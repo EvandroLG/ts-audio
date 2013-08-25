@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Example - audioJS</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<script src="../src/audio-js.js"></script>
+		<script>
+			var audio = window.audioJS({
+				file: 'audio.mp3'
+			});
+
+			audio.play();
+
+			window.setTimeout(function(){
+				audio.stop();
+			}, 4000);
+		</script>
+	</body>
+</html>

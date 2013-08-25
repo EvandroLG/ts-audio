@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Runner - AudioJS</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="lib/css/jasmine.css">
+		<link rel="stylesheet" type="text/css" href="css/test.css">
+		<script src="lib/js/jasmine.js"></script>
+		<script src="lib/js/jasmine-html.js"></script>
+		<script src="lib/js/console-runner.js"></script>
+		<script src="../src/audio-js.js"></script>
+		<script src="spec/spec.audio-js.js"></script>
+	</head>
+	<body>
+		<script>
+			var console_reporter = new jasmine.ConsoleReporter()
+    		jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+    		jasmine.getEnv().addReporter(console_reporter);
+    		jasmine.getEnv().execute();
+		</script>
+	</body>
+</html>
