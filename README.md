@@ -1,5 +1,5 @@
 # audioJS
-AudioJS is a agnostic lib cross-browser to work easily with the AudioContext API of HTML5.
+AudioJS is a agnostic and cross-browser lib to work easily with the AudioContext API of HTML5.
 
 ## Browser Compatibility
 AudioJS is compatibility with the following browsers/version:
