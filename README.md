@@ -2,7 +2,7 @@
 AudioJS is a agnostic and cross-browser lib to work easily with the AudioContext API of HTML5.
 
 ## Browser Compatibility
-AudioJS is compatibility with the following browsers/version:
+AudioJS is compatible with the following browsers/version:
 * Google Chrome 27.0+
 * Firefox 23.0+
 * Safari 6.0+
