@@ -6,7 +6,6 @@
 */
 (function(window){
     'use strict';
-    console.log('here?');
 
     var ajax = function(params) {
         var httpRequest = new XMLHttpRequest();
@@ -97,20 +96,26 @@
             var that = this;
             var audioContext = this.audioContext;
 
-            audioContext.decodeAudioData(response, function(buffer) {
-                that.source = audioContext.createBufferSource();
-                that.source.buffer = buffer;
-                that.source.connect(audioContext.destination);
+            audioContext.decodeAudioData(response,
+                function(buffer) {
+                    that.source = audioContext.createBufferSource();
+                    that.source.buffer = buffer;
+                    that.source.connect(audioContext.destination);
 
-                if (that.autoPlay || that.shouldPlay) {                    
-                    that.callbackManager.register({
-                        callback: that._play,
-                        context: that
-                    });
+                    if (that.autoPlay || that.shouldPlay) {
+                        that.callbackManager.register({
+                            callback: that._play,
+                            context: that
+                        });
 
-                    that.callbackManager.execute();
+                        that.callbackManager.execute();
+                    }
+                },
+
+                function(){
+                    throw 'Decoding the audio buffer failed!';
                 }
-            });
+            );
         },
 
         _play: function() {
