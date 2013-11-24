@@ -6,6 +6,7 @@
 */
 (function(window){
     'use strict';
+    console.log('here?');
 
     var ajax = function(params) {
         var httpRequest = new XMLHttpRequest();
@@ -61,7 +62,7 @@
                 throw 'Your browser does not support API AudioContext!';
             }
 
-            this.audioContext =  new window.webkitAudioContext();
+            this.audioContext =  new AudioContext;
         },
 
         _cachedVariabes: function(params) {
