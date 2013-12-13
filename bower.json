@@ -1,0 +1,24 @@
+{
+  "name": "audio-js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/EvandroLG/audioJS",
+  "authors": [
+    "evandrolg"
+  ],
+  "description": "AudioJS is a agnostic lib cross-browser to work easily with the AudioContext API of HTML5.",
+  "main": "src/audio-js.min.js",
+  "keywords": [
+    "audio",
+    "audiocontext",
+    "html5",
+    "js"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
