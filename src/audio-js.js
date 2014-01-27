@@ -103,8 +103,8 @@
                     that.source = audioContext.createBufferSource();
                     that.source.buffer = buffer;
                     that.source.connect(audioContext.destination);
-					that.source.gain.value = that.volume; 
-					
+                    that.source.gain.value = that.volume;
+
                     if (that.autoPlay || that.shouldPlay) {
                         that.callbackManager.register({
                             callback: that._play,
