@@ -74,8 +74,8 @@
             } else {
                 this.file = params.file;
                 this.autoPlay = params.autoPlay;
-				this.loop = params.loop || false;
-				this.volume = params.volume || 1;
+                this.loop = params.loop || false;
+                this.volume = params.volume || 1;
             }
 
             this._validateFormat();
@@ -122,7 +122,7 @@
         },
 
         _play: function() {
-			this.source.loop = this.loop;
+            this.source.loop = this.loop;
             this.source.start(0);
             this.isStarted = true;
         },
