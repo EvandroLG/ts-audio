@@ -12,6 +12,8 @@ AudioJS is compatible with the following browsers/version:
 # Properties
 * **file** <code>String</code> (<code>undefined</code> by default)
 * **autoPlay** <code>Boolean</code> (<code>false</code> by default)
+* **loop** <code>Boolean</code> (<code>false</code> by default)
+* **volume** <code>Number</code> (Range 0-1, <code>1</code> by default)
 
 ## Methods
 * audioJS.<code>play()</code>

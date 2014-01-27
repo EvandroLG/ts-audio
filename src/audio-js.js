@@ -74,6 +74,8 @@
             } else {
                 this.file = params.file;
                 this.autoPlay = params.autoPlay;
+                this.loop = params.loop || false;
+                this.volume = params.volume || 1;
             }
 
             this._validateFormat();
@@ -101,6 +103,7 @@
                     that.source = audioContext.createBufferSource();
                     that.source.buffer = buffer;
                     that.source.connect(audioContext.destination);
+                    that.source.gain.value = that.volume;
 
                     if (that.autoPlay || that.shouldPlay) {
                         that.callbackManager.register({
@@ -119,6 +122,7 @@
         },
 
         _play: function() {
+            this.source.loop = this.loop;
             this.source.start(0);
             this.isStarted = true;
         },
