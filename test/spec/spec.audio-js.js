@@ -67,4 +67,26 @@ describe('audio-js', function(){
             this.verifyMethod('stop');
         });
     });
+
+	describe('methods with loop', function(){
+        beforeEach(function(){
+            this.audioJS = window.audioJS({
+                file: 'audio.mp3',
+                loop: true
+            });
+
+            this.verifyMethod = function(method){
+                var isMethod = typeof this.audioJS[method] === 'function';
+                expect(isMethod).toBeTruthy();
+            };
+        });
+
+        it('should exist method play', function(){
+            this.verifyMethod('play');
+        });
+
+        it('should exist method stop', function(){
+            this.verifyMethod('stop');
+        });
+    });
 });
