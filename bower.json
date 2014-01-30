@@ -5,7 +5,7 @@
   "authors": [
     "evandrolg"
   ],
-  "description": "AudioJS is a agnostic lib cross-browser to work easily with the AudioContext API of HTML5.",
+  "description": "AudioJS is an agnostic and cross-browser library to work easily with the AudioContext API of HTML5.",
   "main": "src/audio-js.min.js",
   "keywords": [
     "audio",
