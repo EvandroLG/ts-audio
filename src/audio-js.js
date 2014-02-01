@@ -1,32 +1,36 @@
 /*
-  * audioJS
-  * author: Evandro Leopoldino Gonçalves <evandrolgoncalves@gmail.com>
-  * https://github.com/evandrolg
-  * License: MIT
-*/
-(function(window){
+ * audioJS
+ * author: Evandro Leopoldino Gonçalves <evandrolgoncalves@gmail.com>
+ * https://github.com/evandrolg
+ * License: MIT
+ */
+(function (window) {
     'use strict';
 
-    var ajax = function(params) {
+    var ajax = function (params) {
         var httpRequest = new XMLHttpRequest();
 
-        httpRequest.addEventListener('load', function() {
+        httpRequest.addEventListener('load', function () {
             params.success(httpRequest.response);
         }, false);
 
-        httpRequest.open('GET', params.file, true);
-        httpRequest.responseType = 'arraybuffer';
-        httpRequest.send();
+        try {
+            httpRequest.open('GET', params.file, true);
+            httpRequest.responseType = 'arraybuffer';
+            httpRequest.send();
+        } catch (e) {
+            window.console.log(e);
+        }
     };
 
-    var CallbackManager = function() {
+    var CallbackManager = function () {
         return {
-            register: function(obj) {
+            register: function (obj) {
                 this.callback = obj.callback;
                 this.context = obj.context;
             },
 
-            execute: function() {
+            execute: function () {
                 if (this.callback) {
                     this.callback.call(this.context);
                 }
@@ -34,7 +38,7 @@
         };
     };
 
-    var AudioJS = function(params) {
+    var AudioJS = function (params) {
         if (!params) {
             throw 'You need to pass a value as parameter!';
         }
@@ -44,16 +48,16 @@
     };
 
     AudioJS.prototype = {
-        _validateFormat: function() {
+        _validateFormat: function () {
             var regex = /\.(mp3|opus|ogg|wav|m4a|weba)$/;
             var isValid = regex.test(this.file);
 
-            if(!isValid) {
+            if (!isValid) {
                 throw 'The format of the audio file is invalid!';
             }
         },
 
-        _createInstance: function() {
+        _createInstance: function () {
             var AudioContext = window.AudioContext || window.webkitAudioContext || null;
             var hasSupport = AudioContext;
 
@@ -61,10 +65,10 @@
                 throw 'Your browser does not support API AudioContext!';
             }
 
-            this.audioContext =  new AudioContext;
+            this.audioContext = new AudioContext;
         },
 
-        _cachedVariabes: function(params) {
+        _cachedVariabes: function (params) {
             this._createInstance();
 
             var isString = typeof params === 'string';
@@ -83,27 +87,31 @@
             this.callbackManager = new CallbackManager();
         },
 
-        _load: function() {
+        _load: function () {
             var that = this;
 
             ajax({
                 file: this.file,
-                success: function(response) {
+                success: function (response) {
                     that._decodeAudioData.call(that, response);
+                    Registry.musicLoaded = true;
+                    updateLoader();
                 }
             });
         },
 
-        _decodeAudioData: function(response) {
+        _decodeAudioData: function (response) {
             var that = this;
             var audioContext = this.audioContext;
 
             audioContext.decodeAudioData(response,
-                function(buffer) {
+                function (buffer) {
                     that.source = audioContext.createBufferSource();
                     that.source.buffer = buffer;
                     that.source.connect(audioContext.destination);
                     that.source.gain.value = that.volume;
+                    that.source.loop = that.loop;
+                    that.buffer = buffer;
 
                     if (that.autoPlay || that.shouldPlay) {
                         that.callbackManager.register({
@@ -115,28 +123,38 @@
                     }
                 },
 
-                function(){
+                function () {
                     throw 'Decoding the audio buffer failed!';
                 }
             );
         },
 
-        _play: function() {
-            this.source.loop = this.loop;
+        _play: function () {
             this.source.start(0);
             this.isStarted = true;
         },
 
-        play: function() {
+        play: function () {
             this.callbackManager.register({
                 callback: this._play,
                 context: this
             });
 
+            // if we want to play the sound again after stop //
+            if (this.buffer && this.shouldPlay) {
+                this.source = this.audioContext.createBufferSource();
+                this.source.buffer = this.buffer;
+                this.source.connect(this.audioContext.destination);
+                this.source.gain.value = this.volume;
+                this.source.loop = this.loop;
+                this.source.start(0);
+                this.isStarted = true;
+            }
+
             this.shouldPlay = true;
         },
 
-        stop: function() {
+        stop: function () {
             if (this.isStarted) {
                 this.source.stop(0);
                 this.isStarted = false;
@@ -144,7 +162,7 @@
         }
     };
 
-    window.audioJS = function(params) {
+    window.audioJS = function (params) {
         return new AudioJS(params);
     };
 }(this));
