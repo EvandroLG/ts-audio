@@ -67,12 +67,12 @@ describe('audio-js', function(){
             this.verifyMethod('stop');
         });
     });
-
+	
 	describe('methods with loop', function(){
         beforeEach(function(){
             this.audioJS = window.audioJS({
                 file: 'audio.mp3',
-                loop: true
+				loop: true
             });
 
             this.verifyMethod = function(method){
@@ -88,5 +88,33 @@ describe('audio-js', function(){
         it('should exist method stop', function(){
             this.verifyMethod('stop');
         });
+    });
+	
+	describe('play and re-play', function(){
+		var track;
+        beforeEach(function(){
+            track = this.audioJS = window.audioJS({
+                file: 'audio.mp3',
+				loop: false
+            });
+
+            this.verifyMethod = function(method){
+                var isMethod = typeof this.audioJS[method] === 'function';
+                expect(isMethod).toBeTruthy();
+            };
+        });
+
+        it('should exist method play', function(){
+            this.verifyMethod('play');
+        });
+
+        it('should exist method stop', function(){
+            this.verifyMethod('stop');
+        });
+		
+		it('should be able to stop and play again', function() {
+			track.stop();
+			track.play();
+		});
     });
 });
