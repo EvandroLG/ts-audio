@@ -1,33 +1,27 @@
-# audioJS
-AudioJS is a agnostic and cross-browser library to work easily with the AudioContext API of HTML5.
+# TSDX Bootstrap
 
-## Browser Compatibility
-AudioJS is compatible with the following browsers/version:
-* Google Chrome 28.0+
-* Firefox 25.0+
-* Safari 6.0+
-* IOS Safari 6.0-6.1+
-* Opera 16.0+
+This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).
 
-# Properties
-* **file** <code>String</code> (<code>undefined</code> by default)
-* **autoPlay** <code>Boolean</code> (<code>false</code> by default)
-* **loop** <code>Boolean</code> (<code>false</code> by default)
-* **volume** <code>Number</code> (Range 0-1, <code>1</code> by default)
+## Local Development
 
-## Methods
-* audioJS.<code>play()</code>
-* audioJS.<code>stop()</code>
+Below is a list of commands you will probably find useful.
 
-**Examples**
-```js
-	var audio = window.audioJS({
-		file: 'audio.mp3'
-	});
+### `npm start` or `yarn start`
 
-	audio.play();
+Runs the project in development/watch mode. Your project will be rebuilt upon changes. TSDX has a special logger for you convenience. Error messages are pretty printed and formatted for compatibility VS Code's Problems tab.
 
-	window.setTimeout(function(){
-		audio.stop();
-	}, 4000);
-```
+<img src="https://user-images.githubusercontent.com/4060187/52168303-574d3a00-26f6-11e9-9f3b-71dbec9ebfcb.gif" width="600" />
+
+Your library will be rebuilt if you make edits.
+
+### `npm run build` or `yarn build`
+
+Bundles the package to the `dist` folder.
+The package is optimized and bundled with Rollup into multiple formats (CommonJS, UMD, and ES Module).
+
+<img src="https://user-images.githubusercontent.com/4060187/52168322-a98e5b00-26f6-11e9-8cf6-222d716b75ef.gif" width="600" />
+
+### `npm test` or `yarn test`
+
+Runs the test watcher (Jest) in an interactive mode.
+By default, runs tests related to files changed since the last commit.
