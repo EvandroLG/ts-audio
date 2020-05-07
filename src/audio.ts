@@ -8,6 +8,7 @@ const decodeAudioData = (
   audioContext: AudioContext,
   source: AudioBufferSourceNode,
   buffer: ArrayBuffer,
+  volume: number,
   autoPlay: boolean,
   loop: boolean
 ) => {
@@ -16,6 +17,10 @@ const decodeAudioData = (
     source.buffer = data;
     source.connect(audioContext.destination);
     source.loop = loop;
+
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = volume;
+    gainNode.connect(audioContext.destination);
 
     if (autoPlay) {
       play(source);
@@ -27,7 +32,7 @@ const decodeAudioData = (
 
 const Audio = (
   file: string,
-  volume?: number,
+  volume: number = 1,
   autoPlay: boolean = false,
   loop: boolean = false
 ) => {
@@ -35,12 +40,12 @@ const Audio = (
   const source = audioContext.createBufferSource();
 
   getBuffer(file).then(buffer =>
-    decodeAudioData(audioContext, source, buffer, autoPlay, loop)
+    decodeAudioData(audioContext, source, buffer, volume, autoPlay, loop)
   );
 
   return {
     play: () => {},
-    stop: () => {},
+    stop: () => source.stop(0),
   };
 };
 
