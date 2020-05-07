@@ -7,10 +7,15 @@ const getBuffer = (file: string) =>
     return response.arrayBuffer();
   });
 
+const play = (source: AudioBufferSourceNode) => {
+  source.start(0);
+};
+
 const decodeAudioData = (
   audioContext: AudioContext,
   source: AudioBufferSourceNode,
   buffer: ArrayBuffer,
+  autoPlay: boolean,
   loop: boolean
 ) => {
   const onError = console.error;
@@ -18,6 +23,10 @@ const decodeAudioData = (
     source.buffer = data;
     source.connect(audioContext.destination);
     source.loop = loop;
+
+    if (autoPlay) {
+      play(source);
+    }
   };
 
   audioContext.decodeAudioData(buffer, onSuccess, onError);
@@ -25,16 +34,21 @@ const decodeAudioData = (
 
 const Audio = (
   file: string,
-  autoPlay?: boolean,
-  loop: boolean = false,
-  volume?: number
-): void => {
+  volume?: number,
+  autoPlay: boolean = false,
+  loop: boolean = false
+) => {
   const audioContext = new AudioContext();
   const source = audioContext.createBufferSource();
 
   getBuffer(file).then(buffer =>
-    decodeAudioData(audioContext, source, buffer, loop)
+    decodeAudioData(audioContext, source, buffer, autoPlay, loop)
   );
+
+  return {
+    play: () => {},
+    stop: () => {},
+  };
 };
 
 export default Audio;
