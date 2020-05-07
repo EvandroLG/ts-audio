@@ -1,34 +1,5 @@
-import { getBuffer } from 'utils';
-
-const play = (source: AudioBufferSourceNode) => {
-  source.start(0);
-};
-
-const decodeAudioData = (
-  audioContext: AudioContext,
-  source: AudioBufferSourceNode,
-  buffer: ArrayBuffer,
-  volume: number,
-  autoPlay: boolean,
-  loop: boolean
-) => {
-  const onError = console.error;
-  const onSuccess = (data: any) => {
-    source.buffer = data;
-    source.connect(audioContext.destination);
-    source.loop = loop;
-
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = volume;
-    gainNode.connect(audioContext.destination);
-
-    if (autoPlay) {
-      play(source);
-    }
-  };
-
-  audioContext.decodeAudioData(buffer, onSuccess, onError);
-};
+import { getBuffer } from './utils';
+import decodeAudioData from './decodeAudioData';
 
 const Audio = (
   file: string,
