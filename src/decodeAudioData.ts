@@ -11,11 +11,11 @@ const decodeAudioData = (
     source.connect(audioContext.destination);
     source.loop = loop;
 
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = volume;
-    gainNode.connect(audioContext.destination);
-
     if (autoPlay) {
+      const gainNode = audioContext.createGain();
+      gainNode.gain.value = volume;
+      gainNode.connect(audioContext.destination);
+
       source.start(0);
     }
   };
