@@ -10,12 +10,14 @@
     var ajax = function (params) {
         var httpRequest = new XMLHttpRequest();
 
-        httpRequest.addEventListener('load', function () {
-            params.success(httpRequest.response);
-        }, false);
-
         try {
             httpRequest.open('GET', params.file, true);
+
+            // InvalidStateError: An attempt was made to use an object that is not, or is no longer, usable
+            httpRequest.addEventListener('load', function () {
+                params.success(httpRequest.response);
+            }, false);
+    
             httpRequest.responseType = 'arraybuffer';
             httpRequest.send();
         } catch (e) {
