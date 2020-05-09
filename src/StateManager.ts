@@ -1,12 +1,17 @@
-const StateManager = () => {
+export type StateManagerType = {
+  set: (key: string, value: any) => void;
+  get: (key: string) => any;
+};
+
+const StateManager = (): StateManagerType => {
   const states: { [key: string]: any } = {};
 
   return {
-    setState(key: string, value: any) {
+    set(key: string, value: any) {
       states[key] = value;
     },
 
-    getState(key: string) {
+    get(key: string) {
       return states[key];
     },
   };

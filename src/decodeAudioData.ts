@@ -1,15 +1,19 @@
+import { StateManagerType } from 'StateManager';
+
 const decodeAudioData = (
   audioContext: AudioContext,
   source: AudioBufferSourceNode,
-  buffer: ArrayBuffer,
+  arrayBuffer: ArrayBuffer,
   volume: number,
   autoPlay: boolean,
-  loop: boolean
+  loop: boolean,
+  states: StateManagerType
 ) => {
-  const onSuccess = (data: any) => {
-    source.buffer = data;
+  const onSuccess = (buffer: any) => {
+    source.buffer = buffer;
     source.connect(audioContext.destination);
     source.loop = loop;
+    states.set('buffer', buffer);
 
     if (autoPlay) {
       const gainNode = audioContext.createGain();
@@ -20,7 +24,7 @@ const decodeAudioData = (
     }
   };
 
-  audioContext.decodeAudioData(buffer, onSuccess, console.error);
+  audioContext.decodeAudioData(arrayBuffer, onSuccess, console.error);
 };
 
 export default decodeAudioData;
