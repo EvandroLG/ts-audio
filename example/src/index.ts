@@ -1,13 +1,10 @@
 import Audio from '../../src/';
 import song from './song.mp3';
 
-const getById = (value: string) => document.getElementById(value);
+const buttonPlay = document.getElementById('bt-play');
+const audio = Audio({ file: song, loop: true, volume: 0.2 });
 
-let audio;
-
-getById('bt-play').addEventListener('click', () => {
-  audio = Audio({ file: song, autoPlay: true, loop: true, volume: 0.2 });
-  getById('bt-stop').removeAttribute('disabled');
+buttonPlay.addEventListener('click', () => {
+  audio.play();
+  buttonPlay.setAttribute('disabled', 'disabled');
 });
-
-getById('bt-stop').addEventListener('click', () => audio.stop());
