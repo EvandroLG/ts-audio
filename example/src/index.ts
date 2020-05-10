@@ -1,4 +1,4 @@
-import Audio from '../../src/';
+import Audio from 'ts-audio';
 import song from './song.mp3';
 
 const buttonPlay = document.getElementById('bt-play');
