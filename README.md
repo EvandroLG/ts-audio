@@ -1,7 +1,6 @@
-# ts-audio
+# ts-audio &middot; [![Build Status](https://travis-ci.org/EvandroLG/ts-audio.svg?branch=master)](https://travis-ci.org/ts-audio) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 `ts-audio` is an agnostic and easy-to-use library to work with the `AudioContext` API.
 
-[![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
 ## Installation
 To install `ts-audio`, execute:
