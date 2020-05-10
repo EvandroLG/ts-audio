@@ -11,15 +11,16 @@ const decodeAudioData = (
 ) => {
   const onSuccess = (buffer: any) => {
     source.buffer = buffer;
-    source.connect(audioContext.destination);
     source.loop = loop;
+
+    const gainNode = audioContext.createGain();
+    source.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    gainNode.gain.value = volume;
+
     states.set('buffer', buffer);
 
     if (autoPlay) {
-      const gainNode = audioContext.createGain();
-      gainNode.gain.value = volume;
-      gainNode.connect(audioContext.destination);
-
       source.start(0);
     }
   };

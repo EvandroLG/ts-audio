@@ -33,13 +33,7 @@ const Audio = ({
 
   return {
     play() {
-      const buffer = states.get('buffer');
-
-      if (buffer) {
-        const gainNode = audioContext.createGain();
-        gainNode.gain.value = volume;
-        gainNode.connect(audioContext.destination);
-
+      if (states.get('buffer')) {
         source.start(0);
       }
     },
