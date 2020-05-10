@@ -7,13 +7,13 @@
 To install `ts-audio`, execute:
 
 ```sh
-  $ npm install ts-audio
+$ npm install ts-audio
 ```
 
 or
 
 ```sh
-  $ yarn add ts-audio
+$ yarn add ts-audio
 ```
 
 # Properties
