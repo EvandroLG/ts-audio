@@ -2,7 +2,7 @@ import StateManager from './StateManager';
 import decodeAudioData from './decodeAudioData';
 import { getBuffer } from './utils';
 
-type PropType = {
+export type PropType = {
   file: string;
   volume?: number;
   autoPlay?: boolean;

@@ -1,2 +1,1 @@
-import Audio from './Audio';
-export default Audio;
+export { default, PropType as AudioPropType } from './Audio';
