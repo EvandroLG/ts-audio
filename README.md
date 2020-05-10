@@ -1,27 +1,27 @@
-# TSDX Bootstrap
+# audioJS
+`audioJS` is an agnostic and easy-to-use library to work with the `AudioContext` API.
 
-This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).
+[![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
-## Local Development
+# Properties
+* file: <code>String</code>
+* volume?: <code>Number</code> (Range 0-1, <code>1</code> by default)
+* autoPlay?: <code>Boolean</code> (<code>false</code> by default)
+* loop?: <code>Boolean</code> (<code>false</code> by default)
 
-Below is a list of commands you will probably find useful.
+## Methods
+* audio.<code>play()</code>
+* audio.<code>stop()</code>
 
-### `npm start` or `yarn start`
+## Quickstart
+```js
+import Audio from '../../src/';
 
-Runs the project in development/watch mode. Your project will be rebuilt upon changes. TSDX has a special logger for you convenience. Error messages are pretty printed and formatted for compatibility VS Code's Problems tab.
+const buttonPlay = document.getElementById('bt-play');
+const audio = Audio({ file: './song.mp3', loop: true, volume: 0.2 });
 
-<img src="https://user-images.githubusercontent.com/4060187/52168303-574d3a00-26f6-11e9-9f3b-71dbec9ebfcb.gif" width="600" />
-
-Your library will be rebuilt if you make edits.
-
-### `npm run build` or `yarn build`
-
-Bundles the package to the `dist` folder.
-The package is optimized and bundled with Rollup into multiple formats (CommonJS, UMD, and ES Module).
-
-<img src="https://user-images.githubusercontent.com/4060187/52168322-a98e5b00-26f6-11e9-8cf6-222d716b75ef.gif" width="600" />
-
-### `npm test` or `yarn test`
-
-Runs the test watcher (Jest) in an interactive mode.
-By default, runs tests related to files changed since the last commit.
+buttonPlay.addEventListener('click', () => {
+  audio.play();
+  buttonPlay.setAttribute('disabled', 'disabled');
+});
+```
