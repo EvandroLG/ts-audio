@@ -27,6 +27,8 @@ $ yarn add ts-audio
 * audio.<code>stop()</code>
 
 ## Quickstart
+- [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/example)
+
 ```js
 import Audio from 'ts-audio';
 
@@ -39,4 +41,3 @@ buttonPlay.addEventListener('click', () => {
 });
 ```
 
-- [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/example)
