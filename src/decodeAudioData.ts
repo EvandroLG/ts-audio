@@ -1,4 +1,4 @@
-import { StateManagerType } from 'StateManager';
+import { StateManagerType } from './StateManager';
 
 const decodeAudioData = (
   audioContext: AudioContext,
