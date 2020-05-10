@@ -38,3 +38,5 @@ buttonPlay.addEventListener('click', () => {
   buttonPlay.setAttribute('disabled', 'disabled');
 });
 ```
+
+- [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/example)
