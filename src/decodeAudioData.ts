@@ -18,7 +18,7 @@ const decodeAudioData = (
     gainNode.connect(audioContext.destination);
     gainNode.gain.value = volume;
 
-    states.set('buffer', buffer);
+    states.set('isDecoded', true);
 
     if (autoPlay) {
       source.start(0);

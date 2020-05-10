@@ -33,7 +33,7 @@ const Audio = ({
 
   return {
     play() {
-      if (states.get('buffer')) {
+      if (states.get('isDecoded')) {
         source.start(0);
       }
     },
