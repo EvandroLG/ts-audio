@@ -1,4 +1,4 @@
-# ts-audio - sample
+# [ts-audio] sample
 For run the sample application, first install the dependecies:
 
 ```sh
