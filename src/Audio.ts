@@ -41,6 +41,13 @@ const Audio = ({
     stop() {
       source.stop(0);
     },
+
+    setVolume(newVolume: number) {
+      const gainNode = audioContext.createGain();
+      source.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      gainNode.gain.value = newVolume;
+    },
   };
 };
 
