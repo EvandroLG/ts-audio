@@ -16,7 +16,7 @@ or
 $ yarn add ts-audio
 ```
 
-# Properties
+## Properties
 * file: <code>String</code>
 * volume?: <code>Number</code> (Range 0-1, <code>1</code> by default)
 * autoPlay?: <code>Boolean</code> (<code>false</code> by default)
