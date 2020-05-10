@@ -1,33 +1,27 @@
-# audioJS
-AudioJS is a agnostic and cross-browser library to work easily with the AudioContext API of HTML5.
+# ts-audio
+`ts-audio` is an agnostic and easy-to-use library to work with the `AudioContext` API.
 
-## Browser Compatibility
-AudioJS is compatible with the following browsers/version:
-* Google Chrome 28.0+
-* Firefox 25.0+
-* Safari 6.0+
-* IOS Safari 6.0-6.1+
-* Opera 16.0+
+[![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
 # Properties
-* **file** <code>String</code> (<code>undefined</code> by default)
-* **autoPlay** <code>Boolean</code> (<code>false</code> by default)
-* **loop** <code>Boolean</code> (<code>false</code> by default)
-* **volume** <code>Number</code> (Range 0-1, <code>1</code> by default)
+* file: <code>String</code>
+* volume?: <code>Number</code> (Range 0-1, <code>1</code> by default)
+* autoPlay?: <code>Boolean</code> (<code>false</code> by default)
+* loop?: <code>Boolean</code> (<code>false</code> by default)
 
 ## Methods
-* audioJS.<code>play()</code>
-* audioJS.<code>stop()</code>
+* audio.<code>play()</code>
+* audio.<code>stop()</code>
 
-**Examples**
+## Quickstart
 ```js
-	var audio = window.audioJS({
-		file: 'audio.mp3'
-	});
+import Audio from '../../src/';
 
-	audio.play();
+const buttonPlay = document.getElementById('bt-play');
+const audio = Audio({ file: './song.mp3', loop: true, volume: 0.2 });
 
-	window.setTimeout(function(){
-		audio.stop();
-	}, 4000);
+buttonPlay.addEventListener('click', () => {
+  audio.play();
+  buttonPlay.setAttribute('disabled', 'disabled');
+});
 ```
