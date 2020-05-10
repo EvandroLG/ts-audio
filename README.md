@@ -3,6 +3,19 @@
 
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
+## Installation
+To install `ts-audio`, execute:
+
+```sh
+  $ npm install ts-audio
+```
+
+or
+
+```sh
+  $ yarn add ts-audio
+```
+
 # Properties
 * file: <code>String</code>
 * volume?: <code>Number</code> (Range 0-1, <code>1</code> by default)
@@ -15,7 +28,7 @@
 
 ## Quickstart
 ```js
-import Audio from '../../src/';
+import Audio from 'ts-audio';
 
 const buttonPlay = document.getElementById('bt-play');
 const audio = Audio({ file: './song.mp3', loop: true, volume: 0.2 });
