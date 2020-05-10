@@ -1,5 +1,5 @@
-# audioJS
-`audioJS` is an agnostic and easy-to-use library to work with the `AudioContext` API.
+# ts-audio
+`ts-audio` is an agnostic and easy-to-use library to work with the `AudioContext` API.
 
 [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
