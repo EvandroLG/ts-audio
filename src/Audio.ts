@@ -9,13 +9,19 @@ export type PropType = {
   loop?: boolean;
 };
 
+declare global {
+  interface Window {
+    webkitAudioContext: typeof AudioContext;
+  }
+}
+
 const Audio = ({
   file,
   volume = 1,
   autoPlay = false,
   loop = false,
 }: PropType) => {
-  const audioContext = new AudioContext();
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
   const source = audioContext.createBufferSource();
   const states = StateManager();
 
