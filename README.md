@@ -1,6 +1,10 @@
 # ts-audio &middot; [![Build Status](https://travis-ci.org/EvandroLG/ts-audio.svg?branch=master)](https://travis-ci.org/ts-audio) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 `ts-audio` is an agnostic and easy-to-use library to work with the `AudioContext` API.
 
+## Features
+* Simple API that abstracts the complexity of the AudioContext API
+* Cross-browser support
+* Works with any language that compiles to JavaScript
 
 ## Installation
 To install `ts-audio`, execute:
@@ -40,4 +44,3 @@ buttonPlay.addEventListener('click', () => {
   buttonPlay.setAttribute('disabled', 'disabled');
 });
 ```
-
