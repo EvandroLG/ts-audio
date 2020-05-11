@@ -4,7 +4,6 @@ const decodeAudioData = (
   audioContext: AudioContext,
   source: AudioBufferSourceNode,
   arrayBuffer: ArrayBuffer,
-  volume: number,
   autoPlay: boolean,
   loop: boolean,
   states: StateManagerType
@@ -12,11 +11,6 @@ const decodeAudioData = (
   const onSuccess = (buffer: any) => {
     source.buffer = buffer;
     source.loop = loop;
-
-    const gainNode = audioContext.createGain();
-    source.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    gainNode.gain.value = volume;
 
     states.set('isDecoded', true);
 

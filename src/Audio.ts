@@ -22,19 +22,16 @@ const Audio = ({
   loop = false,
 }: PropType) => {
   const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const source = audioContext.createBufferSource();
   const states = StateManager();
+  const source = audioContext.createBufferSource();
+  const gainNode = audioContext.createGain();
+
+  gainNode.gain.value = volume;
+  source.connect(gainNode);
+  gainNode.connect(audioContext.destination);
 
   getBuffer(file).then(buffer =>
-    decodeAudioData(
-      audioContext,
-      source,
-      buffer,
-      volume,
-      autoPlay,
-      loop,
-      states
-    )
+    decodeAudioData(audioContext, source, buffer, autoPlay, loop, states)
   );
 
   return {
@@ -49,9 +46,6 @@ const Audio = ({
     },
 
     setVolume(newVolume: number) {
-      const gainNode = audioContext.createGain();
-      source.connect(gainNode);
-      gainNode.connect(audioContext.destination);
       gainNode.gain.value = newVolume;
     },
   };
