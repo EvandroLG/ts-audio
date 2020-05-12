@@ -6,3 +6,7 @@ export const getBuffer = (file: string) =>
 
     return response.arrayBuffer();
   });
+
+export const throwsError = (value: string) => {
+  throw new Error(`\`ts-audio\`: ${value}`);
+};
