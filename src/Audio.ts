@@ -1,4 +1,5 @@
 import StateManager from './StateManager';
+import EventEmitter from './EventEmitter';
 import decodeAudioData from './decodeAudioData';
 import { getBuffer, throwsError } from './utils';
 
@@ -23,8 +24,9 @@ const Audio = ({
     );
   }
 
-  const audioContext = new Context();
   const states = StateManager();
+  const emitter = EventEmitter();
+  const audioContext = new Context();
   const source = audioContext.createBufferSource();
   const gainNode = audioContext.createGain();
 
@@ -34,15 +36,23 @@ const Audio = ({
 
   getBuffer(file)
     .then(buffer =>
-      decodeAudioData(audioContext, source, buffer, autoPlay, loop, states)
+      decodeAudioData(
+        audioContext,
+        source,
+        buffer,
+        autoPlay,
+        loop,
+        states,
+        emitter
+      )
     )
     .catch(console.error);
 
   return {
     play() {
-      if (states.get('isDecoded')) {
-        source.start(0);
-      }
+      states.get('isDecoded')
+        ? source.start(0)
+        : emitter.listener('decoded', () => source.start(0));
     },
 
     stop() {
