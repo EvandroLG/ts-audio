@@ -7,7 +7,7 @@ describe('event emitter', () => {
     const callback = jest.fn();
     const param = { data: true };
 
-    emitter.addListener(keyEvent, callback);
+    emitter.listener(keyEvent, callback);
     emitter.emit(keyEvent, { data: true });
 
     expect(callback).toBeCalledWith(param);
