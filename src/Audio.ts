@@ -38,10 +38,6 @@ const Audio = ({
   const source = audioContext.createBufferSource();
   const gainNode = audioContext.createGain();
 
-  audioContext.onstatechange = () => {
-    console.log(audioContext.state);
-  };
-
   gainNode.gain.value = volume;
   source.connect(gainNode);
   gainNode.connect(audioContext.destination);
