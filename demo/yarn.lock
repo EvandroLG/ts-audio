@@ -4911,10 +4911,10 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-ts-audio@latest:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/ts-audio/-/ts-audio-0.2.3.tgz#7469db6f7b2578f73286352fb75c3c040cef7966"
-  integrity sha512-ZyEKxjy5FOz5NzNMwKMrMz5MK1Vrl+SW3ZjylSHQC9chkycH26nwPW3qScPxF96UpHdQroiLYmSxdVorGzGMGw==
+ts-audio@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/ts-audio/-/ts-audio-0.3.0.tgz#f3357c39e4ef63e9dda7f3380b1e8d58d2f085a1"
+  integrity sha512-hdsOSZJTw0/oO5iKwQT5fnKsSwlKYIo7ayS+uayscYxK5tedGPws9lPVPZjVT6fkk3r+Jbc7WRZMBbRjba/VFQ==
 
 tty-browserify@0.0.0:
   version "0.0.0"
