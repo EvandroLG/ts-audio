@@ -10,10 +10,10 @@ export type PropType = {
   loop?: boolean;
 };
 
+// if audiocontext is initialized before a user gesture on the page, its
+// state become `suspended` by default. once audiocontext.state is `suspended`
+// the only way to start it after a user gesture is executing the `resume` method
 const start = (audioContext: AudioContext, source: AudioBufferSourceNode) =>
-  // if audiocontext is initialized before a user gesture on the page, its
-  // state become `suspended` by default. once audiocontext.state is `suspended`
-  // the only way to start it after a user gesture is executing the `resume` method
   audioContext.state === 'suspended'
     ? audioContext.resume().then(() => source.start(0))
     : source.start(0);
@@ -38,6 +38,10 @@ const Audio = ({
   const source = audioContext.createBufferSource();
   const gainNode = audioContext.createGain();
 
+  audioContext.onstatechange = () => {
+    console.log(audioContext.state);
+  };
+
   gainNode.gain.value = volume;
   source.connect(gainNode);
   gainNode.connect(audioContext.destination);
@@ -58,13 +62,24 @@ const Audio = ({
 
   return {
     play() {
+      if (states.get('hasStarted')) {
+        audioContext.resume();
+        return;
+      }
+
       states.get('isDecoded')
         ? start(audioContext, source)
         : emitter.listener('decoded', () => start(audioContext, source));
+
+      states.set('hasStarted', true);
     },
 
     stop() {
       source.stop(0);
+    },
+
+    pause() {
+      audioContext.suspend();
     },
 
     setVolume(newVolume: number) {
