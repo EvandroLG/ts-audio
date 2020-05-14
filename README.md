@@ -27,6 +27,7 @@ $ yarn add ts-audio
 
 ## Methods
 * audio.<code>play(): void</code>
+* audio.<code>pause(): void</code>
 * audio.<code>stop(): void</code>
 * audio.<code>setVolume(volume: number): void</code>
 
@@ -44,3 +45,6 @@ buttonPlay.addEventListener('click', () => {
   buttonPlay.setAttribute('disabled', 'disabled');
 });
 ```
+
+## LICENSE
+[MIT](https://github.com/EvandroLG/ts-audio/tree/master/LICENSE)
