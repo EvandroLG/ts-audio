@@ -1,7 +1,8 @@
+import AudioCtx from './AudioCtx';
 import StateManager from './StateManager';
 import EventEmitter from './EventEmitter';
 import decodeAudioData from './decodeAudioData';
-import { getBuffer, throwsError } from './utils';
+import { getBuffer } from './utils';
 
 export type PropType = {
   file: string;
@@ -24,17 +25,9 @@ const Audio = ({
   autoPlay = false,
   loop = false,
 }: PropType) => {
-  const Context = window.AudioContext || (window as any).webkitAudioContext;
-
-  if (!Context) {
-    throwsError(
-      "Your browser doesn't support AudioContext - https://bit.ly/2YWmpnX"
-    );
-  }
-
+  const audioContext = AudioCtx();
   const states = StateManager();
   const emitter = EventEmitter();
-  const audioContext = new Context();
   const source = audioContext.createBufferSource();
   const gainNode = audioContext.createGain();
 
