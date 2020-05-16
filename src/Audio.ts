@@ -3,11 +3,18 @@ import EventEmitter from './EventEmitter';
 import decodeAudioData from './decodeAudioData';
 import { getBuffer, throwsError } from './utils';
 
-export type PropType = {
+export type AudioPropType = {
   file: string;
   volume?: number;
   autoPlay?: boolean;
   loop?: boolean;
+};
+
+export type AudioType = {
+  play: () => void;
+  pause: () => void;
+  stop: () => void;
+  setVolume: (volume: number) => void;
 };
 
 // if audiocontext is initialized before a user gesture on the page, its
@@ -23,7 +30,7 @@ const Audio = ({
   volume = 1,
   autoPlay = false,
   loop = false,
-}: PropType) => {
+}: AudioPropType): AudioType => {
   const Context = window.AudioContext || (window as any).webkitAudioContext;
 
   if (!Context) {
