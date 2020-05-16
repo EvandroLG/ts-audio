@@ -15,8 +15,8 @@ export type AudioType = {
   play: () => void;
   pause: () => void;
   stop: () => void;
-  setVolume: (volume: number) => void;
-  setLoop: (loop: boolean) => void;
+  volume: number;
+  loop: boolean;
 };
 
 // if audiocontext is initialized before a user gesture on the page, its
@@ -73,11 +73,19 @@ const Audio = ({
       }
     },
 
-    setVolume(newVolume: number) {
+    get volume() {
+      return gainNode.gain.value;
+    },
+
+    set volume(newVolume: number) {
       gainNode.gain.value = newVolume;
     },
 
-    setLoop(newLoop: boolean) {
+    get loop() {
+      return source.loop;
+    },
+
+    set loop(newLoop: boolean) {
       source.loop = newLoop;
     },
   };
