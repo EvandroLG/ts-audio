@@ -1,4 +1,4 @@
-import Audio from 'ts-audio';
+import Audio, { AudioType } from '../../src';
 import song from './song.mp3';
 
 const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
@@ -6,13 +6,22 @@ const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
 const range = <HTMLInputElement>document.getElementById('range');
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
-const audio = Audio({ file: song, loop: true, volume: 0.1 });
+const buttonStop = document.getElementById('bt-stop');
+const audio: AudioType = Audio({
+  file: song,
+  loop: true,
+  volume: getVolume(range),
+});
+
+setTimeout(() => {
+  audio.loop = false;
+}, 2000);
 
 buttonPlay.addEventListener('click', () => {
   audio.play();
-
   buttonPlay.setAttribute('disabled', 'disabled');
   buttonPause.removeAttribute('disabled');
+  buttonStop.removeAttribute('disabled');
 });
 
 buttonPause.addEventListener('click', () => {
@@ -21,7 +30,13 @@ buttonPause.addEventListener('click', () => {
   buttonPlay.removeAttribute('disabled');
 });
 
+buttonStop.addEventListener('click', () => {
+  audio.stop();
+  buttonStop.setAttribute('disabled', 'disabled');
+  buttonPlay.removeAttribute('disabled');
+});
+
 range.addEventListener('change', (e: Event) => {
   const volume = getVolume(e.target as HTMLInputElement);
-  audio.setVolume(volume);
+  audio.volume = volume;
 });
