@@ -70,12 +70,14 @@ const Audio = ({
       states.set('hasStarted', true);
     },
 
-    stop() {
-      source.stop(0);
-    },
-
     pause() {
       audioContext.suspend();
+    },
+
+    stop() {
+      if (states.get('hasStarted')) {
+        source.stop(0);
+      }
     },
 
     setVolume(newVolume: number) {
