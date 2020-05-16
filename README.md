@@ -19,6 +19,21 @@ or
 $ yarn add ts-audio
 ```
 
+## Quickstart
+- [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo)
+
+```js
+import Audio from 'ts-audio';
+
+const buttonPlay = document.getElementById('bt-play');
+const audio = Audio({ file: './song.mp3', loop: true, volume: 0.2 });
+
+buttonPlay.addEventListener('click', () => {
+  audio.play();
+  buttonPlay.setAttribute('disabled', 'disabled');
+});
+```
+
 ## Parameters
 * file: <code>string</code>
 * volume?: <code>number</code> (Range 0-1, <code>1</code> by default)
@@ -37,21 +52,6 @@ Stops playback immediately.
 
 * audio.<code>setVolume(volume: number): void</code><br>
 Allows volume to be updated at any time during audio playback.
-
-## Quickstart
-- [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo)
-
-```js
-import Audio from 'ts-audio';
-
-const buttonPlay = document.getElementById('bt-play');
-const audio = Audio({ file: './song.mp3', loop: true, volume: 0.2 });
-
-buttonPlay.addEventListener('click', () => {
-  audio.play();
-  buttonPlay.setAttribute('disabled', 'disabled');
-});
-```
 
 ## LICENSE
 [MIT](https://github.com/EvandroLG/ts-audio/tree/master/LICENSE)
