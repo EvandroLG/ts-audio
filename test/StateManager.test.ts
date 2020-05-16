@@ -1,7 +1,7 @@
 import StateManager from '../src/StateManager';
 
 describe('StateManager', () => {
-  it('get and set', () => {
+  test('get and set', () => {
     const state = StateManager();
 
     state.set('isValid', true);

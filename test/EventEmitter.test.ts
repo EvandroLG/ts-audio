@@ -1,7 +1,7 @@
 import EventEmitter from '../src/EventEmitter';
 
 describe('event emitter', () => {
-  it('emit', () => {
+  test('emit', () => {
     const emitter = EventEmitter();
     const keyEvent = 'decoded';
     const callback = jest.fn();
