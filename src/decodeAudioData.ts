@@ -2,7 +2,7 @@ import { StateManagerType } from './StateManager';
 import { EventEmitterType } from './EventEmitter';
 
 const decodeAudioData = (
-  audioContext: AudioContext,
+  audioCtx: AudioContext,
   source: AudioBufferSourceNode,
   arrayBuffer: ArrayBuffer,
   autoPlay: boolean,
@@ -22,7 +22,7 @@ const decodeAudioData = (
     }
   };
 
-  audioContext.decodeAudioData(arrayBuffer, onSuccess, console.error);
+  audioCtx.decodeAudioData(arrayBuffer, onSuccess, console.error);
 };
 
 export default decodeAudioData;

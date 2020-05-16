@@ -1,7 +1,8 @@
+import AudioCtx from './AudioCtx';
 import StateManager from './StateManager';
 import EventEmitter from './EventEmitter';
 import decodeAudioData from './decodeAudioData';
-import { getBuffer, throwsError } from './utils';
+import { getBuffer } from './utils';
 
 export type AudioPropType = {
   file: string;
@@ -20,9 +21,9 @@ export type AudioType = {
 // if audiocontext is initialized before a user gesture on the page, its
 // state become `suspended` by default. once audiocontext.state is `suspended`
 // the only way to start it after a user gesture is executing the `resume` method
-const start = (audioContext: AudioContext, source: AudioBufferSourceNode) =>
-  audioContext.state === 'suspended'
-    ? audioContext.resume().then(() => source.start(0))
+const start = (audioCtx: AudioContext, source: AudioBufferSourceNode) =>
+  audioCtx.state === 'suspended'
+    ? audioCtx.resume().then(() => source.start(0))
     : source.start(0);
 
 const Audio = ({
@@ -31,54 +32,38 @@ const Audio = ({
   autoPlay = false,
   loop = false,
 }: AudioPropType): AudioType => {
-  const Context = window.AudioContext || (window as any).webkitAudioContext;
-
-  if (!Context) {
-    throwsError(
-      "Your browser doesn't support AudioContext - https://bit.ly/2YWmpnX"
-    );
-  }
-
+  const audioCtx = AudioCtx();
   const states = StateManager();
   const emitter = EventEmitter();
-  const audioContext = new Context();
-  const source = audioContext.createBufferSource();
-  const gainNode = audioContext.createGain();
+  const source = audioCtx.createBufferSource();
+  const gainNode = audioCtx.createGain();
 
   gainNode.gain.value = volume;
   source.connect(gainNode);
-  gainNode.connect(audioContext.destination);
+  gainNode.connect(audioCtx.destination);
 
   getBuffer(file)
     .then(buffer =>
-      decodeAudioData(
-        audioContext,
-        source,
-        buffer,
-        autoPlay,
-        loop,
-        states,
-        emitter
-      )
+      decodeAudioData(audioCtx, source, buffer, autoPlay, loop, states, emitter)
     )
     .catch(console.error);
 
   return {
     play() {
       if (states.get('hasStarted')) {
-        audioContext.resume();
+        audioCtx.resume();
         return;
       }
 
       states.get('isDecoded')
-        ? start(audioContext, source)
-        : emitter.listener('decoded', () => start(audioContext, source));
+        ? start(audioCtx, source)
+        : emitter.listener('decoded', () => start(audioCtx, source));
 
       states.set('hasStarted', true);
     },
 
     pause() {
-      audioContext.suspend();
+      audioCtx.suspend();
     },
 
     stop() {
