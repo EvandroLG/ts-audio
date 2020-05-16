@@ -26,10 +26,17 @@ $ yarn add ts-audio
 * loop?: <code>boolean</code> (<code>false</code> by default)
 
 ## Methods
-* audio.<code>play(): void</code>
+* audio.<code>play(): void</code><br>
+Starts playing the video as soon as the audio is loaded. In case the audio was previously paused, it continues to play from the position that had been paused.
+
 * audio.<code>pause(): void</code>
+Pauses the audio and can be played again by calling the `play` method
+
 * audio.<code>stop(): void</code>
+Stops playback immediately.
+
 * audio.<code>setVolume(volume: number): void</code>
+Allows volume to be updated at any time during audio playback.
 
 ## Quickstart
 - [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo)
