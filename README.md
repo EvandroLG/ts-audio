@@ -29,13 +29,13 @@ $ yarn add ts-audio
 * audio.<code>play(): void</code><br>
 Starts playing the video as soon as the audio is loaded. In case the audio was previously paused, it continues to play from the position that had been paused.
 
-* audio.<code>pause(): void</code>
+* audio.<code>pause(): void</code><br>
 Pauses the audio and can be played again by calling the `play` method
 
-* audio.<code>stop(): void</code>
+* audio.<code>stop(): void</code><br>
 Stops playback immediately.
 
-* audio.<code>setVolume(volume: number): void</code>
+* audio.<code>setVolume(volume: number): void</code><br>
 Allows volume to be updated at any time during audio playback.
 
 ## Quickstart
