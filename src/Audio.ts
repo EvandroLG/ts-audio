@@ -11,10 +11,13 @@ export type AudioPropType = {
   loop?: boolean;
 };
 
+type AudioEventType = 'ready';
+
 export type AudioType = {
   play: () => void;
   pause: () => void;
   stop: () => void;
+  on: (eventType: AudioEventType, callback: () => void) => void;
   volume: number;
   loop: boolean;
 };
@@ -70,6 +73,13 @@ const Audio = ({
     stop() {
       if (states.get('hasStarted')) {
         source.stop(0);
+      }
+    },
+
+    on(eventType: AudioEventType, callback: () => void) {
+      if (eventType === 'ready') {
+        emitter.listener('decoded', callback);
+        return;
       }
     },
 

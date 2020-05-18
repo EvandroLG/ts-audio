@@ -15,7 +15,7 @@ const decodeAudioData = (
     source.loop = loop;
 
     states.set('isDecoded', true);
-    emitter.emit('decoded', { data: true });
+    emitter.emit('decoded', { data: buffer });
 
     if (autoPlay) {
       source.start(0);
