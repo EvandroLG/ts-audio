@@ -2,25 +2,8 @@ import AudioCtx from './AudioCtx';
 import StateManager from './StateManager';
 import EventEmitter from './EventEmitter';
 import decodeAudioData from './decodeAudioData';
+import { AudioPropType, AudioEventType, AudioType } from './types';
 import { getBuffer } from './utils';
-
-export type AudioPropType = {
-  file: string;
-  volume?: number;
-  autoPlay?: boolean;
-  loop?: boolean;
-};
-
-type AudioEventType = 'ready';
-
-export type AudioType = {
-  play: () => void;
-  pause: () => void;
-  stop: () => void;
-  on: (eventType: AudioEventType, callback: () => void) => void;
-  volume: number;
-  loop: boolean;
-};
 
 // if audiocontext is initialized before a user gesture on the page, its
 // state become `suspended` by default. once audiocontext.state is `suspended`
@@ -76,7 +59,10 @@ const Audio = ({
       }
     },
 
-    on(eventType: AudioEventType, callback: () => void) {
+    on(
+      eventType: AudioEventType,
+      callback: (param: { [data: string]: any }) => void
+    ) {
       if (eventType === 'ready') {
         emitter.listener('decoded', callback);
         return;

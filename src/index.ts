@@ -1,1 +1,2 @@
-export { default, AudioPropType, AudioType } from './Audio';
+export { default } from './Audio';
+export * from './types';
