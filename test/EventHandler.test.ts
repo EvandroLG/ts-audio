@@ -1,4 +1,4 @@
-import EventListener from '../src/EventListener';
+import EventHandler from '../src/EventHandler';
 import { EventEmitterType } from '../src/EventEmitter';
 
 const EventEmitterMock = () =>
@@ -9,18 +9,18 @@ const EventEmitterMock = () =>
 
 describe('event listener', () => {
   const emitter = EventEmitterMock();
-  const eventListener = EventListener(emitter);
+  const eventHandler = EventHandler(emitter);
 
   test('ready', () => {
     const callback = jest.fn();
-    eventListener.ready(callback);
+    eventHandler.ready(callback);
 
     expect(emitter.listener).toBeCalledWith('decoded', callback);
   });
 
   test('start', () => {
     const callback = jest.fn();
-    eventListener.start(callback);
+    eventHandler.start(callback);
 
     expect(emitter.listener).toBeCalledWith('start', callback);
   });

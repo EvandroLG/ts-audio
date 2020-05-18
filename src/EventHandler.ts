@@ -2,7 +2,7 @@ import { EventEmitterType } from './EventEmitter';
 
 type callbackType = (param: { [data: string]: any }) => void;
 
-const EventListener = (emitter: EventEmitterType) => ({
+const EventHandler = (emitter: EventEmitterType) => ({
   ready(callback: callbackType) {
     emitter.listener('decoded', callback);
   },
@@ -12,4 +12,4 @@ const EventListener = (emitter: EventEmitterType) => ({
   },
 });
 
-export default EventListener;
+export default EventHandler;
