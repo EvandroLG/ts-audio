@@ -1,6 +1,7 @@
 import AudioCtx from './AudioCtx';
 import StateManager from './StateManager';
 import EventEmitter from './EventEmitter';
+import EventListener from './EventListener';
 import decodeAudioData from './decodeAudioData';
 import { AudioPropType, AudioEventType, AudioType } from './types';
 import { getBuffer } from './utils';
@@ -22,6 +23,7 @@ const Audio = ({
   const audioCtx = AudioCtx();
   const states = StateManager();
   const emitter = EventEmitter();
+  const eventListener = EventListener(emitter);
   const source = audioCtx.createBufferSource();
   const gainNode = audioCtx.createGain();
 
@@ -47,6 +49,7 @@ const Audio = ({
         : emitter.listener('decoded', () => start(audioCtx, source));
 
       states.set('hasStarted', true);
+      emitter.emit('start', { data: null });
     },
 
     pause() {
@@ -63,10 +66,7 @@ const Audio = ({
       eventType: AudioEventType,
       callback: (param: { [data: string]: any }) => void
     ) {
-      if (eventType === 'ready') {
-        emitter.listener('decoded', callback);
-        return;
-      }
+      eventListener[eventType]?.(callback);
     },
 
     get volume() {
