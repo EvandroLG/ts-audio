@@ -60,7 +60,7 @@ Stops playback immediately.
 To listen to an event, use the following method:
 
 ```js
-audio.on(eventType: 'ready' | 'start', callback: (param: { data: any }) => void)
+audio.on(eventType: 'ready' | 'start' | 'state', callback: (param: { data: any }) => void)
 ```
 
 ### Event Types
