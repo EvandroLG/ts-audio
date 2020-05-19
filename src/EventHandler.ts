@@ -2,7 +2,7 @@ import { EventEmitterType } from './EventEmitter';
 
 type callbackType = (param: { [data: string]: any }) => void;
 
-const EventHandler = (emitter: EventEmitterType, audioCtx: AudioContext) => ({
+const EventHandler = (emitter: EventEmitterType, audioCtx?: AudioContext) => ({
   ready(callback: callbackType) {
     emitter.listener('decoded', callback);
   },
@@ -12,7 +12,9 @@ const EventHandler = (emitter: EventEmitterType, audioCtx: AudioContext) => ({
   },
 
   state(callback: callbackType) {
-    audioCtx.onstatechange = () => callback({ data: audioCtx.state });
+    if (audioCtx) {
+      audioCtx.onstatechange = () => callback({ data: audioCtx.state });
+    }
   },
 });
 
