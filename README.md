@@ -40,6 +40,12 @@ buttonPlay.addEventListener('click', () => {
 * autoPlay?: <code>boolean</code> (<code>false</code> by default)
 * loop?: <code>boolean</code> (<code>false</code> by default)
 
+## Properties
+Both properties are `getter` and `setter`
+
+* audio.<code>volume: number</code>
+* audio.<code>loop: boolean</code>
+
 ## Methods
 * audio.<code>play(): void</code><br>
 Starts playing the video as soon as the audio is loaded. In case the audio was previously paused, it continues to play from the position that had been paused.
@@ -50,8 +56,17 @@ Pauses the audio and can be played again by calling the `play` method
 * audio.<code>stop(): void</code><br>
 Stops playback immediately.
 
-* audio.<code>setVolume(volume: number): void</code><br>
-Allows volume to be updated at any time during audio playback.
+## Events
+To listen to an event, use the following method
+
+* audio.<code>on(eventType: 'ready' | 'start', callback: (param: { data: any }))</code>
+
+* <code>ready</code><br>
+Triggered after the audio file has been loaded and decoded.<br>
+`data` returns a `AudioBuffer` with the following properties: `duration`, `length`, `numberOfChannels`, `sampleRate`
+
+* <code>start</code><br>
+Triggered as soon as the audio is played for the first time
 
 ## LICENSE
 [MIT](https://github.com/EvandroLG/ts-audio/tree/master/LICENSE)
