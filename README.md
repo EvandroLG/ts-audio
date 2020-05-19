@@ -59,8 +59,11 @@ Stops playback immediately.
 ## Events
 To listen to an event, use the following method
 
-* audio.<code>on(eventType: 'ready' | 'start', callback: (param: { data: any }))</code>
+```js
+audio.<code>on(eventType: 'ready' | 'start', callback: (param: { data: any }))
+```
 
+## Event Types
 * <code>ready</code><br>
 Triggered after the audio file has been loaded and decoded.<br>
 `data` returns a `AudioBuffer` with the following properties: `duration`, `length`, `numberOfChannels`, `sampleRate`
