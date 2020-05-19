@@ -42,5 +42,8 @@
     "audio",
     "song",
     "AudioContext"
-  ]
+  ],
+  "dependencies": {
+    "types": "^0.1.1"
+  }
 }

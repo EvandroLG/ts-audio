@@ -23,7 +23,7 @@ const Audio = ({
   const audioCtx = AudioCtx();
   const states = StateManager();
   const emitter = EventEmitter();
-  const eventHandler = EventHandler(emitter);
+  const eventHandler = EventHandler(emitter, audioCtx);
   const source = audioCtx.createBufferSource();
   const gainNode = audioCtx.createGain();
 

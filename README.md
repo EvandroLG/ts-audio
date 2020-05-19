@@ -57,10 +57,10 @@ Pauses the audio and can be played again by calling the `play` method
 Stops playback immediately.
 
 ## Events
-To listen to an event, use the following method
+To listen to an event, use the following method:
 
 ```js
-audio.on(eventType: 'ready' | 'start', callback: (param: { data: any }))
+audio.on(eventType: 'ready' | 'start', callback: (param: { data: any }) => void)
 ```
 
 #### Event Types
@@ -69,7 +69,11 @@ Triggered after the audio file has been loaded and decoded.<br>
 `data` returns a `AudioBuffer` with the following properties: `duration`, `length`, `numberOfChannels`, `sampleRate`
 
 * <code>start</code><br>
-Triggered as soon as the audio is played for the first time
+Triggered as soon as the audio is played for the first time.
+
+* <code>state</code></br>
+Fires when the audio context's state changes.
+`data` returns the possible values: `suspended`, `running`, `closed`.
 
 ## LICENSE
 [MIT](https://github.com/EvandroLG/ts-audio/tree/master/LICENSE)

@@ -5,7 +5,7 @@ export type AudioPropType = {
   loop?: boolean;
 };
 
-export type AudioEventType = 'ready' | 'start';
+export type AudioEventType = 'ready' | 'start' | 'state';
 
 export type AudioType = {
   play: () => void;
