@@ -5,6 +5,7 @@
 * Simple API that abstracts the complexity of the AudioContext API
 * Cross-browser support
 * Works with any language that compiles to JavaScript
+* Support to Types
 
 ## Installation
 To install `ts-audio`, execute:
@@ -25,12 +26,14 @@ $ yarn add ts-audio
 ```js
 import Audio from 'ts-audio';
 
-const buttonPlay = document.getElementById('bt-play');
-const audio = Audio({ file: './song.mp3', loop: true, volume: 0.2 });
+const audio = Audio({
+  file: './song.mp3',
+  loop: true,
+  volume: 0.2
+});
 
-buttonPlay.addEventListener('click', () => {
-  audio.play();
-  buttonPlay.setAttribute('disabled', 'disabled');
+document.getElementById('bt-play').addEventListener('click', () => {
+  audio.play()
 });
 ```
 
@@ -40,5 +43,5 @@ buttonPlay.addEventListener('click', () => {
 * [Methods](https://github.com/EvandroLG/ts-audio/wiki/Methods)
 * [Events](https://github.com/EvandroLG/ts-audio/wiki/Events)
 
-## LICENSE
+## License
 [MIT](https://github.com/EvandroLG/ts-audio/tree/master/LICENSE)
