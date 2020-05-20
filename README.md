@@ -21,8 +21,6 @@ $ yarn add ts-audio
 ```
 
 ## Quickstart
-- [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo)
-
 ```js
 import Audio from 'ts-audio';
 
@@ -36,6 +34,8 @@ document.getElementById('bt-play').addEventListener('click', () => {
   audio.play()
 });
 ```
+
+- [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo)
 
 ## Docs
 * [Parameters](https://github.com/EvandroLG/ts-audio/wiki/Parameters)
