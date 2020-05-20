@@ -84,6 +84,10 @@ const Audio = ({
     set loop(newLoop: boolean) {
       source.loop = newLoop;
     },
+
+    get state() {
+      return audioCtx.state;
+    },
   };
 };
 
