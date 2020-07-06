@@ -13,6 +13,8 @@ const audio: AudioType = Audio({
   volume: getVolume(range),
 });
 
+audio.on('end', console.log);
+
 setTimeout(() => {
   audio.loop = false;
 }, 2000);
