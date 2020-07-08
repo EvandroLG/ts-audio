@@ -11,6 +11,10 @@ const EventHandler = (emitter: EventEmitterType, audioCtx?: AudioContext) => ({
     emitter.listener('start', callback);
   },
 
+  end(callback: callbackType) {
+    emitter.listener('end', callback);
+  },
+
   state(callback: callbackType) {
     if (audioCtx) {
       audioCtx.onstatechange = () => callback({ data: audioCtx.state });

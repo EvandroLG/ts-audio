@@ -5,7 +5,7 @@ export type AudioPropType = {
   loop?: boolean;
 };
 
-export type AudioEventType = 'ready' | 'start' | 'state';
+export type AudioEventType = 'ready' | 'start' | 'state' | 'end';
 
 export type AudioType = {
   play: () => void;
@@ -18,4 +18,8 @@ export type AudioType = {
   volume: number;
   loop: boolean;
   state: AudioContextState;
+};
+
+export type PlaylistPropType = {
+  files: string[];
 };

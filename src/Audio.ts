@@ -29,6 +29,7 @@ const Audio = ({
 
   gainNode.gain.value = volume;
   source.connect(gainNode);
+  source.onended = () => emitter.emit('end', { data: null });
   gainNode.connect(audioCtx.destination);
 
   getBuffer(file)
