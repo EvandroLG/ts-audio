@@ -22,4 +22,5 @@ export type AudioType = {
 
 export type PlaylistPropType = {
   files: string[];
+  volume?: number;
 };
