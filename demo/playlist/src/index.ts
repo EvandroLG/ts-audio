@@ -8,6 +8,8 @@ const playlist = AudioPlaylist({
   volume: 0.7,
 });
 
+playlist.on('end', console.log);
+
 document.getElementById('bt-play').addEventListener('click', () => {
   playlist.play();
 });
