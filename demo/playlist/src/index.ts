@@ -8,8 +8,11 @@ const playlist = AudioPlaylist({
   volume: 0.7,
 });
 
-playlist.on('end', console.log);
+const buttonPlay = document.getElementById('bt-play');
 
-document.getElementById('bt-play').addEventListener('click', () => {
+playlist.on('end', () => buttonPlay.removeAttribute('disabled'));
+
+buttonPlay.addEventListener('click', () => {
   playlist.play();
+  buttonPlay.setAttribute('disabled', 'disabled');
 });
