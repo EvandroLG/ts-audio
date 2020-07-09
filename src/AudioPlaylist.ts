@@ -1,13 +1,8 @@
 import { PlaylistPropType } from './types';
-import StateManager, { StateManagerType } from './StateManager';
 import Audio from './Audio';
 
-const playAudio = (
-  state: StateManagerType,
-  files: string[],
-  volume?: number
-) => {
-  const file = files[state.get('filePosition')];
+const playAudio = (index: number, files: string[], volume?: number) => {
+  const file = files[index];
 
   if (!file) {
     return;
@@ -17,18 +12,14 @@ const playAudio = (
   audio.play();
 
   audio.on('end', () => {
-    state.set('filePosition', state.get('filePosition') + 1);
-    playAudio(state, files, volume);
+    playAudio(index + 1, files, volume);
   });
 };
 
 const AudioPlaylist = ({ files, volume }: PlaylistPropType) => {
-  const state = StateManager();
-
   return {
     play() {
-      state.set('filePosition', 0);
-      playAudio(state, files, volume);
+      playAudio(0, files, volume);
     },
   };
 };
