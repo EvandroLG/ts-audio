@@ -1,59 +1,42 @@
 import { PlaylistPropType } from './types';
-import EventEmitter, { EventType } from '../EventEmitter';
+import EventEmitter from '../EventEmitter';
 import StateManager from '../StateManager';
-import Audio from '../audio/Audio';
+import playAudio from './playAudio';
 
-const emmiter = EventEmitter();
-const state = StateManager();
+const AudioPlaylist = ({ files, volume }: PlaylistPropType) => {
+  const emmiter = EventEmitter();
+  const state = StateManager();
+  const _playAudio = playAudio(state, emmiter);
 
-const playAudio = (index: number, files: string[], volume?: number) => {
-  const file = files[index];
+  return {
+    play() {
+      const audio = state.get('audio');
 
-  if (!file) {
-    emmiter.emit('end', { data: null });
-    return;
-  }
+      if (!audio || state.get('isStopped')) {
+        _playAudio(0, files, volume);
+        state.set('isStopped', false);
+        return;
+      }
 
-  const audio = Audio({ file, volume });
-  state.set('audio', audio);
+      audio.play();
+    },
 
-  audio.on('start', e => emmiter.emit('start', e as EventType));
-  audio.on('end', () => {
-    if (state.get('isStopped')) return;
-    playAudio(index + 1, files, volume);
-  });
+    pause() {
+      state.get('audio')?.pause();
+    },
 
-  audio.play();
+    stop() {
+      state.set('isStopped', true);
+      state.get('audio')?.stop();
+    },
+
+    on(
+      eventType: 'start' | 'end',
+      callback: (param: { [data: string]: any }) => void
+    ) {
+      emmiter.listener(eventType, callback);
+    },
+  };
 };
-
-const AudioPlaylist = ({ files, volume }: PlaylistPropType) => ({
-  play() {
-    const audio = state.get('audio');
-
-    if (!audio || state.get('isStopped')) {
-      playAudio(0, files, volume);
-      state.set('isStopped', false);
-      return;
-    }
-
-    audio.play();
-  },
-
-  pause() {
-    state.get('audio')?.pause();
-  },
-
-  stop() {
-    state.set('isStopped', true);
-    state.get('audio')?.stop();
-  },
-
-  on(
-    eventType: 'start' | 'end',
-    callback: (param: { [data: string]: any }) => void
-  ) {
-    emmiter.listener(eventType, callback);
-  },
-});
 
 export default AudioPlaylist;
