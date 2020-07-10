@@ -10,6 +10,7 @@ const playlist = AudioPlaylist({
 
 const buttonPlay = document.getElementById('bt-play');
 
+playlist.on('start', console.log);
 playlist.on('end', () => buttonPlay.removeAttribute('disabled'));
 
 buttonPlay.addEventListener('click', () => {

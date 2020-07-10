@@ -1,5 +1,5 @@
-import { StateManagerType } from './StateManager';
-import { EventEmitterType } from './EventEmitter';
+import { StateManagerType } from '../StateManager';
+import { EventEmitterType } from '../EventEmitter';
 
 const decodeAudioData = (
   audioCtx: AudioContext,

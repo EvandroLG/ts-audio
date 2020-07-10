@@ -44,6 +44,8 @@
     "AudioContext"
   ],
   "dependencies": {
+    "audio": "^1.2.0",
+    "playlist": "^0.0.1",
     "types": "^0.1.1"
   }
 }

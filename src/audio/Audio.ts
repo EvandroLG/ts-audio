@@ -1,10 +1,10 @@
 import AudioCtx from './AudioCtx';
-import StateManager from './StateManager';
-import EventEmitter from './EventEmitter';
-import EventHandler from './EventHandler';
+import StateManager from '../StateManager';
+import EventEmitter from '../EventEmitter';
+import EventHandler from '../EventHandler';
 import decodeAudioData from './decodeAudioData';
 import { AudioPropType, AudioEventType, AudioType } from './types';
-import { getBuffer } from './utils';
+import { getBuffer } from '../utils';
 
 // if audiocontext is initialized before a user gesture on the page, its
 // state become `suspended` by default. once audiocontext.state is `suspended`

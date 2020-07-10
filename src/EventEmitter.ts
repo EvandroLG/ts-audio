@@ -1,4 +1,4 @@
-type EventType = {
+export type EventType = {
   data: any;
 };
 

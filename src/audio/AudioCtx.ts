@@ -1,4 +1,4 @@
-import { throwsError } from './utils';
+import { throwsError } from '../utils';
 
 const AudioCtx = () => {
   const Context = window.AudioContext || (window as any).webkitAudioContext;

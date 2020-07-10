@@ -2,10 +2,10 @@ import EventHandler from '../src/EventHandler';
 import { EventEmitterType } from '../src/EventEmitter';
 
 const EventEmitterMock = () =>
-  ({
-    listener: jest.fn(),
-    emit: jest.fn(),
-  } as EventEmitterType);
+  (({
+  listener: jest.fn(),
+  emit: jest.fn()
+}) as EventEmitterType);
 
 describe('event listener', () => {
   const emitter = EventEmitterMock();
