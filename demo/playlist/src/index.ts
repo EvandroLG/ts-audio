@@ -10,6 +10,7 @@ const playlist = AudioPlaylist({
 
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
+const buttonStop = document.getElementById('bt-stop');
 
 playlist.on('start', console.log);
 playlist.on('end', () => buttonPlay.removeAttribute('disabled'));
@@ -18,10 +19,19 @@ buttonPlay.addEventListener('click', () => {
   playlist.play();
   buttonPlay.setAttribute('disabled', 'disabled');
   buttonPause.removeAttribute('disabled');
+  buttonStop.removeAttribute('disabled');
 });
 
 buttonPause.addEventListener('click', () => {
   playlist.pause();
   buttonPause.setAttribute('disabled', 'disabled');
+  buttonStop.setAttribute('disabled', 'disabled');
+  buttonPlay.removeAttribute('disabled');
+});
+
+buttonStop.addEventListener('click', () => {
+  playlist.stop();
+  buttonPause.setAttribute('disabled', 'disabled');
+  buttonStop.setAttribute('disabled', 'disabled');
   buttonPlay.removeAttribute('disabled');
 });

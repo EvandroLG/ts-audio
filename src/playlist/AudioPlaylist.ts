@@ -19,6 +19,7 @@ const playAudio = (index: number, files: string[], volume?: number) => {
 
   audio.on('start', e => emmiter.emit('start', e as EventType));
   audio.on('end', () => {
+    if (state.get('isStopped')) return;
     playAudio(index + 1, files, volume);
   });
 
@@ -28,11 +29,23 @@ const playAudio = (index: number, files: string[], volume?: number) => {
 const AudioPlaylist = ({ files, volume }: PlaylistPropType) => ({
   play() {
     const audio = state.get('audio');
-    audio ? audio.play() : playAudio(0, files, volume);
+
+    if (!audio || state.get('isStopped')) {
+      playAudio(0, files, volume);
+      state.set('isStopped', false);
+      return;
+    }
+
+    audio.play();
   },
 
   pause() {
     state.get('audio')?.pause();
+  },
+
+  stop() {
+    state.set('isStopped', true);
+    state.get('audio')?.stop();
   },
 
   on(
