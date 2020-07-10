@@ -9,6 +9,7 @@ const playlist = AudioPlaylist({
 });
 
 const buttonPlay = document.getElementById('bt-play');
+const buttonPause = document.getElementById('bt-pause');
 
 playlist.on('start', console.log);
 playlist.on('end', () => buttonPlay.removeAttribute('disabled'));
@@ -16,4 +17,11 @@ playlist.on('end', () => buttonPlay.removeAttribute('disabled'));
 buttonPlay.addEventListener('click', () => {
   playlist.play();
   buttonPlay.setAttribute('disabled', 'disabled');
+  buttonPause.removeAttribute('disabled');
+});
+
+buttonPause.addEventListener('click', () => {
+  playlist.pause();
+  buttonPause.setAttribute('disabled', 'disabled');
+  buttonPlay.removeAttribute('disabled');
 });

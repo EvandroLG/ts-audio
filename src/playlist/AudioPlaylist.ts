@@ -1,8 +1,10 @@
 import { PlaylistPropType } from './types';
 import EventEmitter, { EventType } from '../EventEmitter';
+import StateManager from '../StateManager';
 import Audio from '../audio/Audio';
 
 const emmiter = EventEmitter();
+const state = StateManager();
 
 const playAudio = (index: number, files: string[], volume?: number) => {
   const file = files[index];
@@ -13,6 +15,7 @@ const playAudio = (index: number, files: string[], volume?: number) => {
   }
 
   const audio = Audio({ file, volume });
+  state.set('audio', audio);
 
   audio.on('start', e => emmiter.emit('start', e as EventType));
   audio.on('end', () => {
@@ -24,7 +27,12 @@ const playAudio = (index: number, files: string[], volume?: number) => {
 
 const AudioPlaylist = ({ files, volume }: PlaylistPropType) => ({
   play() {
-    playAudio(0, files, volume);
+    const audio = state.get('audio');
+    audio ? audio.play() : playAudio(0, files, volume);
+  },
+
+  pause() {
+    state.get('audio')?.pause();
   },
 
   on(
