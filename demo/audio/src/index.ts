@@ -29,13 +29,14 @@ buttonPlay.addEventListener('click', () => {
 buttonPause.addEventListener('click', () => {
   audio.pause();
   buttonPause.setAttribute('disabled', 'disabled');
+  buttonStop.setAttribute('disabled', 'disabled');
   buttonPlay.removeAttribute('disabled');
 });
 
 buttonStop.addEventListener('click', () => {
   audio.stop();
+  buttonPause.setAttribute('disabled', 'disabled');
   buttonStop.setAttribute('disabled', 'disabled');
-  buttonPlay.removeAttribute('disabled');
 });
 
 range.addEventListener('change', (e: Event) => {
