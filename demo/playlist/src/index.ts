@@ -1,4 +1,4 @@
-import { AudioPlaylist } from '../../../src';
+import { AudioPlaylist } from 'ts-audio';
 import songOne from './1.mp3';
 import songTwo from './2.mp3';
 import songThree from './3.mp3';
