@@ -38,10 +38,11 @@ document.getElementById('bt-play').addEventListener('click', () => {
 - [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo)
 
 ## Docs
-* [Parameters](https://github.com/EvandroLG/ts-audio/wiki/Parameters)
-* [Properties](https://github.com/EvandroLG/ts-audio/wiki/Properties)
-* [Methods](https://github.com/EvandroLG/ts-audio/wiki/Methods)
-* [Events](https://github.com/EvandroLG/ts-audio/wiki/Events)
+* Audio
+  * [Parameters](https://github.com/EvandroLG/ts-audio/wiki/Parameters)
+  * [Properties](https://github.com/EvandroLG/ts-audio/wiki/Properties)
+  * [Methods](https://github.com/EvandroLG/ts-audio/wiki/Methods)
+  * [Events](https://github.com/EvandroLG/ts-audio/wiki/Events)
 
 ## License
 [MIT](https://github.com/EvandroLG/ts-audio/tree/master/LICENSE)
