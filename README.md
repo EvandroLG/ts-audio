@@ -22,7 +22,7 @@ $ yarn add ts-audio
 ```
 
 ## Quickstart
-`ts-audio` has two components at its core: `Audio` and `AudioPlaylist`. Both components are functions that you can call with certain parameters.
+`ts-audio` has two components at its core: `Audio` and `AudioPlaylist`. Both components are functions that you can call with certain parameters.<br>
 Below is an example of how to use the `Audio`:
 
 ```js
