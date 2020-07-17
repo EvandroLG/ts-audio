@@ -1,4 +1,4 @@
-import { AudioPlaylist } from 'ts-audio';
+import { AudioPlaylist } from '../../../src';
 import songOne from './1.mp3';
 import songTwo from './2.mp3';
 import songThree from './3.mp3';
@@ -7,6 +7,11 @@ const playlist = AudioPlaylist({
   files: [songOne, songTwo, songThree],
   volume: 0.7,
 });
+
+setTimeout(() => {
+  console.log('volume');
+  playlist.volume = 1;
+}, 5000);
 
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
