@@ -6,6 +6,7 @@ import playAudio from './playAudio';
 const AudioPlaylist = ({ files, volume }: PlaylistPropType) => {
   const emmiter = EventEmitter();
   const state = StateManager();
+  state.set('volume', volume);
   const _playAudio = playAudio(state, emmiter);
 
   return {
@@ -13,7 +14,7 @@ const AudioPlaylist = ({ files, volume }: PlaylistPropType) => {
       const audio = state.get('audio');
 
       if (!audio || state.get('isStopped')) {
-        _playAudio(0, files, volume);
+        _playAudio(0, files);
         state.set('isStopped', false);
         return;
       }
@@ -35,6 +36,15 @@ const AudioPlaylist = ({ files, volume }: PlaylistPropType) => {
       callback: (param: { [data: string]: any }) => void
     ) {
       emmiter.listener(eventType, callback);
+    },
+
+    get volume() {
+      return state.get('volume');
+    },
+
+    set volume(newVolume: number) {
+      state.set('volume', newVolume);
+      state.get('audio').volume = newVolume;
     },
   };
 };
