@@ -6,10 +6,10 @@ import songThree from './3.mp3';
 const playlist = AudioPlaylist({
   files: [songOne, songTwo, songThree],
   volume: 0.7,
+  loop: true,
 });
 
 setTimeout(() => {
-  console.log('volume');
   playlist.volume = 1;
 }, 5000);
 

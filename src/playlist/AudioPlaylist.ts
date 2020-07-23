@@ -3,7 +3,11 @@ import EventEmitter from '../EventEmitter';
 import StateManager from '../StateManager';
 import playAudio from './playAudio';
 
-const AudioPlaylist = ({ files, volume }: PlaylistPropType) => {
+const AudioPlaylist = ({
+  files,
+  volume = 1,
+  loop = false,
+}: PlaylistPropType) => {
   const emmiter = EventEmitter();
   const state = StateManager();
   state.set('volume', volume);
@@ -14,7 +18,7 @@ const AudioPlaylist = ({ files, volume }: PlaylistPropType) => {
       const audio = state.get('audio');
 
       if (!audio || state.get('isStopped')) {
-        _playAudio(0, files);
+        _playAudio(0, files, loop);
         state.set('isStopped', false);
         return;
       }
