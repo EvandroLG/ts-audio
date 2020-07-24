@@ -18,7 +18,7 @@ const playAudio = (state: StateManagerType, emmiter: EventEmitterType) => {
     audio.on('end', () => {
       if (state.get('isStopped')) return;
 
-      files.length === index + 1 && loop
+      files.length === index + 1 && state.get('loop')
         ? _playAudio(0, files, loop)
         : _playAudio(index + 1, files, loop);
     });

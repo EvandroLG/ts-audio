@@ -11,6 +11,7 @@ const AudioPlaylist = ({
   const emmiter = EventEmitter();
   const state = StateManager();
   state.set('volume', volume);
+  state.set('loop', loop);
   const _playAudio = playAudio(state, emmiter);
 
   return {
@@ -49,6 +50,14 @@ const AudioPlaylist = ({
     set volume(newVolume: number) {
       state.set('volume', newVolume);
       state.get('audio').volume = newVolume;
+    },
+
+    get loop() {
+      return state.get('loop');
+    },
+
+    set loop(newLoop: boolean) {
+      state.set('loop', newLoop);
     },
   };
 };
