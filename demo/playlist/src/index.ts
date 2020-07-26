@@ -1,23 +1,20 @@
-import { AudioPlaylist } from '../../../src';
+import { AudioPlaylist } from 'ts-audio';
 import songOne from './1.mp3';
 import songTwo from './2.mp3';
 import songThree from './3.mp3';
 
-const playlist = AudioPlaylist({
-  files: [songOne, songTwo, songThree],
-  volume: 0.7,
-  loop: true,
-});
-
-setTimeout(() => {
-  playlist.volume = 1;
-  playlist.loop = false;
-  console.log({ playlist });
-}, 5000);
+const getVolume = (value: string) => Number(value) / 100;
 
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
+const range = document.getElementById('range');
+
+const playlist = AudioPlaylist({
+  files: [songOne, songTwo, songThree],
+  volume: getVolume((range as HTMLInputElement).value),
+  loop: true,
+});
 
 playlist.on('start', console.log);
 playlist.on('end', () => buttonPlay.removeAttribute('disabled'));
@@ -41,4 +38,9 @@ buttonStop.addEventListener('click', () => {
   buttonPause.setAttribute('disabled', 'disabled');
   buttonStop.setAttribute('disabled', 'disabled');
   buttonPlay.removeAttribute('disabled');
+});
+
+range.addEventListener('change', (e: Event) => {
+  const volume = getVolume((e.target as HTMLInputElement).value);
+  playlist.volume = volume;
 });
