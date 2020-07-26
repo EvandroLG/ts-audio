@@ -3,3 +3,5 @@ export type PlaylistPropType = {
   volume?: number;
   loop?: boolean;
 };
+
+export type PlaylistEventType = 'start' | 'end';

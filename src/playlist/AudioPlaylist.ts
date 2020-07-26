@@ -1,4 +1,4 @@
-import { PlaylistPropType } from './types';
+import { PlaylistPropType, PlaylistEventType } from './types';
 import EventEmitter from '../EventEmitter';
 import StateManager from '../StateManager';
 import playAudio from './playAudio';
@@ -37,7 +37,7 @@ const AudioPlaylist = ({
     },
 
     on(
-      eventType: 'start' | 'end',
+      eventType: PlaylistEventType,
       callback: (param: { [data: string]: any }) => void
     ) {
       emmiter.listener(eventType, callback);
