@@ -34,9 +34,7 @@ const audio = Audio({
   volume: 0.2
 });
 
-document.getElementById('bt-play').addEventListener('click', () => {
-  audio.play()
-});
+audio.play()
 ```
 
 - [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo/audio)
@@ -51,9 +49,7 @@ const playlist = AudioPlaylist({
   volume: 0.7,
 });
 
-document.getElementById('bt-play').addEventListener('click', () => {
-  playlist.play();
-});
+playlist.play();
 ```
 
 - [Complete example](https://github.com/EvandroLG/ts-audio/tree/master/demo/playlist)
