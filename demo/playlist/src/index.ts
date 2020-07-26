@@ -11,6 +11,8 @@ const playlist = AudioPlaylist({
 
 setTimeout(() => {
   playlist.volume = 1;
+  playlist.loop = false;
+  console.log({ playlist });
 }, 5000);
 
 const buttonPlay = document.getElementById('bt-play');
