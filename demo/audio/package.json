@@ -4,6 +4,6 @@
   },
   "devDependencies": {
     "parcel": "^1.12.4",
-    "ts-audio": "0.4.1"
+    "ts-audio": "0.4.3"
   }
 }

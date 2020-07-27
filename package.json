@@ -1,5 +1,5 @@
 {
-  "version": "0.4.2",
+  "version": "0.4.3",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -42,10 +42,5 @@
     "audio",
     "song",
     "AudioContext"
-  ],
-  "dependencies": {
-    "audio": "^1.2.0",
-    "playlist": "^0.0.1",
-    "types": "^0.1.1"
-  }
+  ]
 }
