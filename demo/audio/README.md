@@ -1,5 +1,5 @@
 # [ts-audio] sample
-For run the sample application, first install the dependecies:
+For run the sample application, first install the dependencies:
 
 ```sh
 $ npm install
