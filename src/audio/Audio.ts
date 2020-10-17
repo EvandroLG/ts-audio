@@ -2,6 +2,7 @@ import AudioCtx from './AudioCtx';
 import StateManager from '../StateManager';
 import EventEmitter from '../EventEmitter';
 import EventHandler from '../EventHandler';
+import initializeSource from './initializeSource';
 import decodeAudioData from './decodeAudioData';
 import { AudioPropType, AudioEventType, AudioType } from './types';
 import { getBuffer } from '../utils';
@@ -24,13 +25,12 @@ const Audio = ({
   const states = StateManager();
   const emitter = EventEmitter();
   const eventHandler = EventHandler(emitter, audioCtx);
-  const source = audioCtx.createBufferSource();
-  const gainNode = audioCtx.createGain();
-
-  gainNode.gain.value = volume;
-  source.connect(gainNode);
-  source.onended = () => emitter.emit('end', { data: null });
-  gainNode.connect(audioCtx.destination);
+  const [source, gainNode] = initializeSource(
+    audioCtx,
+    volume,
+    emitter,
+    states
+  );
 
   getBuffer(file)
     .then(buffer =>
