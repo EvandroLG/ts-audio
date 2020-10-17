@@ -9,7 +9,7 @@ const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
 const audio: AudioType = Audio({
   file: song,
-  loop: true,
+  loop: false,
   volume: getVolume(range),
 });
 
