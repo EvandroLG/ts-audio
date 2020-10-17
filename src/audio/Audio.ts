@@ -25,18 +25,20 @@ const Audio = ({
   const states = StateManager();
   const emitter = EventEmitter();
   const eventHandler = EventHandler(emitter, audioCtx);
-  const [source, gainNode] = initializeSource(
-    audioCtx,
-    volume,
-    emitter,
-    states
-  );
-
-  getBuffer(file)
-    .then(buffer =>
-      decodeAudioData(audioCtx, source, buffer, autoPlay, loop, states, emitter)
-    )
-    .catch(console.error);
+  const curryGetBuffer = (source: any) =>
+    getBuffer(file)
+      .then(buffer =>
+        decodeAudioData(
+          audioCtx,
+          source,
+          buffer,
+          autoPlay,
+          loop,
+          states,
+          emitter
+        )
+      )
+      .catch(console.error);
 
   return {
     play() {
@@ -44,6 +46,10 @@ const Audio = ({
         audioCtx.resume();
         return;
       }
+
+      initializeSource(audioCtx, volume, emitter, states);
+      const source = states.get('source');
+      curryGetBuffer(source);
 
       states.get('isDecoded')
         ? start(audioCtx, source)
@@ -59,7 +65,7 @@ const Audio = ({
 
     stop() {
       if (states.get('hasStarted')) {
-        source.stop(0);
+        states.get('source').stop(0);
       }
     },
 
@@ -71,19 +77,19 @@ const Audio = ({
     },
 
     get volume() {
-      return gainNode.gain.value;
+      return states.get('gainNode').gain.value;
     },
 
     set volume(newVolume: number) {
-      gainNode.gain.value = newVolume;
+      states.get('gainNode').gain.value = newVolume;
     },
 
     get loop() {
-      return source.loop;
+      return states.get('source').loop;
     },
 
     set loop(newLoop: boolean) {
-      source.loop = newLoop;
+      states.get('source').loop = newLoop;
     },
 
     get state() {

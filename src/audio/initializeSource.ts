@@ -7,8 +7,8 @@ const initializeSource = (
   emitter: EventEmitterType,
   states: StateManagerType
 ) => {
-  const source = audioCtx.createBufferSource();
-  const gainNode = audioCtx.createGain();
+  const source = states.set('source', audioCtx.createBufferSource());
+  const gainNode = states.set('gainNode', audioCtx.createGain());
 
   gainNode.gain.value = volume;
   gainNode.connect(audioCtx.destination);
@@ -18,8 +18,6 @@ const initializeSource = (
     states.set('hasStarted', false);
     emitter.emit('end', { data: null });
   };
-
-  return [source, gainNode];
 };
 
 export default initializeSource;
