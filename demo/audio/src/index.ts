@@ -1,4 +1,4 @@
-import Audio, { AudioType } from 'ts-audio';
+import Audio, { AudioType } from '../../../src/index';
 import song from './song.mp3';
 
 const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
@@ -13,7 +13,11 @@ const audio: AudioType = Audio({
   volume: getVolume(range),
 });
 
-audio.on('end', console.log);
+audio.on('end', () => {
+  buttonPlay.removeAttribute('disabled');
+  buttonPause.setAttribute('disabled', 'disabled');
+  buttonStop.setAttribute('disabled', 'disabled');
+});
 
 setTimeout(() => {
   audio.loop = false;
