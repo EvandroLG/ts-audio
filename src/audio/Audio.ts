@@ -25,7 +25,9 @@ const Audio = ({
   const states = StateManager();
   const emitter = EventEmitter();
   const eventHandler = EventHandler(emitter, audioCtx);
-  const curryGetBuffer = (source: any) =>
+  const curryGetBuffer = (source: any) => {
+    states.set('isDecoded', false);
+
     getBuffer(file)
       .then(buffer =>
         decodeAudioData(
@@ -39,6 +41,7 @@ const Audio = ({
         )
       )
       .catch(console.error);
+  };
 
   return {
     play() {
@@ -85,11 +88,13 @@ const Audio = ({
     },
 
     get loop() {
-      return states.get('source').loop;
+      return states.get('source')?.loop;
     },
 
     set loop(newLoop: boolean) {
-      states.get('source').loop = newLoop;
+      if (states.get('source')) {
+        states.get('source').loop = newLoop;
+      }
     },
 
     get state() {
