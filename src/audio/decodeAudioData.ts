@@ -1,4 +1,4 @@
-import { StateManagerType } from '../StateManager';
+import { StatesType } from './types';
 import { EventEmitterType } from '../EventEmitter';
 
 const decodeAudioData = (
@@ -7,14 +7,14 @@ const decodeAudioData = (
   arrayBuffer: ArrayBuffer,
   autoPlay: boolean,
   loop: boolean,
-  states: StateManagerType,
+  states: StatesType,
   emitter: EventEmitterType
 ) => {
   const onSuccess = (buffer: any) => {
     source.buffer = buffer;
     source.loop = loop;
 
-    states.set('isDecoded', true);
+    states.isDecoded = true;
     emitter.emit('decoded', { data: buffer });
 
     if (autoPlay) {

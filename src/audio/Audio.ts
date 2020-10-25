@@ -1,5 +1,5 @@
 import AudioCtx from './AudioCtx';
-import StateManager from '../StateManager';
+import globalStates from './states';
 import EventEmitter from '../EventEmitter';
 import EventHandler from '../EventHandler';
 import initializeSource from './initializeSource';
@@ -22,11 +22,11 @@ const Audio = ({
   loop = false,
 }: AudioPropType): AudioType => {
   const audioCtx = AudioCtx();
-  const states = StateManager();
+  const states = { ...globalStates };
   const emitter = EventEmitter();
   const eventHandler = EventHandler(emitter, audioCtx);
   const curryGetBuffer = (source: any) => {
-    states.set('isDecoded', false);
+    states.isDecoded = false;
 
     getBuffer(file)
       .then(buffer =>
@@ -45,20 +45,20 @@ const Audio = ({
 
   return {
     play() {
-      if (states.get('hasStarted')) {
+      if (states.hasStarted) {
         audioCtx.resume();
         return;
       }
 
       initializeSource(audioCtx, volume, emitter, states);
-      const source = states.get('source');
+      const { source } = states;
       curryGetBuffer(source);
 
-      states.get('isDecoded')
+      states.isDecoded
         ? start(audioCtx, source)
         : emitter.listener('decoded', () => start(audioCtx, source));
 
-      states.set('hasStarted', true);
+      states.hasStarted = true;
       emitter.emit('start', { data: null });
     },
 
@@ -67,8 +67,8 @@ const Audio = ({
     },
 
     stop() {
-      if (states.get('hasStarted')) {
-        states.get('source').stop(0);
+      if (states.hasStarted) {
+        states.source.stop(0);
       }
     },
 
@@ -80,20 +80,20 @@ const Audio = ({
     },
 
     get volume() {
-      return states.get('gainNode').gain.value;
+      return states.gainNode.gain.value;
     },
 
     set volume(newVolume: number) {
-      states.get('gainNode').gain.value = newVolume;
+      states.gainNode.gain.value = newVolume;
     },
 
     get loop() {
-      return states.get('source')?.loop;
+      return states.source?.loop;
     },
 
     set loop(newLoop: boolean) {
-      if (states.get('source')) {
-        states.get('source').loop = newLoop;
+      if (states.source) {
+        states.source.loop = newLoop;
       }
     },
 

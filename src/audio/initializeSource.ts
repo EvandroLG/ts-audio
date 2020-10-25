@@ -1,21 +1,21 @@
 import { EventEmitterType } from '../EventEmitter';
-import { StateManagerType } from '../StateManager';
+import { StatesType } from './types';
 
 const initializeSource = (
   audioCtx: any,
   volume: number,
   emitter: EventEmitterType,
-  states: StateManagerType
+  states: StatesType
 ) => {
-  const source = states.set('source', audioCtx.createBufferSource());
-  const gainNode = states.set('gainNode', audioCtx.createGain());
+  const source = (states.source = audioCtx.createBufferSource());
+  const gainNode = (states.gainNode = audioCtx.createGain());
 
   gainNode.gain.value = volume;
   gainNode.connect(audioCtx.destination);
   source.connect(gainNode);
 
   source.onended = () => {
-    states.set('hasStarted', false);
+    states.hasStarted = false;
     emitter.emit('end', { data: null });
   };
 };
