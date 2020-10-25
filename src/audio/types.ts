@@ -23,6 +23,6 @@ export type AudioType = {
 export type StatesType = {
   isDecoded: boolean;
   hasStarted: boolean;
-  source: any;
-  gainNode: any;
+  source: AudioBufferSourceNode | null;
+  gainNode: GainNode | null;
 };

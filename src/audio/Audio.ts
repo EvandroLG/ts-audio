@@ -52,14 +52,17 @@ const Audio = ({
 
       initializeSource(audioCtx, volume, emitter, states);
       const { source } = states;
-      curryGetBuffer(source);
 
-      states.isDecoded
-        ? start(audioCtx, source)
-        : emitter.listener('decoded', () => start(audioCtx, source));
+      if (source) {
+        curryGetBuffer(source);
 
-      states.hasStarted = true;
-      emitter.emit('start', { data: null });
+        states.isDecoded
+          ? start(audioCtx, source)
+          : emitter.listener('decoded', () => start(audioCtx, source));
+
+        states.hasStarted = true;
+        emitter.emit('start', { data: null });
+      }
     },
 
     pause() {
@@ -68,7 +71,7 @@ const Audio = ({
 
     stop() {
       if (states.hasStarted) {
-        states.source.stop(0);
+        states.source?.stop(0);
       }
     },
 
@@ -80,15 +83,17 @@ const Audio = ({
     },
 
     get volume() {
-      return states.gainNode.gain.value;
+      return states.gainNode?.gain.value ?? 0;
     },
 
     set volume(newVolume: number) {
-      states.gainNode.gain.value = newVolume;
+      if (states.gainNode) {
+        states.gainNode.gain.value = newVolume;
+      }
     },
 
     get loop() {
-      return states.source?.loop;
+      return states.source?.loop ?? false;
     },
 
     set loop(newLoop: boolean) {
