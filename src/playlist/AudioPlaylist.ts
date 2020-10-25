@@ -1,6 +1,6 @@
 import { PlaylistPropType, PlaylistEventType } from './types';
 import EventEmitter from '../EventEmitter';
-import StateManager from '../StateManager';
+import globalStates from './states';
 import playAudio from './playAudio';
 
 const AudioPlaylist = ({
@@ -9,18 +9,19 @@ const AudioPlaylist = ({
   loop = false,
 }: PlaylistPropType) => {
   const emmiter = EventEmitter();
-  const state = StateManager();
-  state.set('volume', volume);
-  state.set('loop', loop);
-  const _playAudio = playAudio(state, emmiter);
+  const state = { ...globalStates };
+  state.volume = volume;
+  state.loop = loop;
+  const curryPlayAudio = playAudio(state, emmiter);
 
   return {
     play() {
-      const audio = state.get('audio');
+      const { audio } = state;
 
-      if (!audio || state.get('isStopped')) {
-        _playAudio(0, files, loop);
-        state.set('isStopped', false);
+      if (!audio || state.isStopped) {
+        curryPlayAudio(0, files, loop);
+        state.isStopped = false;
+
         return;
       }
 
@@ -28,12 +29,12 @@ const AudioPlaylist = ({
     },
 
     pause() {
-      state.get('audio')?.pause();
+      state.audio?.pause();
     },
 
     stop() {
-      state.set('isStopped', true);
-      state.get('audio')?.stop();
+      state.isStopped = true;
+      state.audio?.stop();
     },
 
     on(
@@ -44,20 +45,23 @@ const AudioPlaylist = ({
     },
 
     get volume() {
-      return state.get('volume');
+      return state.volume;
     },
 
     set volume(newVolume: number) {
-      state.set('volume', newVolume);
-      state.get('audio').volume = newVolume;
+      state.volume = newVolume;
+
+      if (state.audio) {
+        state.audio.volume = newVolume;
+      }
     },
 
     get loop() {
-      return state.get('loop');
+      return state.loop;
     },
 
     set loop(newLoop: boolean) {
-      state.set('loop', newLoop);
+      state.loop = newLoop;
     },
   };
 };

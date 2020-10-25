@@ -1,8 +1,8 @@
 import Audio from '../audio/Audio';
 import { EventType, EventEmitterType } from '../EventEmitter';
-import { StateManagerType } from '../StateManager';
+import { StatesType } from './types';
 
-const playAudio = (state: StateManagerType, emmiter: EventEmitterType) => {
+const playAudio = (state: StatesType, emmiter: EventEmitterType) => {
   const _playAudio = (index: number, files: string[], loop: boolean) => {
     const file = files[index];
 
@@ -11,14 +11,14 @@ const playAudio = (state: StateManagerType, emmiter: EventEmitterType) => {
       return;
     }
 
-    const audio = Audio({ file, volume: state.get('volume') });
-    state.set('audio', audio);
+    const audio = Audio({ file, volume: state.volume });
+    state.audio = audio;
 
     audio.on('start', e => emmiter.emit('start', e as EventType));
     audio.on('end', () => {
-      if (state.get('isStopped')) return;
+      if (state.isStopped) return;
 
-      files.length === index + 1 && state.get('loop')
+      files.length === index + 1 && state.loop
         ? _playAudio(0, files, loop)
         : _playAudio(index + 1, files, loop);
     });
