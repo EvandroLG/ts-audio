@@ -9,18 +9,16 @@ const AudioPlaylist = ({
   loop = false,
 }: PlaylistPropType) => {
   const emmiter = EventEmitter();
-  const state = { ...globalStates };
-  state.volume = volume;
-  state.loop = loop;
-  const curryPlayAudio = playAudio(state, emmiter);
+  const states = { ...globalStates, ...{ volume, loop } };
+  const curryPlayAudio = playAudio(states, emmiter);
 
   return {
     play() {
-      const { audio } = state;
+      const { audio } = states;
 
-      if (!audio || state.isStopped) {
+      if (!audio || states.isStopped) {
         curryPlayAudio(0, files, loop);
-        state.isStopped = false;
+        states.isStopped = false;
 
         return;
       }
@@ -29,12 +27,12 @@ const AudioPlaylist = ({
     },
 
     pause() {
-      state.audio?.pause();
+      states.audio?.pause();
     },
 
     stop() {
-      state.isStopped = true;
-      state.audio?.stop();
+      states.isStopped = true;
+      states.audio?.stop();
     },
 
     on(
@@ -45,23 +43,23 @@ const AudioPlaylist = ({
     },
 
     get volume() {
-      return state.volume;
+      return states.volume;
     },
 
     set volume(newVolume: number) {
-      state.volume = newVolume;
+      states.volume = newVolume;
 
-      if (state.audio) {
-        state.audio.volume = newVolume;
+      if (states.audio) {
+        states.audio.volume = newVolume;
       }
     },
 
     get loop() {
-      return state.loop;
+      return states.loop;
     },
 
     set loop(newLoop: boolean) {
-      state.loop = newLoop;
+      states.loop = newLoop;
     },
   };
 };
