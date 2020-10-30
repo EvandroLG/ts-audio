@@ -9,18 +9,16 @@ const playlist = AudioPlaylist({
   loop: true,
 });
 
-setTimeout(() => {
-  playlist.volume = 1;
-  playlist.loop = false;
-  console.log({ playlist });
-}, 5000);
-
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
 
 playlist.on('start', console.log);
-playlist.on('end', () => buttonPlay.removeAttribute('disabled'));
+playlist.on('end', () => {
+  buttonPlay.removeAttribute('disabled');
+  buttonPause.setAttribute('disabled', 'disabled');
+  buttonStop.setAttribute('disabled', 'disabled');
+});
 
 buttonPlay.addEventListener('click', () => {
   playlist.play();
