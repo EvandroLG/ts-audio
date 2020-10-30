@@ -1,6 +1,6 @@
-import { StatesType } from './types';
+import { StatesPlaylistType } from './types';
 
-const states: StatesType = {
+const states: StatesPlaylistType = {
   volume: 1,
   loop: false,
   audio: null,

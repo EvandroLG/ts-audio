@@ -6,7 +6,7 @@ export type PlaylistPropType = {
   loop?: boolean;
 };
 
-export type StatesType = {
+export type StatesPlaylistType = {
   volume: number;
   loop: boolean;
   audio: AudioType | null;
