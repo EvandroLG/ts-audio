@@ -1,5 +1,5 @@
 # ts-audio &middot; [![Build Status](https://travis-ci.org/EvandroLG/ts-audio.svg?branch=master)](https://travis-ci.org/EvandroLG/ts-audio) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
-`ts-audio` is an agnostic and easy-to-use library to work with the `AudioContext` API.
+`ts-audio` is an agnostic and easy-to-use library to work with the `AudioContext` API and create Playlists.
 
 ## Features
 * Simple API that abstracts the complexity of the AudioContext API
@@ -7,6 +7,7 @@
 * Makes easy to create audio playlist
 * Works with any language that compiles to JavaScript
 * Supports to Types
+* Zero-dependecy
 
 ## Installation
 To install `ts-audio`, execute:
