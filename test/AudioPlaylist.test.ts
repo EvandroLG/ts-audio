@@ -3,16 +3,49 @@ import * as Audio from '../src/audio/Audio';
 
 const playMock = jest.fn();
 const pauseMock = jest.fn();
+const stopMock = jest.fn();
 
 const audioMock: any = jest.fn(() => ({
   play: playMock,
   pause: pauseMock,
+  stop: stopMock,
 }));
 
 jest.spyOn(Audio, 'default').mockImplementation(audioMock);
 
 describe('audio playlist', () => {
+  beforeEach(() => {
+    pauseMock.mockClear();
+    stopMock.mockClear();
+  });
+
   const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3'];
+
+  describe('pause', () => {
+    const playlist = AudioPlaylist({
+      files,
+    });
+
+    it('should invoke pause method from audio', () => {
+      playlist.pause();
+      playlist.next();
+      playlist.pause();
+      expect(pauseMock).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('stop', () => {
+    const playlist = AudioPlaylist({
+      files,
+    });
+
+    it('should invoke stop method from audio', () => {
+      playlist.stop();
+      playlist.next();
+      playlist.stop();
+      expect(stopMock).toHaveBeenCalledTimes(1);
+    });
+  });
 
   describe('next', () => {
     const playlist = AudioPlaylist({
@@ -64,7 +97,7 @@ describe('audio playlist', () => {
 
     it('should play the last file when the previous was the first one', () => {
       verifyPlayPrev(files[2]);
-      expect(pauseMock).toHaveBeenCalled();
+      expect(pauseMock).not.toHaveBeenCalled();
     });
 
     it('should play the second file', () => {
