@@ -11,6 +11,7 @@ export type StatesPlaylistType = {
   loop: boolean;
   audio: AudioType | null;
   isStopped: boolean;
+  audioIndex: number;
 };
 
 export type PlaylistEventType = 'start' | 'end';

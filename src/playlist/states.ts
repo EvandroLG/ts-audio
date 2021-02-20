@@ -5,6 +5,7 @@ const states: StatesPlaylistType = {
   loop: false,
   audio: null,
   isStopped: false,
+  audioIndex: 0,
 };
 
 export default states;

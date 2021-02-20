@@ -1,4 +1,4 @@
-import { AudioPlaylist } from 'ts-audio';
+import { AudioPlaylist } from '../../../src';
 import songOne from './1.mp3';
 import songTwo from './2.mp3';
 import songThree from './3.mp3';
@@ -12,6 +12,7 @@ const playlist = AudioPlaylist({
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
+const buttonNext = document.getElementById('bt-next');
 
 playlist.on('start', console.log);
 playlist.on('end', () => {
@@ -39,4 +40,8 @@ buttonStop.addEventListener('click', () => {
   buttonPause.setAttribute('disabled', 'disabled');
   buttonStop.setAttribute('disabled', 'disabled');
   buttonPlay.removeAttribute('disabled');
+});
+
+buttonNext.addEventListener('click', () => {
+  playlist.next();
 });

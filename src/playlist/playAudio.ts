@@ -3,8 +3,8 @@ import { EventType, EventEmitterType } from '../EventEmitter';
 import { StatesPlaylistType } from './types';
 
 const playAudio = (states: StatesPlaylistType, emmiter: EventEmitterType) => {
-  const _playAudio = (index: number, files: string[], loop: boolean) => {
-    const file = files[index];
+  const playAudioHelper = (files: string[], loop: boolean) => {
+    const file = files[states.audioIndex];
 
     const audio = Audio({ file, volume: states.volume });
     states.audio = audio;
@@ -13,20 +13,24 @@ const playAudio = (states: StatesPlaylistType, emmiter: EventEmitterType) => {
     audio.on('end', () => {
       if (states.isStopped) return;
 
-      if (files.length === index + 1) {
+      if (files.length === states.audioIndex + 1) {
         states.audio = null;
-        states.loop
-          ? _playAudio(0, files, loop)
-          : emmiter.emit('end', { data: null });
+
+        if (states.loop) {
+          playAudioHelper(files, loop);
+        } else {
+          emmiter.emit('end', { data: null });
+        }
       } else {
-        _playAudio(index + 1, files, loop);
+        states.audioIndex++;
+        playAudioHelper(files, loop);
       }
     });
 
     audio.play();
   };
 
-  return _playAudio;
+  return playAudioHelper;
 };
 
 export default playAudio;

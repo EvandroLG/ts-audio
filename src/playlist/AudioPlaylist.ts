@@ -1,6 +1,7 @@
 import { PlaylistPropType, PlaylistEventType } from './types';
 import EventEmitter from '../EventEmitter';
 import globalStates from './states';
+import playNextAudio from './playNextAudio';
 import playAudio from './playAudio';
 
 const AudioPlaylist = ({
@@ -17,7 +18,7 @@ const AudioPlaylist = ({
       const { audio } = states;
 
       if (!audio || states.isStopped) {
-        curryPlayAudio(0, files, loop);
+        curryPlayAudio(files, loop);
         states.isStopped = false;
 
         return;
@@ -33,6 +34,10 @@ const AudioPlaylist = ({
     stop() {
       states.isStopped = true;
       states.audio?.stop();
+    },
+
+    next() {
+      playNextAudio(states, files);
     },
 
     on(
