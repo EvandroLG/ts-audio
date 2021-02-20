@@ -13,6 +13,7 @@ const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
 const buttonNext = document.getElementById('bt-next');
+const buttonPrev = document.getElementById('bt-prev');
 
 playlist.on('start', console.log);
 playlist.on('end', () => {
@@ -44,4 +45,8 @@ buttonStop.addEventListener('click', () => {
 
 buttonNext.addEventListener('click', () => {
   playlist.next();
+});
+
+buttonPrev.addEventListener('click', () => {
+  playlist.prev();
 });

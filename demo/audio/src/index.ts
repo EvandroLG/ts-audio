@@ -23,6 +23,10 @@ setTimeout(() => {
   audio.loop = false;
 }, 2000);
 
+audio.on('ready', ({ data }) => console.log(data));
+audio.on('start', () => console.log('start'));
+audio.on('state', ({ data }) => console.log(data));
+
 buttonPlay.addEventListener('click', () => {
   audio.play();
   buttonPlay.setAttribute('disabled', 'disabled');

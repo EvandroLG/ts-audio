@@ -2,6 +2,7 @@ import { PlaylistPropType, PlaylistEventType } from './types';
 import EventEmitter from '../EventEmitter';
 import globalStates from './states';
 import playNextAudio from './playNextAudio';
+import playPrevAudio from './playPrevAudio';
 import playAudio from './playAudio';
 
 const AudioPlaylist = ({
@@ -38,6 +39,10 @@ const AudioPlaylist = ({
 
     next() {
       playNextAudio(states, files);
+    },
+
+    prev() {
+      playPrevAudio(states, files);
     },
 
     on(
