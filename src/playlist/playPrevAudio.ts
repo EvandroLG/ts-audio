@@ -1,7 +1,7 @@
 import Audio from '../audio/Audio';
 import { StatesPlaylistType } from './types';
 
-const playPrevAudio = (states: StatesPlaylistType, files: string[]) => {
+const playPrevAudio = (states: StatesPlaylistType, files: string[]): void => {
   const isFirstFile = states.audioIndex === 0;
   states.audioIndex = isFirstFile ? files.length - 1 : states.audioIndex + 1;
 

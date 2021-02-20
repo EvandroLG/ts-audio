@@ -12,8 +12,9 @@ const audioMock: any = jest.fn(() => ({
 jest.spyOn(Audio, 'default').mockImplementation(audioMock);
 
 describe('audio playlist', () => {
+  const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3'];
+
   describe('next', () => {
-    const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3'];
     const playlist = AudioPlaylist({
       files,
     });
@@ -39,8 +40,40 @@ describe('audio playlist', () => {
       expect(pauseMock).toHaveBeenCalled();
     });
 
-    it('should play the first file when the previous audio is the last one', () => {
+    it('should play the first file when the previous audio was the last one', () => {
       verifyPlayNext(files[0]);
+      expect(pauseMock).toHaveBeenCalled();
+    });
+  });
+
+  describe('prev', () => {
+    const playlist = AudioPlaylist({
+      files,
+    });
+
+    const verifyPlayPrev = (file: string) => {
+      playlist.prev();
+
+      expect(audioMock).toHaveBeenCalledWith({
+        file,
+        volume: 1,
+      });
+
+      expect(playMock).toHaveBeenCalled();
+    };
+
+    it('should play the last file when the previous was the first one', () => {
+      verifyPlayPrev(files[2]);
+      expect(pauseMock).toHaveBeenCalled();
+    });
+
+    it('should play the second file', () => {
+      verifyPlayPrev(files[1]);
+      expect(pauseMock).toHaveBeenCalled();
+    });
+
+    it('should play the first file', () => {
+      verifyPlayPrev(files[0]);
       expect(pauseMock).toHaveBeenCalled();
     });
   });
