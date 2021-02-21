@@ -1,6 +1,6 @@
 import { throwsError } from '../utils';
 
-const AudioCtx = () => {
+const AudioCtx = (): AudioContext => {
   const Context = window.AudioContext || (window as any).webkitAudioContext;
 
   if (!Context) {

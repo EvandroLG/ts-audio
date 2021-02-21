@@ -2,7 +2,17 @@ import { EventEmitterType } from './EventEmitter';
 
 type callbackType = (param: { [data: string]: any }) => void;
 
-const EventHandler = (emitter: EventEmitterType, audioCtx?: AudioContext) => ({
+type EventHandlerType = {
+  ready: (callback: callbackType) => void;
+  start: (callback: callbackType) => void;
+  end: (callback: callbackType) => void;
+  state: (callback: callbackType) => void;
+};
+
+const EventHandler = (
+  emitter: EventEmitterType,
+  audioCtx?: AudioContext
+): EventHandlerType => ({
   ready(callback: callbackType) {
     emitter.listener('decoded', callback);
   },

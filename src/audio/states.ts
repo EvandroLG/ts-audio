@@ -1,4 +1,9 @@
-import { StatesType } from './types';
+export type StatesType = {
+  isDecoded: boolean;
+  hasStarted: boolean;
+  source: AudioBufferSourceNode | null;
+  gainNode: GainNode | null;
+};
 
 const states: StatesType = {
   isDecoded: false,

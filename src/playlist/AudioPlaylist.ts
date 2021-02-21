@@ -1,4 +1,9 @@
-import { PlaylistPropType, PlaylistEventType } from './types';
+import {
+  AudioPlaylistType,
+  PlaylistPropType,
+  PlaylistEventType,
+} from './types';
+
 import EventEmitter from '../EventEmitter';
 import globalStates from './states';
 import playNextAudio from './playNextAudio';
@@ -9,7 +14,7 @@ const AudioPlaylist = ({
   files,
   volume = 1,
   loop = false,
-}: PlaylistPropType) => {
+}: PlaylistPropType): AudioPlaylistType => {
   const emmiter = EventEmitter();
   const states = { ...globalStates, ...{ volume, loop } };
   const curryPlayAudio = playAudio(states, emmiter);

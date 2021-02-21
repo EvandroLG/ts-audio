@@ -1,4 +1,4 @@
-import { StatesType } from './types';
+import { StatesType } from './states';
 import { EventEmitterType } from '../EventEmitter';
 
 const decodeAudioData = (
@@ -9,7 +9,7 @@ const decodeAudioData = (
   loop: boolean,
   states: StatesType,
   emitter: EventEmitterType
-) => {
+): void => {
   const onSuccess = (buffer: any) => {
     source.buffer = buffer;
     source.loop = loop;

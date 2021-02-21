@@ -14,7 +14,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
-    "lint": "tsdx lint",
+    "lint": "eslint src/",
     "prepare": "tsdx build"
   },
   "peerDependencies": {},
@@ -33,6 +33,9 @@
   "author": "evandrolg",
   "module": "dist/ts-audio.esm.js",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
+    "@typescript-eslint/parser": "^4.15.1",
+    "eslint": "^7.20.0",
     "husky": "^4.2.5",
     "tsdx": "^0.14.1",
     "tslib": "^1.11.1",

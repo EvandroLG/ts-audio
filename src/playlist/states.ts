@@ -1,4 +1,12 @@
-import { StatesPlaylistType } from './types';
+import { AudioType } from '../audio/types';
+
+export type StatesPlaylistType = {
+  volume: number;
+  loop: boolean;
+  audio: AudioType | null;
+  isStopped: boolean;
+  audioIndex: number;
+};
 
 const states: StatesPlaylistType = {
   volume: 1,

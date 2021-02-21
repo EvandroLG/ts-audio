@@ -1,12 +1,12 @@
 import { EventEmitterType } from '../EventEmitter';
-import { StatesType } from './types';
+import { StatesType } from './states';
 
 const initializeSource = (
-  audioCtx: any,
+  audioCtx: AudioContext,
   volume: number,
   emitter: EventEmitterType,
   states: StatesType
-) => {
+): void => {
   const source = (states.source = audioCtx.createBufferSource());
   const gainNode = (states.gainNode = audioCtx.createGain());
 

@@ -19,10 +19,3 @@ export type AudioType = {
   loop: boolean;
   state: AudioContextState;
 };
-
-export type StatesType = {
-  isDecoded: boolean;
-  hasStarted: boolean;
-  source: AudioBufferSourceNode | null;
-  gainNode: GainNode | null;
-};
