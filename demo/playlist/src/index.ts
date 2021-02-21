@@ -45,8 +45,14 @@ buttonStop.addEventListener('click', () => {
 
 buttonNext.addEventListener('click', () => {
   playlist.next();
+  buttonPlay.setAttribute('disabled', 'disabled');
+  buttonPause.removeAttribute('disabled');
+  buttonStop.removeAttribute('disabled');
 });
 
 buttonPrev.addEventListener('click', () => {
   playlist.prev();
+  buttonPlay.setAttribute('disabled', 'disabled');
+  buttonPause.removeAttribute('disabled');
+  buttonStop.removeAttribute('disabled');
 });
