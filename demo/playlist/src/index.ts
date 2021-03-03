@@ -3,12 +3,15 @@ import songOne from './1.mp3';
 import songTwo from './2.mp3';
 import songThree from './3.mp3';
 
+const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
+
 const playlist = AudioPlaylist({
   files: [songOne, songTwo, songThree],
   volume: 0.7,
   loop: true,
 });
 
+const range = document.getElementById('range');
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
@@ -55,4 +58,9 @@ buttonPrev.addEventListener('click', () => {
   buttonPlay.setAttribute('disabled', 'disabled');
   buttonPause.removeAttribute('disabled');
   buttonStop.removeAttribute('disabled');
+});
+
+range.addEventListener('change', (e: Event) => {
+  const volume = getVolume(e.target as HTMLInputElement);
+  playlist.volume = volume;
 });
