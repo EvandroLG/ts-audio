@@ -4,14 +4,14 @@ import songTwo from './2.mp3';
 import songThree from './3.mp3';
 
 const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
+const range = <HTMLInputElement>document.getElementById('range');
 
 const playlist = AudioPlaylist({
   files: [songOne, songTwo, songThree],
-  volume: 0.7,
+  volume: getVolume(range),
   loop: true,
 });
 
-const range = document.getElementById('range');
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
