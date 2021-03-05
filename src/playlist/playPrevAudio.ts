@@ -3,7 +3,7 @@ import { StatesPlaylistType } from './states';
 
 const playPrevAudio = (states: StatesPlaylistType, files: string[]): void => {
   const isFirstFile = states.audioIndex === 0;
-  states.audioIndex = isFirstFile ? files.length - 1 : states.audioIndex + 1;
+  states.audioIndex = isFirstFile ? files.length - 1 : states.audioIndex - 1;
 
   states.audio?.pause();
 
