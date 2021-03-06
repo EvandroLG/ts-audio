@@ -33,9 +33,9 @@
   "author": "evandrolg",
   "module": "dist/ts-audio.esm.js",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.15.1",
-    "@typescript-eslint/parser": "^4.15.1",
-    "eslint": "^7.20.0",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint": "^7.21.0",
     "husky": "^4.3.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",
