@@ -2,6 +2,7 @@ export type PlaylistPropType = {
   files: string[];
   volume?: number;
   loop?: boolean;
+  shuffle?: boolean;
 };
 
 export type AudioPlaylistType = {

@@ -9,14 +9,17 @@ import globalStates from './states';
 import playNextAudio from './playNextAudio';
 import playPrevAudio from './playPrevAudio';
 import playAudio from './playAudio';
+import { shuffle as shuffleHelper } from '../utils';
 
 const AudioPlaylist = ({
   files,
   volume = 1,
   loop = false,
+  shuffle = false,
 }: PlaylistPropType): AudioPlaylistType => {
   const emmiter = EventEmitter();
   const states = { ...globalStates, ...{ volume, loop } };
+  const copiedFiles = shuffle ? shuffleHelper(files) : files.slice();
   const curryPlayAudio = playAudio(states, emmiter);
 
   return {
@@ -24,7 +27,7 @@ const AudioPlaylist = ({
       const { audio } = states;
 
       if (!audio || states.isStopped) {
-        curryPlayAudio(files, loop);
+        curryPlayAudio(copiedFiles, loop);
         states.isStopped = false;
 
         return;
@@ -43,11 +46,11 @@ const AudioPlaylist = ({
     },
 
     next() {
-      playNextAudio(states, files);
+      playNextAudio(states, copiedFiles);
     },
 
     prev() {
-      playPrevAudio(states, files);
+      playPrevAudio(states, copiedFiles);
     },
 
     on(
