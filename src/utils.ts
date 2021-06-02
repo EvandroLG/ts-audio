@@ -16,12 +16,12 @@ export const shuffle = (list: string[]): string[] => {
   let index = list.length - 1;
 
   while (index >= 0) {
-    const randomIdx = Math.floor(Math.random() * index);
-    index--;
+    const randomIdx = Math.floor(Math.random() * index + 1);
+    const tmp = result[index];
+    result[index] = result[randomIdx];
+    result[randomIdx] = tmp;
 
-    const tmp = list[index];
-    list[index] = list[randomIdx];
-    list[randomIdx] = tmp;
+    index--;
   }
 
   return result;
