@@ -10,6 +10,7 @@ const playlist = AudioPlaylist({
   files: [songOne, songTwo, songThree],
   volume: getVolume(range),
   loop: true,
+  shuffle: true,
 });
 
 const buttonPlay = document.getElementById('bt-play');
