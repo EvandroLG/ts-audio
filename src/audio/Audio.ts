@@ -25,7 +25,7 @@ const Audio = ({
   const states = { ...globalStates };
   const emitter = EventEmitter();
   const eventHandler = EventHandler(emitter, audioCtx);
-  const curryGetBuffer = (source: any) => {
+  const curryGetBuffer = (source: AudioBufferSourceNode) => {
     states.isDecoded = false;
 
     getBuffer(file)
@@ -77,7 +77,7 @@ const Audio = ({
 
     on(
       eventType: AudioEventType,
-      callback: (param: { [data: string]: any }) => void
+      callback: <T>(param: { [data: string]: T }) => void
     ) {
       eventHandler[eventType]?.(callback);
     },

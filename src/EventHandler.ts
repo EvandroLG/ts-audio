@@ -1,6 +1,6 @@
 import { EventEmitterType } from './EventEmitter';
 
-type callbackType = (param: { [data: string]: any }) => void;
+type callbackType = <T>(param: { [data: string]: T }) => void;
 
 type EventHandlerType = {
   ready: (callback: callbackType) => void;

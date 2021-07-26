@@ -53,9 +53,9 @@ const AudioPlaylist = ({
       playPrevAudio(states, copiedFiles);
     },
 
-    on(
+    on<T>(
       eventType: PlaylistEventType,
-      callback: (param: { [data: string]: any }) => void
+      callback: (param: { [data: string]: T }) => void
     ) {
       emmiter.listener(eventType, callback);
     },

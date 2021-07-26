@@ -13,7 +13,7 @@ export type AudioPlaylistType = {
   prev: () => void;
   on: (
     eventType: PlaylistEventType,
-    callback: (param: { [data: string]: any }) => void
+    callback: <T>(param: { [data: string]: T }) => void
   ) => void;
   volume: number;
   loop: boolean;

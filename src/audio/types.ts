@@ -13,7 +13,7 @@ export type AudioType = {
   stop: () => void;
   on: (
     eventType: AudioEventType,
-    callback: (param: { [data: string]: any }) => void
+    callback: <T>(param: { [data: string]: T }) => void
   ) => void;
   volume: number;
   loop: boolean;
