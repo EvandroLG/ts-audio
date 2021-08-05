@@ -20,6 +20,7 @@ const playAudio = (
 
       if (files.length === states.audioIndex + 1) {
         states.audio = null;
+        states.audioIndex = 0;
 
         if (states.loop) {
           playAudioHelper(files, loop);
