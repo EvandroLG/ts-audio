@@ -3,7 +3,8 @@
     "start": "parcel src/index.html"
   },
   "devDependencies": {
-    "parcel": "^1.12.4",
+    "parcel": "^2.0.0-rc.0",
+    "parcel-bundler": "^1.12.5",
     "ts-audio": "0.4.5"
   }
 }
