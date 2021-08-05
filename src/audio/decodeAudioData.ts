@@ -10,7 +10,7 @@ const decodeAudioData = (
   states: StatesType,
   emitter: EventEmitterType
 ): void => {
-  const onSuccess = (buffer: any) => {
+  const onSuccess = (buffer: AudioBuffer) => {
     source.buffer = buffer;
     source.loop = loop;
 

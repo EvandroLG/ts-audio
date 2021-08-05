@@ -1,7 +1,13 @@
 import { throwsError } from '../utils';
 
+declare global {
+  interface Window {
+    webkitAudioContext: typeof window.AudioContext;
+  }
+}
+
 const AudioCtx = (): AudioContext => {
-  const Context = window.AudioContext || (window as any).webkitAudioContext;
+  const Context = window.AudioContext || window.webkitAudioContext;
 
   if (!Context) {
     throwsError(

@@ -1,5 +1,5 @@
 export type EventType = {
-  data: any;
+  data: unknown;
 };
 
 export type EventEmitterType = {
