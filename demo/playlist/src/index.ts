@@ -11,6 +11,7 @@ const playlist = AudioPlaylist({
   volume: getVolume(range),
   loop: true,
   shuffle: true,
+  preload: true,
 });
 
 const buttonPlay = document.getElementById('bt-play');

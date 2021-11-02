@@ -3,6 +3,8 @@ export type PlaylistPropType = {
   volume?: number;
   loop?: boolean;
   shuffle?: boolean;
+  preload?: boolean;
+  preloadLimit?: number;
 };
 
 export type AudioPlaylistType = {
