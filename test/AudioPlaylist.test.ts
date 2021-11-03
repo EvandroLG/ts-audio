@@ -13,10 +13,7 @@ const audioMock: any = jest.fn(() => ({
 }));
 
 jest.spyOn(Audio, 'default').mockImplementation(audioMock);
-
-jest.mock('../src/utils', () => ({
-  preloadFiles: jest.fn(),
-}));
+jest.spyOn(utils, 'preloadFiles').mockImplementation();
 
 describe('audio playlist', () => {
   beforeEach(() => {
@@ -118,7 +115,7 @@ describe('audio playlist', () => {
 
   describe('preload', () => {
     beforeEach(() => {
-      (utils.preloadFiles as any).mockClear();
+      (utils.preloadFiles as jest.Mock).mockClear();
     });
 
     it('should preload files using the default limit', () => {
