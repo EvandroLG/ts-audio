@@ -3,6 +3,7 @@ export type AudioPropType = {
   volume?: number;
   autoPlay?: boolean;
   loop?: boolean;
+  preload?: boolean;
 };
 
 export type AudioEventType = 'ready' | 'start' | 'state' | 'end';
