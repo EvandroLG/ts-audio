@@ -14,6 +14,7 @@ const audioMock: any = jest.fn(() => ({
 
 jest.spyOn(Audio, 'default').mockImplementation(audioMock);
 jest.spyOn(utils, 'preloadFiles').mockImplementation();
+jest.spyOn(utils, 'shuffle').mockImplementation();
 
 describe('audio playlist', () => {
   beforeEach(() => {
@@ -143,6 +144,29 @@ describe('audio playlist', () => {
       });
 
       expect(utils.preloadFiles).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('shuffle', () => {
+    beforeEach(() => {
+      (utils.shuffle as jest.Mock).mockClear();
+    });
+
+    it('should shuffle the files', () => {
+      AudioPlaylist({
+        files,
+        shuffle: true,
+      });
+
+      expect(utils.shuffle).toHaveBeenCalledWith(files);
+    });
+
+    it('should not shuffle the files', () => {
+      AudioPlaylist({
+        files,
+      });
+
+      expect(utils.shuffle).not.toHaveBeenCalled();
     });
   });
 });
