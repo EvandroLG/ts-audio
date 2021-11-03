@@ -27,14 +27,16 @@ export const shuffle = (list: string[]): string[] => {
   return result;
 };
 
-export const preloadFiles = <T>(
+export const preloadFiles = (
   files: string[],
   limit: number,
-  mockApi?: (input: string) => Promise<T>,
+  api: (
+    input: RequestInfo,
+    init?: RequestInit | undefined
+  ) => Promise<Response> = fetch,
   done?: () => void
 ): void => {
   const queue: string[] = files.slice(limit);
-  const api = mockApi ?? fetch;
 
   const request = (fileName: string) => {
     api(fileName).then(() => {

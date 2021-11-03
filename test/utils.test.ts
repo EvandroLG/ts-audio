@@ -51,7 +51,7 @@ describe('utils', () => {
 
     const api = () => {
       counter++;
-      return Promise.resolve();
+      return Promise.resolve({} as Response);
     };
 
     preloadFiles(files, 3, api, () => {
