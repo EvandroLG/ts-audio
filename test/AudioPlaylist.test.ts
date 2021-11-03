@@ -1,5 +1,6 @@
 import { AudioPlaylist } from '../src/';
 import * as Audio from '../src/audio/Audio';
+import * as utils from '../src/utils';
 
 const playMock = jest.fn();
 const pauseMock = jest.fn();
@@ -12,6 +13,10 @@ const audioMock: any = jest.fn(() => ({
 }));
 
 jest.spyOn(Audio, 'default').mockImplementation(audioMock);
+
+jest.mock('../src/utils', () => ({
+  preloadFiles: jest.fn(),
+}));
 
 describe('audio playlist', () => {
   beforeEach(() => {
@@ -108,6 +113,39 @@ describe('audio playlist', () => {
     it('should play the first file', () => {
       verifyPlayPrev(files[0]);
       expect(pauseMock).toHaveBeenCalled();
+    });
+  });
+
+  describe('preload', () => {
+    beforeEach(() => {
+      (utils.preloadFiles as any).mockClear();
+    });
+
+    it('should preload files using the default limit', () => {
+      AudioPlaylist({
+        files,
+        preload: true,
+      });
+
+      expect(utils.preloadFiles).toHaveBeenCalledWith(files, 3);
+    });
+
+    it('should preload files using specified limit', () => {
+      AudioPlaylist({
+        files,
+        preload: true,
+        preloadLimit: 2,
+      });
+
+      expect(utils.preloadFiles).toHaveBeenCalledWith(files, 2);
+    });
+
+    it('should not preload files', () => {
+      AudioPlaylist({
+        files,
+      });
+
+      expect(utils.preloadFiles).not.toHaveBeenCalled();
     });
   });
 });
