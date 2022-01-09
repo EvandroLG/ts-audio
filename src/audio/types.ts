@@ -12,6 +12,7 @@ export type AudioType = {
   play: () => void;
   pause: () => void;
   stop: () => void;
+  toggle: () => void;
   on: (
     eventType: AudioEventType,
     callback: <T>(param: { [data: string]: T }) => void

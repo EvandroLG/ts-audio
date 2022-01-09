@@ -44,14 +44,11 @@ const Audio = ({
       .catch(console.error);
   };
 
-  if (preload) {
-    preloadFiles([file], 1);
-  }
-
-  return {
+  class Player {
     play() {
       if (states.hasStarted) {
         audioCtx.resume();
+        states.isPlaying = true;
         return;
       }
 
@@ -66,51 +63,63 @@ const Audio = ({
           : emitter.listener('decoded', () => start(audioCtx, source));
 
         states.hasStarted = true;
+        states.isPlaying = true;
         emitter.emit('start', { data: null });
       }
-    },
+    }
 
     pause() {
       audioCtx.suspend();
-    },
+      states.isPlaying = false;
+    }
+
+    toggle() {
+      states.isPlaying ? this.pause() : this.play();
+    }
 
     stop() {
       if (states.hasStarted) {
         states.source?.stop(0);
       }
-    },
+    }
 
     on(
       eventType: AudioEventType,
       callback: <T>(param: { [data: string]: T }) => void
     ) {
       eventHandler[eventType]?.(callback);
-    },
+    }
 
     get volume() {
       return states.gainNode?.gain.value ?? 0;
-    },
+    }
 
     set volume(newVolume: number) {
       if (states.gainNode) {
         states.gainNode.gain.value = newVolume;
       }
-    },
+    }
 
     get loop() {
       return states.source?.loop ?? false;
-    },
+    }
 
     set loop(newLoop: boolean) {
       if (states.source) {
         states.source.loop = newLoop;
       }
-    },
+    }
 
     get state() {
       return audioCtx.state;
-    },
-  };
+    }
+  }
+
+  if (preload) {
+    preloadFiles([file], 1);
+  }
+
+  return new Player();
 };
 
 export default Audio;
