@@ -29,6 +29,10 @@ const Audio = ({
   const curryGetBuffer = (source: AudioBufferSourceNode) => {
     states.isDecoded = false;
 
+    source.onended = () => {
+      states.isPlaying = false;
+    };
+
     getBuffer(file)
       .then(buffer =>
         decodeAudioData(
@@ -80,6 +84,7 @@ const Audio = ({
     stop() {
       if (states.hasStarted) {
         states.source?.stop(0);
+        states.isPlaying = false;
       }
     }
 

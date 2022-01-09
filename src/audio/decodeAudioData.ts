@@ -19,6 +19,7 @@ const decodeAudioData = (
 
     if (autoPlay) {
       source.start(0);
+      states.isPlaying = true;
     }
   };
 
