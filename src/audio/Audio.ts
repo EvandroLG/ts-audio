@@ -48,7 +48,11 @@ const Audio = ({
       .catch(console.error);
   };
 
-  class Player {
+  if (preload) {
+    preloadFiles([file], 1);
+  }
+
+  const Player = {
     play() {
       if (states.hasStarted) {
         audioCtx.resume();
@@ -70,61 +74,57 @@ const Audio = ({
         states.isPlaying = true;
         emitter.emit('start', { data: null });
       }
-    }
+    },
 
     pause() {
       audioCtx.suspend();
       states.isPlaying = false;
-    }
+    },
 
     toggle() {
-      states.isPlaying ? this.pause() : this.play();
-    }
+      states.isPlaying ? Player.pause() : Player.play();
+    },
 
     stop() {
       if (states.hasStarted) {
         states.source?.stop(0);
         states.isPlaying = false;
       }
-    }
+    },
 
     on(
       eventType: AudioEventType,
       callback: <T>(param: { [data: string]: T }) => void
     ) {
       eventHandler[eventType]?.(callback);
-    }
+    },
 
     get volume() {
       return states.gainNode?.gain.value ?? 0;
-    }
+    },
 
     set volume(newVolume: number) {
       if (states.gainNode) {
         states.gainNode.gain.value = newVolume;
       }
-    }
+    },
 
     get loop() {
       return states.source?.loop ?? false;
-    }
+    },
 
     set loop(newLoop: boolean) {
       if (states.source) {
         states.source.loop = newLoop;
       }
-    }
+    },
 
     get state() {
       return audioCtx.state;
-    }
-  }
+    },
+  };
 
-  if (preload) {
-    preloadFiles([file], 1);
-  }
-
-  return new Player();
+  return Player;
 };
 
 export default Audio;

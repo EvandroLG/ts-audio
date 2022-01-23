@@ -38,15 +38,19 @@ export const preloadFiles = (
 ): void => {
   const queue: string[] = files.slice(limit);
 
-  const request = (fileName: string) => {
-    api(fileName).then(() => {
-      if (!queue.length) {
-        done?.();
-        return;
-      }
+  const requestNext = () => {
+    if (!queue.length) {
+      done?.();
+      return;
+    }
 
-      request(queue.shift() as string);
-    });
+    request(queue.shift() as string);
+  };
+
+  const request = (fileName: string) => {
+    api(fileName)
+      .then(requestNext)
+      .catch(requestNext);
   };
 
   for (let i = 0; i < limit; i++) {
