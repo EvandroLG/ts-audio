@@ -5,6 +5,7 @@ export type StatesPlaylistType = {
   loop: boolean;
   audio: AudioType | null;
   isStopped: boolean;
+  isPlaying: boolean;
   audioIndex: number;
 };
 
@@ -13,6 +14,7 @@ const states: StatesPlaylistType = {
   loop: false,
   audio: null,
   isStopped: false,
+  isPlaying: false,
   audioIndex: 0,
 };
 

@@ -28,9 +28,10 @@ const AudioPlaylist = ({
     preloadFiles(copiedFiles, preloadLimit);
   }
 
-  return {
+  const Player = {
     play() {
       const { audio } = states;
+      states.isPlaying = true;
 
       if (!audio || states.isStopped) {
         curryPlayAudio(copiedFiles, loop);
@@ -42,11 +43,17 @@ const AudioPlaylist = ({
       audio.play();
     },
 
+    toggle() {
+      states.isPlaying ? Player.pause() : Player.play();
+    },
+
     pause() {
       states.audio?.pause();
+      states.isPlaying = false;
     },
 
     stop() {
+      states.isPlaying = false;
       states.isStopped = true;
       states.audio?.stop();
     },
@@ -86,6 +93,8 @@ const AudioPlaylist = ({
       states.loop = newLoop;
     },
   };
+
+  return Player;
 };
 
 export default AudioPlaylist;
