@@ -10,6 +10,7 @@ export type PlaylistPropType = {
 export type AudioPlaylistType = {
   play: () => void;
   pause: () => void;
+  toggle: () => void;
   stop: () => void;
   next: () => void;
   prev: () => void;
