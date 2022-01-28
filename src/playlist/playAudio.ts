@@ -26,6 +26,7 @@ const playAudio = (
           playAudioHelper(files, loop);
         } else {
           emmiter.emit('end', { data: null });
+          states.isPlaying = false;
         }
       } else {
         states.audioIndex++;

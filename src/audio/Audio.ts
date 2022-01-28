@@ -48,10 +48,6 @@ const Audio = ({
       .catch(console.error);
   };
 
-  if (preload) {
-    preloadFiles([file], 1);
-  }
-
   const Player = {
     play() {
       if (states.hasStarted) {
@@ -123,6 +119,10 @@ const Audio = ({
       return audioCtx.state;
     },
   };
+
+  if (preload) {
+    preloadFiles([file], 1);
+  }
 
   return Player;
 };

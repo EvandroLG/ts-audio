@@ -24,10 +24,6 @@ const AudioPlaylist = ({
   const copiedFiles = shuffle ? shuffleHelper(files) : files.slice();
   const curryPlayAudio = playAudio(states, emmiter);
 
-  if (preload) {
-    preloadFiles(copiedFiles, preloadLimit);
-  }
-
   const Player = {
     play() {
       const { audio } = states;
@@ -93,6 +89,10 @@ const AudioPlaylist = ({
       states.loop = newLoop;
     },
   };
+
+  if (preload) {
+    preloadFiles(copiedFiles, preloadLimit);
+  }
 
   return Player;
 };
