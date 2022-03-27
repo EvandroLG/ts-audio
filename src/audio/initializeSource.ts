@@ -16,6 +16,7 @@ const initializeSource = (
 
   source.onended = () => {
     states.hasStarted = false;
+    states.isPlaying = false;
     emitter.emit('end', { data: null });
   };
 };
