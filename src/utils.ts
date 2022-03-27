@@ -31,7 +31,7 @@ export const preloadFiles = (
   files: string[],
   limit: number,
   api: (
-    input: RequestInfo,
+    input: string,
     init?: RequestInit | undefined
   ) => Promise<Response> = fetch,
   done?: () => void

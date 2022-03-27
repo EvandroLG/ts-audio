@@ -15,28 +15,32 @@ function unique(arr: string[]): boolean {
 }
 
 describe('utils', () => {
-  test('throwsError', () => {
-    const error = 'sorry, something failed';
-    expect(() => throwsError(error)).toThrowError(`\`ts-audio\`: ${error}`);
+  describe('throwsError', () => {
+    it('should throw an error using the message passed by parameter', () => {
+      const error = 'sorry, something failed';
+      expect(() => throwsError(error)).toThrowError(`\`ts-audio\`: ${error}`);
+    });
   });
 
-  test('shuffle', () => {
-    const files = [
-      './file2.mp3',
-      './file1.mp3',
-      './file3.mp3',
-      './file100.mp3',
-      './file50.mp3',
-    ];
+  describe('shuffle', () => {
+    it('should shuffle the order of the elements in a given array', () => {
+      const files = [
+        './file2.mp3',
+        './file1.mp3',
+        './file3.mp3',
+        './file100.mp3',
+        './file50.mp3',
+      ];
 
-    const shuffled = shuffle(files);
+      const shuffled = shuffle(files);
 
-    expect(shuffled.length).toBe(files.length);
-    expect(compare(shuffled, files)).toBeFalsy();
-    expect(unique(shuffled)).toBeTruthy();
+      expect(shuffled.length).toBe(files.length);
+      expect(compare(shuffled, files)).toBeFalsy();
+      expect(unique(shuffled)).toBeTruthy();
+    });
   });
 
-  test('preload files', done => {
+  describe('preload files', () => {
     const files = [
       './file2.mp3',
       './file1.mp3',
@@ -47,16 +51,37 @@ describe('utils', () => {
       './file7.mp3',
     ];
 
-    let counter = 0;
+    it('should request up to 3 files concurrently', done => {
+      let counter = 0;
 
-    const api = () => {
-      counter++;
-      return Promise.resolve({} as Response);
-    };
+      const api = () => {
+        counter++;
+        return Promise.resolve({} as Response);
+      };
 
-    preloadFiles(files, 3, api, () => {
-      expect(counter).toBe(7);
-      done();
+      preloadFiles(files, 3, api, () => {
+        expect(counter).toBe(7);
+        done();
+      });
+    });
+
+    it('should request next file from the queue in case a request has failed', done => {
+      let counter = 0;
+
+      const api = (file: string) => {
+        counter++;
+
+        if (['./file3.mp3', './file7.mp3'].includes(file)) {
+          return Promise.reject({} as Response);
+        }
+
+        return Promise.resolve({} as Response);
+      };
+
+      preloadFiles(files, 3, api, () => {
+        expect(counter).toBe(7);
+        done();
+      });
     });
   });
 });
