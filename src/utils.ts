@@ -36,7 +36,7 @@ export const preloadFiles = (
   ) => Promise<Response> = fetch,
   done?: () => void
 ): void => {
-  const queue: string[] = files.slice(limit);
+  const queue: string[] = files.slice(limit).reverse();
 
   const requestNext = () => {
     if (!queue.length) {
@@ -44,7 +44,7 @@ export const preloadFiles = (
       return;
     }
 
-    request(queue.shift() as string);
+    request(queue.pop() as string);
   };
 
   const request = (fileName: string) => {
