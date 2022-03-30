@@ -19,6 +19,7 @@ const buttonPause = document.getElementById('bt-pause');
 const buttonStop = document.getElementById('bt-stop');
 const buttonNext = document.getElementById('bt-next');
 const buttonPrev = document.getElementById('bt-prev');
+const buttonToggle = document.getElementById('bt-toggle');
 
 playlist.on('start', console.log);
 playlist.on('end', () => {
@@ -60,6 +61,10 @@ buttonPrev.addEventListener('click', () => {
   buttonPlay.setAttribute('disabled', 'disabled');
   buttonPause.removeAttribute('disabled');
   buttonStop.removeAttribute('disabled');
+});
+
+buttonToggle.addEventListener('click', () => {
+  playlist.toggle();
 });
 
 range.addEventListener('change', (e: Event) => {

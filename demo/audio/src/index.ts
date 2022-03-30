@@ -6,6 +6,7 @@ const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
 const range = <HTMLInputElement>document.getElementById('range');
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
+const buttonToggle = document.getElementById('bt-toggle');
 const buttonStop = document.getElementById('bt-stop');
 const audio: AudioType = Audio({
   file: song,
@@ -40,6 +41,10 @@ buttonPause.addEventListener('click', () => {
   buttonPause.setAttribute('disabled', 'disabled');
   buttonStop.setAttribute('disabled', 'disabled');
   buttonPlay.removeAttribute('disabled');
+});
+
+buttonToggle.addEventListener('click', () => {
+  audio.toggle();
 });
 
 buttonStop.addEventListener('click', () => {
