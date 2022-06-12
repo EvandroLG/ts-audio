@@ -20,4 +20,5 @@ export type AudioType = {
   volume: number;
   loop: boolean;
   state: AudioContextState;
+  audioCtx: AudioContext;
 };

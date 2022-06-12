@@ -114,6 +114,10 @@ const Audio = ({
     get state() {
       return audioCtx.state;
     },
+
+    get audioCtx() {
+      return audioCtx;
+    },
   };
 
   if (preload) {
