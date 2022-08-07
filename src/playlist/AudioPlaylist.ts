@@ -89,6 +89,10 @@ const AudioPlaylist = ({
       return states.loop;
     },
 
+    get audioCtx() {
+      return states.audio?.audioCtx;
+    },
+
     set loop(newLoop: boolean) {
       states.loop = newLoop;
     },

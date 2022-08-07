@@ -20,6 +20,7 @@ export type AudioPlaylistType = {
   ) => void;
   volume: number;
   loop: boolean;
+  audioCtx?: AudioContext;
 };
 
 export type PlaylistEventType = 'start' | 'end';

@@ -9,16 +9,23 @@ const playAudio = (
   emmiter: EventEmitterType
 ): playAudioType => {
   const playAudioHelper = (files: string[], loop: boolean) => {
+    console.log('play audio helper was called...');
     const file = files[states.audioIndex];
 
     const audio = Audio({ file, volume: states.volume });
+    audio.audioCtx.resume();
     states.audio = audio;
 
-    audio.on('start', e => emmiter.emit('start', e as EventType));
+    audio.on('start', e => {
+      console.log('audio start');
+      emmiter.emit('start', e as EventType);
+    });
     audio.on('end', () => {
+      console.log('audio ended (file)');
       if (states.isStopped) return;
 
       if (files.length === states.audioIndex + 1) {
+        console.log('audio ended (last file)');
         states.audio = null;
         states.audioIndex = 0;
 
