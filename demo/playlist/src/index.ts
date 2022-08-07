@@ -21,7 +21,10 @@ const buttonNext = document.getElementById('bt-next');
 const buttonPrev = document.getElementById('bt-prev');
 const buttonToggle = document.getElementById('bt-toggle');
 
-playlist.on('start', console.log);
+playlist.on('start', () => {
+  console.log(playlist.audioCtx);
+});
+
 playlist.on('end', () => {
   buttonPlay.removeAttribute('disabled');
   buttonPause.setAttribute('disabled', 'disabled');

@@ -21,6 +21,8 @@ audio.on('end', () => {
   buttonStop.setAttribute('disabled', 'disabled');
 });
 
+console.log('audio ctx', audio.audioCtx);
+
 setTimeout(() => {
   audio.loop = false;
 }, 2000);

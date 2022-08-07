@@ -1,6 +1,6 @@
 {
   "name": "ts-audio",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "author": "evandrolg",
   "module": "dist/ts-audio.esm.js",
   "license": "MIT",
