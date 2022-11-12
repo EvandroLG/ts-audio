@@ -1,4 +1,9 @@
-import { throwsError, shuffle, preloadFiles } from '../src/utils';
+import {
+  throwsError,
+  shuffle,
+  preloadFiles,
+  weightedFiles,
+} from '../src/utils';
 
 function compare(arr1: string[], arr2: string[]): boolean {
   for (let i = 0; i < arr1.length; i++) {
@@ -82,6 +87,38 @@ describe('utils', () => {
         expect(counter).toBe(7);
         done();
       });
+    });
+  });
+
+  describe('weightedFiles', () => {
+    it('should build a new array based on the weight of every file', () => {
+      const map = {
+        'file1.mp3': 2,
+        'file2.mp3': 4,
+        'file3.mp3': 10,
+      };
+
+      const result = weightedFiles(map);
+      result.sort((a, b) => a.localeCompare(b));
+
+      expect(result).toStrictEqual([
+        'file1.mp3',
+        'file1.mp3',
+        'file2.mp3',
+        'file2.mp3',
+        'file2.mp3',
+        'file2.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+        'file3.mp3',
+      ]);
     });
   });
 });
