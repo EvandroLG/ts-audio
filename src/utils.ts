@@ -57,3 +57,16 @@ export const preloadFiles = (
     request(files[i]);
   }
 };
+
+export const weightedFiles = (files: { [key: string]: number }): string[] => {
+  const output = [] as string[];
+  const entries = Object.entries(files);
+
+  for (const [file, weight] of entries) {
+    for (let i = 0; i < weight; i++) {
+      output.push(file);
+    }
+  }
+
+  return output;
+};

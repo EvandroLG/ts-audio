@@ -9,7 +9,11 @@ import globalStates from './states';
 import playNextAudio from './playNextAudio';
 import playPrevAudio from './playPrevAudio';
 import playAudio from './playAudio';
-import { shuffle as shuffleHelper, preloadFiles } from '../utils';
+import {
+  shuffle as shuffleHelper,
+  preloadFiles,
+  weightedFiles,
+} from '../utils';
 
 const AudioPlaylist = ({
   files,
@@ -21,7 +25,8 @@ const AudioPlaylist = ({
 }: PlaylistPropType): AudioPlaylistType => {
   const emmiter = EventEmitter();
   const states = { ...globalStates, ...{ volume, loop } };
-  const copiedFiles = shuffle ? shuffleHelper(files) : files.slice();
+  const _files = Array.isArray(files) ? files : weightedFiles(files);
+  const copiedFiles = shuffle ? shuffleHelper(_files) : _files.slice();
   const curryPlayAudio = playAudio(states, emmiter);
 
   if (preload) {

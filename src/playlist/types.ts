@@ -1,5 +1,5 @@
 export type PlaylistPropType = {
-  files: string[];
+  files: string[] | { [key: string]: number };
   volume?: number;
   loop?: boolean;
   shuffle?: boolean;
