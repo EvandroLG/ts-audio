@@ -25,8 +25,13 @@ const AudioPlaylist = ({
 }: PlaylistPropType): AudioPlaylistType => {
   const emmiter = EventEmitter();
   const states = { ...globalStates, ...{ volume, loop } };
-  const _files = Array.isArray(files) ? files : weightedFiles(files);
-  const copiedFiles = shuffle ? shuffleHelper(_files) : _files.slice();
+  const hasWeights = !Array.isArray(files);
+  const shouldLoop = loop || hasWeights;
+  const _files: string[] = hasWeights
+    ? weightedFiles(files as { [key: string]: number })
+    : (files as string[]);
+  const copiedFiles =
+    shuffle || hasWeights ? shuffleHelper(_files) : _files.slice();
   const curryPlayAudio = playAudio(states, emmiter);
 
   if (preload) {
@@ -39,7 +44,7 @@ const AudioPlaylist = ({
       states.isPlaying = true;
 
       if (!audio || states.isStopped) {
-        curryPlayAudio(copiedFiles, loop);
+        curryPlayAudio(copiedFiles, shouldLoop);
         states.isStopped = false;
 
         return;
