@@ -5,7 +5,7 @@ import EventHandler from '../EventHandler';
 import initializeSource from './initializeSource';
 import decodeAudioData from './decodeAudioData';
 import { AudioPropType, AudioEventType, AudioType } from './types';
-import { getBuffer, preloadFiles } from '../utils';
+import { getBuffer, preloadFile } from './utils';
 
 // if audiocontext is initialized before a user gesture on the page, its
 // state become `suspended` by default. once audiocontext.state is `suspended`
@@ -43,6 +43,10 @@ const Audio = ({
       )
       .catch(console.error);
   };
+
+  if (preload) {
+    preloadFile(file);
+  }
 
   const Player = {
     play() {
@@ -119,10 +123,6 @@ const Audio = ({
       return audioCtx;
     },
   };
-
-  if (preload) {
-    preloadFiles([file], 1);
-  }
 
   return Player;
 };

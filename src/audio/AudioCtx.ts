@@ -1,4 +1,4 @@
-import { throwsError } from '../utils';
+import { throwsError } from './utils';
 
 declare global {
   interface Window {

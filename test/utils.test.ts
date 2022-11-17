@@ -1,9 +1,5 @@
-import {
-  throwsError,
-  shuffle,
-  preloadFiles,
-  weightedFiles,
-} from '../src/utils';
+import { throwsError } from '../src/audio/utils';
+import { shuffle, weightedFiles, preloadFiles } from '../src/playlist/utils';
 
 function compare(arr1: string[], arr2: string[]): boolean {
   for (let i = 0; i < arr1.length; i++) {

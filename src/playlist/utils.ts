@@ -1,14 +1,14 @@
-export const getBuffer = (file: string): Promise<ArrayBuffer> =>
-  fetch(file).then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error, status = ${response.status}`);
+export const weightedFiles = (files: { [key: string]: number }): string[] => {
+  const output = [] as string[];
+  const entries = Object.entries(files);
+
+  for (const [file, weight] of entries) {
+    for (let i = 0; i < weight; i++) {
+      output.push(file);
     }
+  }
 
-    return response.arrayBuffer();
-  });
-
-export const throwsError = (value: string): void => {
-  throw new Error(`\`ts-audio\`: ${value}`);
+  return output;
 };
 
 export const shuffle = (list: string[]): string[] => {
@@ -56,17 +56,4 @@ export const preloadFiles = (
   for (let i = 0; i < limit; i++) {
     request(files[i]);
   }
-};
-
-export const weightedFiles = (files: { [key: string]: number }): string[] => {
-  const output = [] as string[];
-  const entries = Object.entries(files);
-
-  for (const [file, weight] of entries) {
-    for (let i = 0; i < weight; i++) {
-      output.push(file);
-    }
-  }
-
-  return output;
 };
