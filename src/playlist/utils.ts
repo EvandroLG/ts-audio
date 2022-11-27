@@ -37,14 +37,17 @@ export const preloadFiles = (
   done?: () => void
 ): void => {
   const queue: string[] = files.slice(limit).reverse();
+  let isDone = false;
 
   const requestNext = () => {
     if (!queue.length) {
-      done?.();
-      return;
+      if (!isDone) {
+        done?.();
+        isDone = true;
+      }
+    } else {
+      request(queue.pop() as string);
     }
-
-    request(queue.pop() as string);
   };
 
   const request = (fileName: string) => {
