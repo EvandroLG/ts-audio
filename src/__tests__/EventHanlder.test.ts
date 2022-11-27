@@ -1,5 +1,5 @@
-import EventHandler from '../src/EventHandler';
-import { EventEmitterType } from '../src/EventEmitter';
+import EventHandler from '../EventHandler';
+import { EventEmitterType } from '../EventEmitter';
 
 const EventEmitterMock = () =>
   ({

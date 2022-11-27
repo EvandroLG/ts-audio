@@ -1,5 +1,4 @@
-import { throwsError } from '../src/audio/utils';
-import { shuffle, weightedFiles, preloadFiles } from '../src/playlist/utils';
+import { shuffle, weightedFiles, preloadFiles } from '../utils';
 
 function compare(arr1: string[], arr2: string[]): boolean {
   for (let i = 0; i < arr1.length; i++) {
@@ -16,13 +15,6 @@ function unique(arr: string[]): boolean {
 }
 
 describe('utils', () => {
-  describe('throwsError', () => {
-    it('should throw an error using the message passed by parameter', () => {
-      const error = 'sorry, something failed';
-      expect(() => throwsError(error)).toThrowError(`\`ts-audio\`: ${error}`);
-    });
-  });
-
   describe('shuffle', () => {
     it('should shuffle the order of the elements in a given array', () => {
       const files = [

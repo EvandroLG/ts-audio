@@ -1,6 +1,6 @@
-import { AudioPlaylist } from '../src/';
-import * as Audio from '../src/audio/Audio';
-import * as utils from '../src/playlist/utils';
+import AudioPlaylist from '../AudioPlaylist';
+import * as Audio from '../../audio/Audio';
+import * as utils from '..//utils';
 
 const playMock = jest.fn();
 const pauseMock = jest.fn();

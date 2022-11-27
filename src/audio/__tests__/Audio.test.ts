@@ -1,8 +1,8 @@
-import Audio from '../src/';
+import Audio from '../Audio';
 
 const audioCtxMock = {} as AudioContext;
 
-jest.mock('../src/audio/AudioCtx', () =>
+jest.mock('../AudioCtx', () =>
   jest.fn().mockImplementation(() => audioCtxMock)
 );
 

@@ -1,4 +1,4 @@
-import EventEmitter from '../src/EventEmitter';
+import EventEmitter from '../EventEmitter';
 
 describe('event emitter', () => {
   test('emit', () => {
