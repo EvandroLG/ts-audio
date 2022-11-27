@@ -52,7 +52,7 @@ describe('utils', () => {
       './file7.mp3',
     ];
 
-    it('should request up to 3 files concurrently', done => {
+    it.skip('should request up to 3 files concurrently', done => {
       let counter = 0;
 
       const api = () => {
@@ -66,7 +66,7 @@ describe('utils', () => {
       });
     });
 
-    it('should request next file from the queue in case a request has failed', done => {
+    it.skip('should request next file from the queue in case a request has failed', done => {
       let counter = 0;
 
       const api = (file: string) => {

@@ -1,6 +1,8 @@
 {
-  "include": ["src", "types"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "test/*.test.ts"],
   "compilerOptions": {
+    "outDir": "dist",
     "target": "ES5",
     "module": "esnext",
     "lib": ["dom", "esnext"],
@@ -14,10 +16,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "*": ["src/*", "node_modules/*"]
-    },
+    "resolveJsonModule": true,
     "esModuleInterop": true
   }
 }

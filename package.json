@@ -11,14 +11,13 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=14.15.0"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
+    "test": "jest",
     "lint": "eslint src/",
-    "prepare": "tsdx build"
+    "build": "tsc -d",
+    "prepare": "husky install"
   },
   "peerDependencies": {},
   "husky": {
@@ -33,17 +32,23 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@types/jest": "^29.2.0",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "eslint": "^7.21.0",
-    "husky": "^4.3.0",
-    "tsdx": "^0.14.1",
-    "tslib": "^2.0.3",
-    "typescript": "^4.0.5"
+    "husky": "^8.0.2",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
   },
   "keywords": [
     "audio",
     "song",
+    "playlist",
     "AudioContext"
   ]
 }
