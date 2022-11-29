@@ -18,19 +18,13 @@
     "lint": "eslint src/",
     "build": "tsc -d",
     "prepare": "husky install",
-    "prepublishOnly": "tsc -d"
+    "prepack": "tsc -d"
   },
   "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "yarn lint"
     }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
