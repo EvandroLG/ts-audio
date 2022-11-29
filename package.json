@@ -2,7 +2,6 @@
   "name": "ts-audio",
   "version": "0.7.1",
   "author": "evandrolg",
-  "module": "dist/ts-audio.esm.js",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
