@@ -1,6 +1,6 @@
 {
   "name": "ts-audio",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "author": "evandrolg",
   "license": "MIT",
   "main": "dist/index.js",
