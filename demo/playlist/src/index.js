@@ -1,17 +1,13 @@
-import { AudioPlaylist } from '../../../src';
+import { AudioPlaylist } from 'ts-audio';
 import songOne from './1.mp3';
 import songTwo from './2.mp3';
 import songThree from './3.mp3';
 
-const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
-const range = <HTMLInputElement>document.getElementById('range');
+const getVolume = (element) => Number(element.value) / 100;
+const range = document.getElementById('range');
 
 const playlist = AudioPlaylist({
-  files: [songOne, songTwo, songThree],
-  volume: getVolume(range),
-  loop: true,
-  shuffle: true,
-  preload: true,
+  files: { [songOne]: 1, [songTwo]: 5, [songThree]: 1 },
 });
 
 const buttonPlay = document.getElementById('bt-play');
@@ -70,7 +66,7 @@ buttonToggle.addEventListener('click', () => {
   playlist.toggle();
 });
 
-range.addEventListener('change', (e: Event) => {
-  const volume = getVolume(e.target as HTMLInputElement);
+range.addEventListener('change', (e) => {
+  const volume = getVolume(e.target);
   playlist.volume = volume;
 });
