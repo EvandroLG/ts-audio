@@ -1,10 +1,14 @@
 {
+  "license": "MIT",
   "scripts": {
-    "start": "parcel src/index.html"
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack-dev-server"
   },
   "devDependencies": {
-    "parcel": "^2.0.0-rc.0",
-    "parcel-bundler": "^1.12.5",
-    "ts-audio": "latest"
+    "ts-audio": "latest",
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "webpack-dev-server": "^4.11.1"
   }
 }

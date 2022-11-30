@@ -1,14 +1,14 @@
-import Audio, { AudioType } from '../../../src';
+import Audio from 'ts-audio';
 import song from './song.mp3';
 
-const getVolume = (element: HTMLInputElement) => Number(element.value) / 100;
+const getVolume = (element) => Number(element.value) / 100;
 
-const range = <HTMLInputElement>document.getElementById('range');
+const range = document.getElementById('range');
 const buttonPlay = document.getElementById('bt-play');
 const buttonPause = document.getElementById('bt-pause');
 const buttonToggle = document.getElementById('bt-toggle');
 const buttonStop = document.getElementById('bt-stop');
-const audio: AudioType = Audio({
+const audio = Audio({
   file: song,
   loop: true,
   volume: getVolume(range),
@@ -55,7 +55,7 @@ buttonStop.addEventListener('click', () => {
   buttonStop.setAttribute('disabled', 'disabled');
 });
 
-range.addEventListener('change', (e: Event) => {
-  const volume = getVolume(e.target as HTMLInputElement);
+range.addEventListener('change', (e) => {
+  const volume = getVolume(e.target);
   audio.volume = volume;
 });
