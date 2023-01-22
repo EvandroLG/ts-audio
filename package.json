@@ -3,8 +3,9 @@
   "version": "0.7.2",
   "author": "evandrolg",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.modern.mjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.modern.mjs",
+  "exports": "./dist/index.modern.mjs",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -15,8 +16,7 @@
     "test": "jest",
     "lint": "eslint src/",
     "build": "./scripts/build.sh",
-    "prepare": "husky install",
-    "prepack": "tsc -d"
+    "prepare": "husky install"
   },
   "peerDependencies": {},
   "husky": {
@@ -50,7 +50,11 @@
   ],
   "size-limit": [
     {
-      "path": "dist/index.js",
+      "path": "./dist/index.js",
+      "limit": "1 KB"
+    },
+    {
+      "path": "./dist/index.modern.mjs",
       "limit": "1 KB"
     }
   ]
