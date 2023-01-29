@@ -31,7 +31,7 @@ $ yarn add ts-audio
 Below is an example of how to use the `Audio`:
 
 ```js
-import Audio from 'ts-audio';
+import { Audio } from 'ts-audio';
 
 const audio = Audio({
   file: './song.mp3',

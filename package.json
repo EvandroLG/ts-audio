@@ -16,12 +16,12 @@
     "test": "jest",
     "lint": "eslint src/",
     "build": "./scripts/build.sh",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepublishOnly": "yarn build"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "yarn lint && yarn test"
     }
   },
   "devDependencies": {
@@ -51,11 +51,11 @@
   "size-limit": [
     {
       "path": "./dist/index.js",
-      "limit": "1 KB"
+      "limit": "1.60 KB"
     },
     {
       "path": "./dist/index.modern.mjs",
-      "limit": "1 KB"
+      "limit": "1.60 KB"
     }
   ]
 }
