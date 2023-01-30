@@ -3,25 +3,27 @@
   "version": "0.7.3",
   "author": "evandrolg",
   "license": "MIT",
-  "main": "./dist/index.js",
-  "module": "./dist/index.modern.mjs",
-  "exports": "./dist/index.modern.mjs",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.modern.mjs",
+  "umd:main": "dist/index.umd.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
+  "sideEffects": false,
   "scripts": {
-    "size": "yarn build && size-limit",
+    "size": "npm run build && size-limit",
     "test": "jest",
     "lint": "eslint src/",
     "build": "./scripts/build.sh",
     "prepare": "husky install",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "npm run build"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && yarn test"
+      "pre-commit": "npm run lint && npm run test"
     }
   },
   "devDependencies": {
@@ -56,6 +58,10 @@
     {
       "path": "./dist/index.modern.mjs",
       "limit": "1.60 KB"
+    },
+    {
+      "path": "./dist/index.umd.js",
+      "limit": "1.70 KB"
     }
   ]
 }
