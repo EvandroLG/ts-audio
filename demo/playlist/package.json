@@ -5,7 +5,7 @@
     "start": "webpack-dev-server"
   },
   "devDependencies": {
-    "ts-audio": "latest",
+    "ts-audio": "^0.7.3",
     "html-webpack-plugin": "^5.5.0",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.0",
