@@ -1,6 +1,6 @@
+import type { EventEmitterType, EventType } from '../EventEmitter';
 import Audio from '../audio/Audio';
-import { EventType, EventEmitterType } from '../EventEmitter';
-import { StatesPlaylistType } from './states';
+import type { StatesPlaylistType } from './states';
 
 type playAudioType = (files: string[], loop: boolean) => void;
 
@@ -14,7 +14,7 @@ const playAudio = (
     const audio = Audio({ file, volume: states.volume });
     states.audio = audio;
 
-    audio.on('start', e => {
+    audio.on('start', (e) => {
       emmiter.emit('start', e as EventType);
     });
 

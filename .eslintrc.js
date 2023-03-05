@@ -17,5 +17,6 @@ module.exports = {
   },
   rules: {
     'prefer-const': 'error',
+    '@typescript-eslint/consistent-type-imports': 'warn',
   },
 };

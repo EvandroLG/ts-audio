@@ -1,15 +1,14 @@
-import {
-  AudioPlaylistType,
-  PlaylistPropType,
-  PlaylistEventType,
-} from './types';
-
 import EventEmitter from '../EventEmitter';
-import globalStates from './states';
+import playAudio from './playAudio';
 import playNextAudio from './playNextAudio';
 import playPrevAudio from './playPrevAudio';
-import playAudio from './playAudio';
-import { shuffle as shuffleHelper, weightedFiles, preloadFiles } from './utils';
+import globalStates from './states';
+import type {
+  AudioPlaylistType,
+  PlaylistEventType,
+  PlaylistPropType,
+} from './types';
+import { preloadFiles, shuffle as shuffleHelper, weightedFiles } from './utils';
 
 const AudioPlaylist = ({
   files,

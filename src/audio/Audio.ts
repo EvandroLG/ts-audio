@@ -1,10 +1,10 @@
-import AudioCtx from './AudioCtx';
-import globalStates from './states';
 import EventEmitter from '../EventEmitter';
 import EventHandler from '../EventHandler';
-import initializeSource from './initializeSource';
+import AudioCtx from './AudioCtx';
 import decodeAudioData from './decodeAudioData';
-import { AudioPropType, AudioEventType, AudioType } from './types';
+import initializeSource from './initializeSource';
+import globalStates from './states';
+import type { AudioEventType, AudioPropType, AudioType } from './types';
 import { getBuffer, preloadFile } from './utils';
 
 // if audiocontext is initialized before a user gesture on the page, its
@@ -30,7 +30,7 @@ const Audio = ({
     states.isDecoded = false;
 
     getBuffer(file)
-      .then(buffer =>
+      .then((buffer) =>
         decodeAudioData(
           audioCtx,
           source,

@@ -1,4 +1,4 @@
-import { EventEmitterType } from './EventEmitter';
+import type { EventEmitterType } from './EventEmitter';
 
 type callbackType = <T>(param: { [data: string]: T }) => void;
 

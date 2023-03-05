@@ -51,9 +51,7 @@ export const preloadFiles = (
   };
 
   const request = (fileName: string) => {
-    api(fileName)
-      .then(requestNext)
-      .catch(requestNext);
+    api(fileName).then(requestNext).catch(requestNext);
   };
 
   for (let i = 0; i < limit; i++) {

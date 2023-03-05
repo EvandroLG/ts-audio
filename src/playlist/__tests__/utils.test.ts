@@ -1,4 +1,4 @@
-import { shuffle, weightedFiles, preloadFiles } from '../utils';
+import { preloadFiles, shuffle, weightedFiles } from '../utils';
 
 function compare(arr1: string[], arr2: string[]): boolean {
   for (let i = 0; i < arr1.length; i++) {
@@ -11,7 +11,7 @@ function compare(arr1: string[], arr2: string[]): boolean {
 }
 
 function unique(arr: string[]): boolean {
-  return arr.length === new Set(arr.map(item => item)).size;
+  return arr.length === new Set(arr.map((item) => item)).size;
 }
 
 describe('utils', () => {
@@ -44,7 +44,7 @@ describe('utils', () => {
       './file7.mp3',
     ];
 
-    it('should request up to 3 files concurrently', done => {
+    it('should request up to 3 files concurrently', (done) => {
       let counter = 0;
 
       const api = () => {
@@ -58,7 +58,7 @@ describe('utils', () => {
       });
     });
 
-    it('should request next file from the queue in case a request has failed', done => {
+    it('should request next file from the queue in case a request has failed', (done) => {
       let counter = 0;
 
       const api = (file: string) => {

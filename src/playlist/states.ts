@@ -1,4 +1,4 @@
-import { AudioType } from '../audio/types';
+import type { AudioType } from '../audio/types';
 
 export type StatesPlaylistType = {
   volume: number;

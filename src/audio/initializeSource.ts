@@ -1,5 +1,5 @@
-import { EventEmitterType } from '../EventEmitter';
-import { StatesType } from './states';
+import type { EventEmitterType } from '../EventEmitter';
+import type { StatesType } from './states';
 
 const initializeSource = (
   audioCtx: AudioContext,

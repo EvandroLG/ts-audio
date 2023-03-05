@@ -1,5 +1,5 @@
 import Audio from '../audio/Audio';
-import { StatesPlaylistType } from './states';
+import type { StatesPlaylistType } from './states';
 
 const playPrevAudio = (states: StatesPlaylistType, files: string[]): void => {
   const isFirstFile = states.audioIndex === 0;

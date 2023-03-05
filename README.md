@@ -68,7 +68,7 @@ playlist.play();
   - [Methods](https://github.com/EvandroLG/ts-audio/wiki/Audio:-Methods)
   - [Events](https://github.com/EvandroLG/ts-audio/wiki/Audio:-Events)
 
-* AudioPlaylist
+- AudioPlaylist
   - [Parameters](https://github.com/EvandroLG/ts-audio/wiki/AudioPlaylist:-Parameters)
   - [Properties](https://github.com/EvandroLG/ts-audio/wiki/AudioPlaylist:-Properties)
   - [Methods](https://github.com/EvandroLG/ts-audio/wiki/AudioPlaylist:-Methods)

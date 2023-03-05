@@ -1,5 +1,5 @@
 export const getBuffer = (file: string): Promise<ArrayBuffer> =>
-  fetch(file).then(response => {
+  fetch(file).then((response) => {
     if (!response.ok) {
       throw new Error(`HTTP error, status = ${response.status}`);
     }

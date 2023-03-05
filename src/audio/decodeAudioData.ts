@@ -1,5 +1,5 @@
-import { StatesType } from './states';
-import { EventEmitterType } from '../EventEmitter';
+import type { EventEmitterType } from '../EventEmitter';
+import type { StatesType } from './states';
 
 const decodeAudioData = (
   audioCtx: AudioContext,
