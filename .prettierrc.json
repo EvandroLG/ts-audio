@@ -5,6 +5,7 @@
   "singleQuote": true,
   "arrowParens": "always",
   "trailingComma": "es5",
+  "importOrder": ["(.*)/types", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "importOrderGroupNamespaceSpecifiers": true
