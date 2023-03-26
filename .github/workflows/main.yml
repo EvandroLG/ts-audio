@@ -1,17 +1,19 @@
 name: CI
-on: [push]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Begin CI...
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Use Node v18.13.0
-        uses: actions/setup-node@v1
-        with:
-          node-version: 18.13.0
+      - name: Setup Node
+        uses: actions/setup-node@v3
 
       - name: Install dependencies
         run: npm ci
