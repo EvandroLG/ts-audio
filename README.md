@@ -1,4 +1,4 @@
-# <img alt="ts-audio" src="https://github.com/EvandroLG/ts-audio/blob/master/.github/logo.svg?sanitize=true" width="144"> &middot; [![Build Status](https://travis-ci.org/EvandroLG/ts-audio.svg?branch=master)](https://travis-ci.org/EvandroLG/ts-audio) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
+# <img alt="ts-audio" src="https://github.com/EvandroLG/ts-audio/blob/master/.github/logo.svg?sanitize=true" width="144"> &middot; (https://travis-ci.org/EvandroLG/ts-audio) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)
 
 `ts-audio` is an agnostic and easy-to-use library to work with the `AudioContext` API and create Playlists.
 
