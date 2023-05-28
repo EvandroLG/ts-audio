@@ -7,7 +7,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.mp3$/,
+        test: /\.(mp3|ogg)$/,
         type: 'asset/resource',
       },
     ],

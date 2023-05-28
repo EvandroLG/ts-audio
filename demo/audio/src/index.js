@@ -1,5 +1,6 @@
 import { Audio } from 'ts-audio';
-import song from './song.mp3';
+
+import song from './song.ogg';
 
 const getVolume = (element) => Number(element.value) / 100;
 
