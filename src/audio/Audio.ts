@@ -4,7 +4,7 @@ import { EventEmitter } from '../EventEmitter';
 import { EventHandler } from '../EventHandler';
 import initializeSource from './initializeSource';
 import decodeAudioData from './decodeAudioData';
-import { AudioPropType, AudioEventType, AudioType } from './types';
+import type { AudioPropType, AudioEventType, AudioType } from './types';
 import { getBuffer, preloadFile } from './utils';
 
 // if audiocontext is initialized before a user gesture on the page, its

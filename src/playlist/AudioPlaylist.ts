@@ -1,4 +1,4 @@
-import { PlaylistPropType, PlaylistEventType } from './types';
+import type { PlaylistPropType, PlaylistEventType } from './types';
 
 import { EventEmitter } from '../EventEmitter';
 import globalStates from './states';

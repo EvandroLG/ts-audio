@@ -1,4 +1,4 @@
-import { StatesType } from './states';
+import type { StatesType } from './states';
 import type { EventEmitter } from '../EventEmitter';
 
 const decodeAudioData = (

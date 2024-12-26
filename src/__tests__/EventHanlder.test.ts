@@ -1,34 +1,36 @@
 import { EventHandler } from '../EventHandler';
-import { EventEmitterType } from '../EventEmitter';
+import { EventEmitter } from '../EventEmitter';
 
-const EventEmitterMock = () =>
-  ({
-    listener: jest.fn(),
-    emit: jest.fn(),
-  } as EventEmitterType);
+jest.mock('../EventEmitter');
 
 describe('EventHandler', () => {
-  const emitter = EventEmitterMock();
-  const eventHandler = new EventHandler(emitter);
+  let mockEmitter: jest.Mocked<EventEmitter>;
+  let eventHandler: EventHandler;
+
+  beforeEach(() => {
+    mockEmitter = new EventEmitter() as jest.Mocked<EventEmitter>;
+    mockEmitter.listener = jest.fn();
+    eventHandler = new EventHandler(mockEmitter);
+  });
 
   test('registers a callback for the "decoded" event', () => {
     const callback = jest.fn();
     eventHandler.ready(callback);
 
-    expect(emitter.listener).toBeCalledWith('decoded', callback);
+    expect(mockEmitter.listener).toBeCalledWith('decoded', callback);
   });
 
   test('registers a callback for the "start" event', () => {
     const callback = jest.fn();
     eventHandler.start(callback);
 
-    expect(emitter.listener).toBeCalledWith('start', callback);
+    expect(mockEmitter.listener).toBeCalledWith('start', callback);
   });
 
   test('registers a callback for the "end" event', () => {
     const callback = jest.fn();
     eventHandler.end(callback);
 
-    expect(emitter.listener).toBeCalledWith('end', callback);
+    expect(mockEmitter.listener).toBeCalledWith('end', callback);
   });
 });
