@@ -1,5 +1,5 @@
 import { StatesType } from './states';
-import { EventEmitterType } from '../EventEmitter';
+import type { EventEmitter } from '../EventEmitter';
 
 const decodeAudioData = (
   audioCtx: AudioContext,
@@ -8,7 +8,7 @@ const decodeAudioData = (
   autoPlay: boolean,
   loop: boolean,
   states: StatesType,
-  emitter: EventEmitterType
+  emitter: EventEmitter
 ): void => {
   const onSuccess = (buffer: AudioBuffer) => {
     source.buffer = buffer;

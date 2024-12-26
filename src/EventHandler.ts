@@ -1,4 +1,4 @@
-import { EventEmitterType } from './EventEmitter';
+import type { EventEmitter } from './EventEmitter';
 
 type callbackType = <T>(param: { [data: string]: T }) => void;
 
@@ -6,7 +6,7 @@ type callbackType = <T>(param: { [data: string]: T }) => void;
  * EventHandler class to manage event listeners for an audio context.
  */
 export class EventHandler {
-  private emitter: EventEmitterType;
+  private emitter: EventEmitter;
   private audioCtx: AudioContext | undefined;
 
   /**
@@ -14,7 +14,7 @@ export class EventHandler {
    * @param emitter - The event emitter instance to manage event listeners.
    * @param audioCtx - AudioContext instance to monitor state changes. Optional to facilitate testing.
    */
-  constructor(emitter: EventEmitterType, audioCtx?: AudioContext) {
+  constructor(emitter: EventEmitter, audioCtx?: AudioContext) {
     this.emitter = emitter;
     this.audioCtx = audioCtx;
   }
@@ -23,7 +23,7 @@ export class EventHandler {
    * Registers a callback for the 'decoded' event.
    * @param callback - The callback to be invoked when the event occurs.
    */
-  ready(callback: callbackType) {
+  public ready(callback: callbackType) {
     this.emitter.listener('decoded', callback);
   }
 
@@ -31,7 +31,7 @@ export class EventHandler {
    * Registers a callback for the 'start' event.
    * @param callback - The callback to be invoked when the event occurs.
    */
-  start(callback: callbackType) {
+  public start(callback: callbackType) {
     this.emitter.listener('start', callback);
   }
 
@@ -39,7 +39,7 @@ export class EventHandler {
    * Registers a callback for the 'end' event.
    * @param callback - The callback to be invoked when the event occurs.
    */
-  end(callback: callbackType) {
+  public end(callback: callbackType) {
     this.emitter.listener('end', callback);
   }
 
@@ -47,7 +47,7 @@ export class EventHandler {
    * Monitors the state changes of the AudioContext and invokes the callback.
    * @param callback - The callback to be invoked when the AudioContext state changes.
    */
-  state(callback: callbackType) {
+  public state(callback: callbackType) {
     if (!this.audioCtx) return;
 
     this.audioCtx.onstatechange = () =>

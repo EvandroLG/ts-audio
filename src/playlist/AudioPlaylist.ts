@@ -1,10 +1,6 @@
-import {
-  AudioPlaylistType,
-  PlaylistPropType,
-  PlaylistEventType,
-} from './types';
+import { PlaylistPropType, PlaylistEventType } from './types';
 
-import EventEmitter from '../EventEmitter';
+import { EventEmitter } from '../EventEmitter';
 import globalStates from './states';
 import playNextAudio from './playNextAudio';
 import playPrevAudio from './playPrevAudio';
@@ -18,8 +14,8 @@ const AudioPlaylist = ({
   shuffle = false,
   preload = false,
   preloadLimit = 3,
-}: PlaylistPropType): AudioPlaylistType => {
-  const emmiter = EventEmitter();
+}: PlaylistPropType) => {
+  const emmiter = new EventEmitter();
   const states = { ...globalStates, ...{ volume, loop } };
   const hasWeights = !Array.isArray(files);
   const shouldLoop = loop || hasWeights;

@@ -1,6 +1,6 @@
 import AudioCtx from './AudioCtx';
 import globalStates from './states';
-import EventEmitter from '../EventEmitter';
+import { EventEmitter } from '../EventEmitter';
 import { EventHandler } from '../EventHandler';
 import initializeSource from './initializeSource';
 import decodeAudioData from './decodeAudioData';
@@ -24,7 +24,7 @@ const Audio = ({
 }: AudioPropType): AudioType => {
   const audioCtx = AudioCtx();
   const states = { ...globalStates };
-  const emitter = EventEmitter();
+  const emitter = new EventEmitter();
   const eventHandler = new EventHandler(emitter, audioCtx);
   const curryGetBuffer = (source: AudioBufferSourceNode) => {
     states.isDecoded = false;

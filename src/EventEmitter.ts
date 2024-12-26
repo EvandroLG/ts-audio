@@ -1,24 +1,21 @@
-export type EventType = {
+export type Event = {
   data: unknown;
 };
 
-export type EventEmitterType = {
-  listener: (keyEvent: string, callback: (param: EventType) => void) => void;
-  emit: (keyEvent: string, param: EventType) => void;
-};
+export class EventEmitter {
+  private events: { [key: string]: (param: Event) => void };
 
-const EventEmitter = (): EventEmitterType => {
-  const events: { [key: string]: (param: EventType) => void } = {};
+  constructor() {
+    this.events = {};
+  }
 
-  return {
-    listener(keyEvent: string, callback: (param: EventType) => void) {
-      events[keyEvent] = callback;
-    },
+  public listener(keyEvent: string, callback: (param: Event) => void) {
+    this.events[keyEvent] = callback;
+  }
 
-    emit(keyEvent: string, param: EventType) {
-      events[keyEvent]?.(param);
-    },
-  };
-};
-
-export default EventEmitter;
+  public emit(keyEvent: string, param: Event) {
+    if (this.events[keyEvent]) {
+      this.events[keyEvent](param);
+    }
+  }
+}

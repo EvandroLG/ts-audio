@@ -1,12 +1,12 @@
 import Audio from '../audio/Audio';
-import { EventType, EventEmitterType } from '../EventEmitter';
+import type { Event, EventEmitter } from '../EventEmitter';
 import { StatesPlaylistType } from './states';
 
 type playAudioType = (files: string[], loop: boolean) => void;
 
 const playAudio = (
   states: StatesPlaylistType,
-  emmiter: EventEmitterType
+  emmiter: EventEmitter
 ): playAudioType => {
   const playAudioHelper = (files: string[], loop: boolean) => {
     const file = files[states.audioIndex];
@@ -14,8 +14,8 @@ const playAudio = (
     const audio = Audio({ file, volume: states.volume });
     states.audio = audio;
 
-    audio.on('start', e => {
-      emmiter.emit('start', e as EventType);
+    audio.on('start', (e) => {
+      emmiter.emit('start', e as Event);
     });
 
     audio.on('end', () => {
