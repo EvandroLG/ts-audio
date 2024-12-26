@@ -1,24 +1,21 @@
 export type AudioPropType = {
-  file: string;
-  volume?: number;
-  autoPlay?: boolean;
-  loop?: boolean;
-  preload?: boolean;
-};
+  file: string
+  volume?: number
+  autoPlay?: boolean
+  loop?: boolean
+  preload?: boolean
+}
 
-export type AudioEventType = 'ready' | 'start' | 'state' | 'end';
+export type AudioEventType = 'ready' | 'start' | 'state' | 'end'
 
 export type AudioType = {
-  play: () => void;
-  pause: () => void;
-  stop: () => void;
-  toggle: () => void;
-  on: (
-    eventType: AudioEventType,
-    callback: <T>(param: { [data: string]: T }) => void
-  ) => void;
-  volume: number;
-  loop: boolean;
-  state: AudioContextState;
-  audioCtx?: AudioContext;
-};
+  play: () => void
+  pause: () => void
+  stop: () => void
+  toggle: () => void
+  on: (eventType: AudioEventType, callback: <T>(param: { [data: string]: T }) => void) => void
+  volume: number
+  loop: boolean
+  state: AudioContextState
+  audioCtx?: AudioContext
+}

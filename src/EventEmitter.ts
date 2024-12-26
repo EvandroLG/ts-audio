@@ -1,24 +1,49 @@
-export type EventType = {
-  data: unknown;
-};
+/**
+ * Represents an event with associated data.
+ */
+export type Event = {
+  /**
+   * The data associated with the event. The type of data is unknown.
+   */
+  data: unknown
+}
 
-export type EventEmitterType = {
-  listener: (keyEvent: string, callback: (param: EventType) => void) => void;
-  emit: (keyEvent: string, param: EventType) => void;
-};
+/**
+ * Event emitter class that allows registering event listeners and emitting events.
+ */
+export class EventEmitter {
+  /**
+   * A map of event keys to their respective callback functions.
+   * @private
+   */
+  private events: { [key: string]: (param: Event) => void }
 
-const EventEmitter = (): EventEmitterType => {
-  const events: { [key: string]: (param: EventType) => void } = {};
+  /**
+   * Initializes a new instance of the EventEmitter class.
+   */
+  constructor() {
+    this.events = {}
+  }
 
-  return {
-    listener(keyEvent: string, callback: (param: EventType) => void) {
-      events[keyEvent] = callback;
-    },
+  /**
+   * Registers a listener for a specific event key.
+   *
+   * @param {string} keyEvent - The key of the event to listen for.
+   * @param {(param: Event) => void} callback - The callback function to be invoked when the event is emitted.
+   */
+  public listener(keyEvent: string, callback: (param: Event) => void): void {
+    this.events[keyEvent] = callback
+  }
 
-    emit(keyEvent: string, param: EventType) {
-      events[keyEvent]?.(param);
-    },
-  };
-};
-
-export default EventEmitter;
+  /**
+   * Emits an event, invoking the corresponding listener with the provided parameter.
+   *
+   * @param {string} keyEvent - The key of the event to emit.
+   * @param {Event} param - The parameter to pass to the event's callback function.
+   */
+  public emit(keyEvent: string, param: Event): void {
+    if (this.events[keyEvent]) {
+      this.events[keyEvent](param)
+    }
+  }
+}

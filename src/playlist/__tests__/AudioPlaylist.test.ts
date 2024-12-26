@@ -1,172 +1,172 @@
-import AudioPlaylist from '../AudioPlaylist';
-import * as Audio from '../../audio/Audio';
-import * as utils from '..//utils';
+import * as utils from '..//utils'
+import * as Audio from '../../audio/Audio'
+import AudioPlaylist from '../AudioPlaylist'
 
-const playMock = jest.fn();
-const pauseMock = jest.fn();
-const stopMock = jest.fn();
+const playMock = jest.fn()
+const pauseMock = jest.fn()
+const stopMock = jest.fn()
 
 const audioMock: any = jest.fn(() => ({
   play: playMock,
   pause: pauseMock,
   stop: stopMock,
-}));
+}))
 
-jest.spyOn(Audio, 'default').mockImplementation(audioMock);
-jest.spyOn(utils, 'preloadFiles').mockImplementation();
-jest.spyOn(utils, 'shuffle').mockImplementation();
+jest.spyOn(Audio, 'default').mockImplementation(audioMock)
+jest.spyOn(utils, 'preloadFiles').mockImplementation()
+jest.spyOn(utils, 'shuffle').mockImplementation()
 
 describe('audio playlist', () => {
   beforeEach(() => {
-    pauseMock.mockClear();
-    stopMock.mockClear();
-  });
+    pauseMock.mockClear()
+    stopMock.mockClear()
+  })
 
-  const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3'];
+  const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3']
 
   describe('pause', () => {
     const playlist = AudioPlaylist({
       files,
-    });
+    })
 
     it('should invoke pause method from audio', () => {
-      playlist.pause();
-      playlist.next();
-      playlist.pause();
-      expect(pauseMock).toHaveBeenCalledTimes(1);
-    });
-  });
+      playlist.pause()
+      playlist.next()
+      playlist.pause()
+      expect(pauseMock).toHaveBeenCalledTimes(1)
+    })
+  })
 
   describe('stop', () => {
     const playlist = AudioPlaylist({
       files,
-    });
+    })
 
     it('should invoke stop method from audio', () => {
-      playlist.stop();
-      playlist.next();
-      playlist.stop();
-      expect(stopMock).toHaveBeenCalledTimes(1);
-    });
-  });
+      playlist.stop()
+      playlist.next()
+      playlist.stop()
+      expect(stopMock).toHaveBeenCalledTimes(1)
+    })
+  })
 
   describe('next', () => {
     const playlist = AudioPlaylist({
       files,
-    });
+    })
 
     const verifyPlayNext = (file: string) => {
-      playlist.next();
+      playlist.next()
 
       expect(audioMock).toHaveBeenCalledWith({
         file,
         volume: 1,
-      });
+      })
 
-      expect(playMock).toHaveBeenCalled();
-    };
+      expect(playMock).toHaveBeenCalled()
+    }
 
     it('should play the second file', () => {
-      verifyPlayNext(files[1]);
-      expect(pauseMock).not.toHaveBeenCalled();
-    });
+      verifyPlayNext(files[1])
+      expect(pauseMock).not.toHaveBeenCalled()
+    })
 
     it('should play the last file', () => {
-      verifyPlayNext(files[2]);
-      expect(pauseMock).toHaveBeenCalled();
-    });
+      verifyPlayNext(files[2])
+      expect(pauseMock).toHaveBeenCalled()
+    })
 
     it('should play the first file when the previous audio was the last one', () => {
-      verifyPlayNext(files[0]);
-      expect(pauseMock).toHaveBeenCalled();
-    });
-  });
+      verifyPlayNext(files[0])
+      expect(pauseMock).toHaveBeenCalled()
+    })
+  })
 
   describe('prev', () => {
     const playlist = AudioPlaylist({
       files,
-    });
+    })
 
     const verifyPlayPrev = (file: string) => {
-      playlist.prev();
+      playlist.prev()
 
       expect(audioMock).toHaveBeenCalledWith({
         file,
         volume: 1,
-      });
+      })
 
-      expect(playMock).toHaveBeenCalled();
-    };
+      expect(playMock).toHaveBeenCalled()
+    }
 
     it('should play the last file when the previous was the first one', () => {
-      verifyPlayPrev(files[2]);
-      expect(pauseMock).not.toHaveBeenCalled();
-    });
+      verifyPlayPrev(files[2])
+      expect(pauseMock).not.toHaveBeenCalled()
+    })
 
     it('should play the second file', () => {
-      verifyPlayPrev(files[1]);
-      expect(pauseMock).toHaveBeenCalled();
-    });
+      verifyPlayPrev(files[1])
+      expect(pauseMock).toHaveBeenCalled()
+    })
 
     it('should play the first file', () => {
-      verifyPlayPrev(files[0]);
-      expect(pauseMock).toHaveBeenCalled();
-    });
-  });
+      verifyPlayPrev(files[0])
+      expect(pauseMock).toHaveBeenCalled()
+    })
+  })
 
   describe('preload', () => {
     beforeEach(() => {
-      (utils.preloadFiles as jest.Mock).mockClear();
-    });
+      (utils.preloadFiles as jest.Mock).mockClear()
+    })
 
     it('should preload files using the default limit', () => {
       AudioPlaylist({
         files,
         preload: true,
-      });
+      })
 
-      expect(utils.preloadFiles).toHaveBeenCalledWith(files, 3);
-    });
+      expect(utils.preloadFiles).toHaveBeenCalledWith(files, 3)
+    })
 
     it('should preload files using specified limit', () => {
       AudioPlaylist({
         files,
         preload: true,
         preloadLimit: 2,
-      });
+      })
 
-      expect(utils.preloadFiles).toHaveBeenCalledWith(files, 2);
-    });
+      expect(utils.preloadFiles).toHaveBeenCalledWith(files, 2)
+    })
 
     it('should not preload files', () => {
       AudioPlaylist({
         files,
-      });
+      })
 
-      expect(utils.preloadFiles).not.toHaveBeenCalled();
-    });
-  });
+      expect(utils.preloadFiles).not.toHaveBeenCalled()
+    })
+  })
 
   describe('shuffle', () => {
     beforeEach(() => {
-      (utils.shuffle as jest.Mock).mockClear();
-    });
+      (utils.shuffle as jest.Mock).mockClear()
+    })
 
     it('should shuffle the files', () => {
       AudioPlaylist({
         files,
         shuffle: true,
-      });
+      })
 
-      expect(utils.shuffle).toHaveBeenCalledWith(files);
-    });
+      expect(utils.shuffle).toHaveBeenCalledWith(files)
+    })
 
     it('should not shuffle the files', () => {
       AudioPlaylist({
         files,
-      });
+      })
 
-      expect(utils.shuffle).not.toHaveBeenCalled();
-    });
-  });
-});
+      expect(utils.shuffle).not.toHaveBeenCalled()
+    })
+  })
+})

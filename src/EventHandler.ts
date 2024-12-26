@@ -1,35 +1,55 @@
-import { EventEmitterType } from './EventEmitter';
+import type { EventEmitter } from './EventEmitter'
 
-type callbackType = <T>(param: { [data: string]: T }) => void;
+type callbackType = <T>(param: { [data: string]: T }) => void
 
-type EventHandlerType = {
-  ready: (callback: callbackType) => void;
-  start: (callback: callbackType) => void;
-  end: (callback: callbackType) => void;
-  state: (callback: callbackType) => void;
-};
+/**
+ * EventHandler class to manage event listeners for an audio context.
+ */
+export class EventHandler {
+  private emitter: EventEmitter
+  private audioCtx: AudioContext | undefined
 
-const EventHandler = (
-  emitter: EventEmitterType,
-  audioCtx?: AudioContext
-): EventHandlerType => ({
-  ready(callback: callbackType) {
-    emitter.listener('decoded', callback);
-  },
+  /**
+   * Creates an instance of EventHandler.
+   * @param emitter - The event emitter instance to manage event listeners.
+   * @param audioCtx - AudioContext instance to monitor state changes. Optional to facilitate testing.
+   */
+  constructor(emitter: EventEmitter, audioCtx?: AudioContext) {
+    this.emitter = emitter
+    this.audioCtx = audioCtx
+  }
 
-  start(callback: callbackType) {
-    emitter.listener('start', callback);
-  },
+  /**
+   * Registers a callback for the 'decoded' event.
+   * @param callback - The callback to be invoked when the event occurs.
+   */
+  public ready(callback: callbackType) {
+    this.emitter.listener('decoded', callback)
+  }
 
-  end(callback: callbackType) {
-    emitter.listener('end', callback);
-  },
+  /**
+   * Registers a callback for the 'start' event.
+   * @param callback - The callback to be invoked when the event occurs.
+   */
+  public start(callback: callbackType) {
+    this.emitter.listener('start', callback)
+  }
 
-  state(callback: callbackType) {
-    if (audioCtx) {
-      audioCtx.onstatechange = () => callback({ data: audioCtx.state });
-    }
-  },
-});
+  /**
+   * Registers a callback for the 'end' event.
+   * @param callback - The callback to be invoked when the event occurs.
+   */
+  public end(callback: callbackType) {
+    this.emitter.listener('end', callback)
+  }
 
-export default EventHandler;
+  /**
+   * Monitors the state changes of the AudioContext and invokes the callback.
+   * @param callback - The callback to be invoked when the AudioContext state changes.
+   */
+  public state(callback: callbackType) {
+    if (!this.audioCtx) return
+
+    this.audioCtx.onstatechange = () => callback({ data: this.audioCtx?.state })
+  }
+}

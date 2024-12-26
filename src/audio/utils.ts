@@ -1,28 +1,24 @@
 export const getBuffer = (file: string): Promise<ArrayBuffer> =>
-  fetch(file).then(response => {
+  fetch(file).then((response) => {
     if (!response.ok) {
-      throw new Error(`HTTP error, status = ${response.status}`);
+      throw new Error(`HTTP error, status = ${response.status}`)
     }
 
-    return response.arrayBuffer();
-  });
+    return response.arrayBuffer()
+  })
 
 export const throwsError = (value: string): void => {
-  throw new Error(`\`ts-audio\`: ${value}`);
-};
+  throw new Error(`\`ts-audio\`: ${value}`)
+}
 
-export const preloadFile = (
-  file: string,
-  attempts = 3,
-  done?: () => void
-): void => {
+export const preloadFile = (file: string, attempts = 3, done?: () => void): void => {
   fetch(file)
     .then(done)
     .catch(() => {
       if (!attempts) {
-        return;
+        return
       }
 
-      preloadFile(file, attempts - 1);
-    });
-};
+      preloadFile(file, attempts - 1)
+    })
+}
