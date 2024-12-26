@@ -1,5 +1,5 @@
-import { EventHandler } from '../EventHandler';
 import { EventEmitter } from '../EventEmitter';
+import { EventHandler } from '../EventHandler';
 
 jest.mock('../EventEmitter');
 

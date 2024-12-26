@@ -1,6 +1,7 @@
-import Audio from '../audio/Audio';
 import type { Event, EventEmitter } from '../EventEmitter';
 import type { StatesPlaylistType } from './states';
+
+import Audio from '../audio/Audio';
 
 type playAudioType = (files: string[], loop: boolean) => void;
 
