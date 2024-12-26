@@ -33,10 +33,10 @@ module.exports = {
       'error',
       {
         groups: [
-          ['type'], // Type imports always at the top
-          ['builtin', 'external'], // Node.js built-ins and external packages
-          ['internal'], // Internal imports
-          ['parent', 'sibling', 'index'], // Parent, sibling, and index files
+          ['type'],
+          ['builtin', 'external'],
+          ['internal'],
+          ['parent', 'sibling', 'index'],
         ],
         pathGroups: [
           {

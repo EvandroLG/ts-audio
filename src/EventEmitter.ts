@@ -5,8 +5,8 @@ export type Event = {
   /**
    * The data associated with the event. The type of data is unknown.
    */
-  data: unknown;
-};
+  data: unknown
+}
 
 /**
  * Event emitter class that allows registering event listeners and emitting events.
@@ -16,13 +16,13 @@ export class EventEmitter {
    * A map of event keys to their respective callback functions.
    * @private
    */
-  private events: { [key: string]: (param: Event) => void };
+  private events: { [key: string]: (param: Event) => void }
 
   /**
    * Initializes a new instance of the EventEmitter class.
    */
   constructor() {
-    this.events = {};
+    this.events = {}
   }
 
   /**
@@ -32,7 +32,7 @@ export class EventEmitter {
    * @param {(param: Event) => void} callback - The callback function to be invoked when the event is emitted.
    */
   public listener(keyEvent: string, callback: (param: Event) => void): void {
-    this.events[keyEvent] = callback;
+    this.events[keyEvent] = callback
   }
 
   /**
@@ -43,7 +43,7 @@ export class EventEmitter {
    */
   public emit(keyEvent: string, param: Event): void {
     if (this.events[keyEvent]) {
-      this.events[keyEvent](param);
+      this.events[keyEvent](param)
     }
   }
 }

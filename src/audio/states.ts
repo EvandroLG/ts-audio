@@ -1,10 +1,10 @@
 export type StatesType = {
-  isDecoded: boolean;
-  isPlaying: boolean;
-  hasStarted: boolean;
-  source: AudioBufferSourceNode | null;
-  gainNode: GainNode | null;
-};
+  isDecoded: boolean
+  isPlaying: boolean
+  hasStarted: boolean
+  source: AudioBufferSourceNode | null
+  gainNode: GainNode | null
+}
 
 const states: StatesType = {
   isDecoded: false,
@@ -12,6 +12,6 @@ const states: StatesType = {
   hasStarted: false,
   source: null,
   gainNode: null,
-};
+}
 
-export default states;
+export default states

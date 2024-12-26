@@ -1,11 +1,11 @@
-import type { PlaylistPropType, PlaylistEventType } from './types';
+import type { PlaylistPropType, PlaylistEventType } from './types'
 
-import { EventEmitter } from '../EventEmitter';
-import playAudio from './playAudio';
-import playNextAudio from './playNextAudio';
-import playPrevAudio from './playPrevAudio';
-import globalStates from './states';
-import { shuffle as shuffleHelper, weightedFiles, preloadFiles } from './utils';
+import { EventEmitter } from '../EventEmitter'
+import playAudio from './playAudio'
+import playNextAudio from './playNextAudio'
+import playPrevAudio from './playPrevAudio'
+import globalStates from './states'
+import { shuffle as shuffleHelper, weightedFiles, preloadFiles } from './utils'
 
 const AudioPlaylist = ({
   files,
@@ -15,94 +15,89 @@ const AudioPlaylist = ({
   preload = false,
   preloadLimit = 3,
 }: PlaylistPropType) => {
-  const emmiter = new EventEmitter();
-  const states = { ...globalStates, ...{ volume, loop } };
-  const hasWeights = !Array.isArray(files);
-  const shouldLoop = loop || hasWeights;
+  const emmiter = new EventEmitter()
+  const states = { ...globalStates, ...{ volume, loop } }
+  const hasWeights = !Array.isArray(files)
+  const shouldLoop = loop || hasWeights
   const normalizedFiles: string[] = hasWeights
     ? weightedFiles(files as { [key: string]: number })
-    : (files as string[]);
+    : (files as string[])
   const copiedFiles =
-    shuffle || hasWeights
-      ? shuffleHelper(normalizedFiles)
-      : normalizedFiles.slice();
-  const curryPlayAudio = playAudio(states, emmiter);
+    shuffle || hasWeights ? shuffleHelper(normalizedFiles) : normalizedFiles.slice()
+  const curryPlayAudio = playAudio(states, emmiter)
 
   if (preload) {
-    preloadFiles(copiedFiles, preloadLimit);
+    preloadFiles(copiedFiles, preloadLimit)
   }
 
   const Player = {
     play() {
-      const { audio } = states;
-      states.isPlaying = true;
+      const { audio } = states
+      states.isPlaying = true
 
       if (!audio || states.isStopped) {
-        curryPlayAudio(copiedFiles, shouldLoop);
-        states.isStopped = false;
+        curryPlayAudio(copiedFiles, shouldLoop)
+        states.isStopped = false
 
-        return;
+        return
       }
 
-      audio.play();
+      audio.play()
     },
 
     toggle() {
-      states.isPlaying ? Player.pause() : Player.play();
+      states.isPlaying ? Player.pause() : Player.play()
     },
 
     pause() {
-      states.audio?.pause();
-      states.isPlaying = false;
+      states.audio?.pause()
+      states.isPlaying = false
     },
 
     stop() {
-      states.isPlaying = false;
-      states.isStopped = true;
-      states.audio?.stop();
+      states.isPlaying = false
+      states.isStopped = true
+      states.audio?.stop()
     },
 
     next() {
-      playNextAudio(states, copiedFiles);
+      playNextAudio(states, copiedFiles)
     },
 
     prev() {
-      playPrevAudio(states, copiedFiles);
+      playPrevAudio(states, copiedFiles)
     },
 
-    on(
-      eventType: PlaylistEventType,
-      callback: (param: { [data: string]: unknown }) => void
-    ) {
-      emmiter.listener(eventType, callback);
+    on(eventType: PlaylistEventType, callback: (param: { [data: string]: unknown }) => void) {
+      emmiter.listener(eventType, callback)
     },
 
     get volume() {
-      return states.volume;
+      return states.volume
     },
 
     set volume(newVolume: number) {
-      states.volume = newVolume;
+      states.volume = newVolume
 
       if (states.audio) {
-        states.audio.volume = newVolume;
+        states.audio.volume = newVolume
       }
     },
 
     get loop() {
-      return states.loop;
+      return states.loop
     },
 
     get audioCtx() {
-      return states.audio?.audioCtx;
+      return states.audio?.audioCtx
     },
 
     set loop(newLoop: boolean) {
-      states.loop = newLoop;
+      states.loop = newLoop
     },
-  };
+  }
 
-  return Player;
-};
+  return Player
+}
 
-export default AudioPlaylist;
+export default AudioPlaylist

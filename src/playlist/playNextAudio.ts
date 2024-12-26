@@ -1,17 +1,17 @@
-import type { StatesPlaylistType } from './states';
+import type { StatesPlaylistType } from './states'
 
-import Audio from '../audio/Audio';
+import Audio from '../audio/Audio'
 
 const playNextAudio = (states: StatesPlaylistType, files: string[]): void => {
-  const isLastFile = states.audioIndex === files.length - 1;
-  states.audioIndex = isLastFile ? 0 : states.audioIndex + 1;
+  const isLastFile = states.audioIndex === files.length - 1
+  states.audioIndex = isLastFile ? 0 : states.audioIndex + 1
 
-  states.audio?.pause();
+  states.audio?.pause()
 
-  const file = files[states.audioIndex];
-  const audio = Audio({ file, volume: states.volume });
-  states.audio = audio;
-  audio.play();
-};
+  const file = files[states.audioIndex]
+  const audio = Audio({ file, volume: states.volume })
+  states.audio = audio
+  audio.play()
+}
 
-export default playNextAudio;
+export default playNextAudio
