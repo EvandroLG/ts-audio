@@ -116,7 +116,7 @@ describe('audio playlist', () => {
 
   describe('preload', () => {
     beforeEach(() => {
-      ;(utils.preloadFiles as jest.Mock).mockClear()
+      (utils.preloadFiles as jest.Mock).mockClear()
     })
 
     it('should preload files using the default limit', () => {
@@ -149,7 +149,7 @@ describe('audio playlist', () => {
 
   describe('shuffle', () => {
     beforeEach(() => {
-      ;(utils.shuffle as jest.Mock).mockClear()
+      (utils.shuffle as jest.Mock).mockClear()
     })
 
     it('should shuffle the files', () => {

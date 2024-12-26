@@ -32,12 +32,7 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: [
-          ['type'],
-          ['builtin', 'external'],
-          ['internal'],
-          ['parent', 'sibling', 'index'],
-        ],
+        groups: [['type'], ['builtin', 'external'], ['internal'], ['parent', 'sibling', 'index']],
         pathGroups: [
           {
             pattern: '@/**',
@@ -55,4 +50,4 @@ module.exports = {
     'import/newline-after-import': 'error',
     'import/no-duplicates': 'error',
   },
-};
+}
