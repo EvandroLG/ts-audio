@@ -7,97 +7,104 @@ import playPrevAudio from './playPrevAudio'
 import globalStates from './states'
 import { shuffle as shuffleHelper, weightedFiles, preloadFiles } from './utils'
 
-const AudioPlaylist = ({
-  files,
-  volume = 1,
-  loop = false,
-  shuffle = false,
-  preload = false,
-  preloadLimit = 3,
-}: PlaylistPropType) => {
-  const emmiter = new EventEmitter()
-  const states = { ...globalStates, ...{ volume, loop } }
-  const hasWeights = !Array.isArray(files)
-  const shouldLoop = loop || hasWeights
-  const normalizedFiles: string[] = hasWeights
-    ? weightedFiles(files as { [key: string]: number })
-    : (files as string[])
-  const copiedFiles =
-    shuffle || hasWeights ? shuffleHelper(normalizedFiles) : normalizedFiles.slice()
-  const curryPlayAudio = playAudio(states, emmiter)
+class AudioPlaylist {
+  private emmiter: EventEmitter
+  private states: typeof globalStates
+  private copiedFiles: string[]
+  private shouldLoop: boolean
+  private curryPlayAudio: ReturnType<typeof playAudio>
 
-  if (preload) {
-    preloadFiles(copiedFiles, preloadLimit)
+  constructor({
+    files,
+    volume = 1,
+    loop = false,
+    shuffle = false,
+    preload = false,
+    preloadLimit = 3,
+  }: PlaylistPropType) {
+    this.emmiter = new EventEmitter()
+    this.states = { ...globalStates, ...{ volume, loop } }
+
+    const hasWeights = !Array.isArray(files)
+    this.shouldLoop = loop || hasWeights
+
+    const normalizedFiles: string[] = hasWeights
+      ? weightedFiles(files as { [key: string]: number })
+      : (files as string[])
+
+    this.copiedFiles =
+      shuffle || hasWeights ? shuffleHelper(normalizedFiles) : normalizedFiles.slice()
+
+    this.curryPlayAudio = playAudio(this.states, this.emmiter)
+
+    if (preload) {
+      preloadFiles(this.copiedFiles, preloadLimit)
+    }
   }
 
-  const Player = {
-    play() {
-      const { audio } = states
-      states.isPlaying = true
+  play(): void {
+    const { audio } = this.states
+    this.states.isPlaying = true
 
-      if (!audio || states.isStopped) {
-        curryPlayAudio(copiedFiles, shouldLoop)
-        states.isStopped = false
+    if (!audio || this.states.isStopped) {
+      this.curryPlayAudio(this.copiedFiles, this.shouldLoop)
+      this.states.isStopped = false
+      return
+    }
 
-        return
-      }
-
-      audio.play()
-    },
-
-    toggle() {
-      states.isPlaying ? Player.pause() : Player.play()
-    },
-
-    pause() {
-      states.audio?.pause()
-      states.isPlaying = false
-    },
-
-    stop() {
-      states.isPlaying = false
-      states.isStopped = true
-      states.audio?.stop()
-    },
-
-    next() {
-      playNextAudio(states, copiedFiles)
-    },
-
-    prev() {
-      playPrevAudio(states, copiedFiles)
-    },
-
-    on(eventType: PlaylistEventType, callback: (param: { [data: string]: unknown }) => void) {
-      emmiter.listener(eventType, callback)
-    },
-
-    get volume() {
-      return states.volume
-    },
-
-    set volume(newVolume: number) {
-      states.volume = newVolume
-
-      if (states.audio) {
-        states.audio.volume = newVolume
-      }
-    },
-
-    get loop() {
-      return states.loop
-    },
-
-    get audioCtx() {
-      return states.audio?.audioCtx
-    },
-
-    set loop(newLoop: boolean) {
-      states.loop = newLoop
-    },
+    audio.play()
   }
 
-  return Player
+  toggle(): void {
+    this.states.isPlaying ? this.pause() : this.play()
+  }
+
+  pause(): void {
+    this.states.audio?.pause()
+    this.states.isPlaying = false
+  }
+
+  stop(): void {
+    this.states.isPlaying = false
+    this.states.isStopped = true
+    this.states.audio?.stop()
+  }
+
+  next(): void {
+    playNextAudio(this.states, this.copiedFiles)
+  }
+
+  prev(): void {
+    playPrevAudio(this.states, this.copiedFiles)
+  }
+
+  on(eventType: PlaylistEventType, callback: (param: { [data: string]: unknown }) => void): void {
+    this.emmiter.listener(eventType, callback)
+  }
+
+  get volume(): number {
+    return this.states.volume
+  }
+
+  set volume(newVolume: number) {
+    this.states.volume = newVolume
+
+    if (this.states.audio) {
+      this.states.audio.volume = newVolume
+    }
+  }
+
+  get loop(): boolean {
+    return this.states.loop
+  }
+
+  set loop(newLoop: boolean) {
+    this.states.loop = newLoop
+  }
+
+  get audioCtx(): AudioContext | undefined {
+    return this.states.audio?.audioCtx
+  }
 }
 
-export default AudioPlaylist
+export default (params: PlaylistPropType) => new AudioPlaylist(params)
