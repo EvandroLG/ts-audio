@@ -3,12 +3,16 @@ import type { AudioPlaylistState } from './states'
 
 import Audio from '../audio/Audio'
 
-type playAudioType = (files: string[], loop: boolean) => void
-
-const playAudio = (states: AudioPlaylistState, emmiter: EventEmitter): playAudioType => {
+/**
+ * Creates an audio playback controller function that manages playlist state and events.
+ *
+ * @param {AudioPlaylistState} states - Global state object containing audio playback states
+ * @param {EventEmitter} emmiter - Event emitter for handling playlist events
+ * @returns {(files: string[], loop: boolean) => void} A function that handles audio playback
+ */
+const playAudio = (states: AudioPlaylistState, emmiter: EventEmitter) => {
   const playAudioHelper = (files: string[], loop: boolean) => {
     const file = files[states.audioIndex]
-
     const audio = Audio({ file, volume: states.volume })
     states.audio = audio
 

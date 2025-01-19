@@ -3,10 +3,9 @@
  * with features like shuffle, loop, and weighted random selection.
  */
 
+import Audio from '../audio/Audio'
 import { EventEmitter } from '../EventEmitter'
 import playAudio from './playAudio'
-import playNextAudio from './playNextAudio'
-import playPrevAudio from './playPrevAudio'
 import globalStates from './states'
 import { shuffle as shuffleHelper, weightedFiles, preloadFiles } from './utils'
 
@@ -123,17 +122,36 @@ class AudioPlaylist {
   }
 
   /**
-   * Plays the next audio file in the playlist.
+   * Plays the next audio file in the playlist sequence.
+   * Handles wrapping back to the beginning when reaching the end of the playlist.
    */
   next(): void {
-    playNextAudio(this.states, this.copiedFiles)
+    const isLastFile = this.states.audioIndex === this.copiedFiles.length - 1
+    this.states.audioIndex = isLastFile ? 0 : this.states.audioIndex + 1
+
+    this.states.audio?.pause()
+
+    const file = this.copiedFiles[this.states.audioIndex]
+    const audio = Audio({ file, volume: this.states.volume })
+
+    this.states.audio = audio
+    audio.play()
   }
 
   /**
-   * Plays the previous audio file in the playlist.
+   * Plays the previous audio file in the playlist sequence.
+   * Handles wrapping to the end of the playlist when at the beginning.
    */
   prev(): void {
-    playPrevAudio(this.states, this.copiedFiles)
+    const isFirstFile = this.states.audioIndex === 0
+    this.states.audioIndex = isFirstFile ? this.copiedFiles.length - 1 : this.states.audioIndex - 1
+
+    this.states.audio?.pause()
+
+    const file = this.copiedFiles[this.states.audioIndex]
+    const audio = Audio({ file, volume: this.states.volume })
+    this.states.audio = audio
+    audio.play()
   }
 
   /**
