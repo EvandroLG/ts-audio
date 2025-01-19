@@ -6,6 +6,7 @@ const playMock = jest.fn()
 const pauseMock = jest.fn()
 const stopMock = jest.fn()
 
+// TODO: Replace 'any' with proper type from Audio module interface
 const audioMock: any = jest.fn(() => ({
   play: playMock,
   pause: pauseMock,
@@ -16,7 +17,7 @@ jest.spyOn(Audio, 'default').mockImplementation(audioMock)
 jest.spyOn(utils, 'preloadFiles').mockImplementation()
 jest.spyOn(utils, 'shuffle').mockImplementation()
 
-describe('audio playlist', () => {
+describe('AudioPlaylist', () => {
   beforeEach(() => {
     pauseMock.mockClear()
     stopMock.mockClear()
@@ -29,7 +30,7 @@ describe('audio playlist', () => {
       files,
     })
 
-    it('should invoke pause method from audio', () => {
+    test('invokes the pause method from audio', () => {
       playlist.pause()
       playlist.next()
       playlist.pause()
@@ -42,7 +43,7 @@ describe('audio playlist', () => {
       files,
     })
 
-    it('should invoke stop method from audio', () => {
+    it('invokes the stop method from audio', () => {
       playlist.stop()
       playlist.next()
       playlist.stop()
@@ -66,17 +67,17 @@ describe('audio playlist', () => {
       expect(playMock).toHaveBeenCalled()
     }
 
-    it('should play the second file', () => {
+    test('plays the second file', () => {
       verifyPlayNext(files[1])
       expect(pauseMock).not.toHaveBeenCalled()
     })
 
-    it('should play the last file', () => {
+    test('plays the last file', () => {
       verifyPlayNext(files[2])
       expect(pauseMock).toHaveBeenCalled()
     })
 
-    it('should play the first file when the previous audio was the last one', () => {
+    test('plays the first file when the previous audio was the last one', () => {
       verifyPlayNext(files[0])
       expect(pauseMock).toHaveBeenCalled()
     })
@@ -98,17 +99,17 @@ describe('audio playlist', () => {
       expect(playMock).toHaveBeenCalled()
     }
 
-    it('should play the last file when the previous was the first one', () => {
+    test('plays the last file when the previous was the first one', () => {
       verifyPlayPrev(files[2])
       expect(pauseMock).not.toHaveBeenCalled()
     })
 
-    it('should play the second file', () => {
+    test('plays the second file', () => {
       verifyPlayPrev(files[1])
       expect(pauseMock).toHaveBeenCalled()
     })
 
-    it('should play the first file', () => {
+    test('plays the first file', () => {
       verifyPlayPrev(files[0])
       expect(pauseMock).toHaveBeenCalled()
     })
@@ -119,7 +120,7 @@ describe('audio playlist', () => {
       (utils.preloadFiles as jest.Mock).mockClear()
     })
 
-    it('should preload files using the default limit', () => {
+    test('preloads files using the default limit', () => {
       AudioPlaylist({
         files,
         preload: true,
@@ -128,7 +129,7 @@ describe('audio playlist', () => {
       expect(utils.preloadFiles).toHaveBeenCalledWith(files, 3)
     })
 
-    it('should preload files using specified limit', () => {
+    test('preloads files using specified limit', () => {
       AudioPlaylist({
         files,
         preload: true,
@@ -138,7 +139,7 @@ describe('audio playlist', () => {
       expect(utils.preloadFiles).toHaveBeenCalledWith(files, 2)
     })
 
-    it('should not preload files', () => {
+    test('does not preload files', () => {
       AudioPlaylist({
         files,
       })
@@ -152,7 +153,7 @@ describe('audio playlist', () => {
       (utils.shuffle as jest.Mock).mockClear()
     })
 
-    it('should shuffle the files', () => {
+    test('shuffles the files', () => {
       AudioPlaylist({
         files,
         shuffle: true,
@@ -161,7 +162,7 @@ describe('audio playlist', () => {
       expect(utils.shuffle).toHaveBeenCalledWith(files)
     })
 
-    it('should not shuffle the files', () => {
+    test('does not shuffle the files', () => {
       AudioPlaylist({
         files,
       })

@@ -1,8 +1,8 @@
-import type { StatesPlaylistType } from './states'
+import type { AudioPlaylistState } from './states'
 
 import Audio from '../audio/Audio'
 
-const playPrevAudio = (states: StatesPlaylistType, files: string[]): void => {
+const playPrevAudio = (states: AudioPlaylistState, files: string[]): void => {
   const isFirstFile = states.audioIndex === 0
   states.audioIndex = isFirstFile ? files.length - 1 : states.audioIndex - 1
 

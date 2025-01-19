@@ -1,6 +1,6 @@
 import type { AudioType } from '../audio/types'
 
-export type StatesPlaylistType = {
+export type AudioPlaylistState = {
   volume: number
   loop: boolean
   audio: AudioType | null
@@ -9,7 +9,7 @@ export type StatesPlaylistType = {
   audioIndex: number
 }
 
-const states: StatesPlaylistType = {
+const states: AudioPlaylistState = {
   volume: 1,
   loop: false,
   audio: null,
