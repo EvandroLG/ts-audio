@@ -16,9 +16,8 @@ function unique(arr: string[]): boolean {
 
 describe('utils', () => {
   describe('shuffle', () => {
-    it('should shuffle the order of the elements in a given array', () => {
+    test('shuffles the elements of a given array', () => {
       const files = ['./file2.mp3', './file1.mp3', './file3.mp3', './file100.mp3', './file50.mp3']
-
       const shuffled = shuffle(files)
 
       expect(shuffled.length).toBe(files.length)
@@ -38,7 +37,7 @@ describe('utils', () => {
       './file7.mp3',
     ]
 
-    it('should request up to 3 files concurrently', (done) => {
+    test('requests up to 3 files concurrently', (done) => {
       let counter = 0
 
       const api = () => {
@@ -52,7 +51,7 @@ describe('utils', () => {
       })
     })
 
-    it('should request next file from the queue in case a request has failed', (done) => {
+    test('requests next file from the queue if a request fails', (done) => {
       let counter = 0
 
       const api = (file: string) => {
@@ -73,7 +72,7 @@ describe('utils', () => {
   })
 
   describe('weightedFiles', () => {
-    it('should build a new array based on the weight of every file', () => {
+    test('builds a new array based on the weight of each file', () => {
       const map = {
         'file1.mp3': 2,
         'file2.mp3': 4,
