@@ -3,14 +3,29 @@
  * with features like shuffle, loop, and weighted random selection.
  */
 
-import type { PlaylistPropType, PlaylistEventType } from './types'
-
 import { EventEmitter } from '../EventEmitter'
 import playAudio from './playAudio'
 import playNextAudio from './playNextAudio'
 import playPrevAudio from './playPrevAudio'
 import globalStates from './states'
 import { shuffle as shuffleHelper, weightedFiles, preloadFiles } from './utils'
+
+/**
+ * Configuration options for initializing an AudioPlaylist instance.
+ */
+type AudioPlaylistConfig = {
+  files: string[] | { [key: string]: number }
+  volume?: number
+  loop?: boolean
+  shuffle?: boolean
+  preload?: boolean
+  preloadLimit?: number
+}
+
+/**
+ * Events that can be emitted by the AudioPlaylist.
+ */
+type AudioPlaylistEvent = 'start' | 'end'
 
 /**
  * Manages audio playlist functionality including playback control, file management,
@@ -45,7 +60,7 @@ class AudioPlaylist {
     shuffle = false,
     preload = false,
     preloadLimit = 3,
-  }: PlaylistPropType) {
+  }: AudioPlaylistConfig) {
     this.emmiter = new EventEmitter()
     this.states = { ...globalStates, ...{ volume, loop } }
 
@@ -123,10 +138,10 @@ class AudioPlaylist {
 
   /**
    * Registers an event listener for playlist events.
-   * @param {PlaylistEventType} eventType - Type of event to listen for
+   * @param {AudioPlaylistEvent} eventType - Type of event to listen for
    * @param {Function} callback - Callback function to execute when event occurs
    */
-  on(eventType: PlaylistEventType, callback: (param: { [data: string]: unknown }) => void): void {
+  on(eventType: AudioPlaylistEvent, callback: (param: { [data: string]: unknown }) => void): void {
     this.emmiter.listener(eventType, callback)
   }
 
@@ -177,6 +192,6 @@ class AudioPlaylist {
 
 /**
  * Factory function to create a new AudioPlaylist instance.
- * @param {PlaylistPropType} params - Configuration parameters for the playlist
+ * @param {AudioPlaylistConfig} params - Configuration parameters for the playlist
  */
-export default (params: PlaylistPropType) => new AudioPlaylist(params)
+export default (params: AudioPlaylistConfig) => new AudioPlaylist(params)
