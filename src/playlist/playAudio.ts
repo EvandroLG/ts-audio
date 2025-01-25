@@ -10,7 +10,10 @@ import Audio from '../audio/Audio'
  * @param {EventEmitter} emmiter - Event emitter for handling playlist events
  * @returns {(files: string[], loop: boolean) => void} A function that handles audio playback
  */
-const playAudio = (states: AudioPlaylistState, emmiter: EventEmitter) => {
+const playAudio = (
+  states: AudioPlaylistState,
+  emmiter: EventEmitter,
+): ((files: string[], loop: boolean) => void) => {
   const playAudioHelper = (files: string[], loop: boolean) => {
     const file = files[states.audioIndex]
     const audio = Audio({ file, volume: states.volume })

@@ -1,5 +1,8 @@
 import type { AudioType } from '../audio/types'
 
+/**
+ * Represents the global state for an audio playlist.
+ */
 export type AudioPlaylistState = {
   volume: number
   loop: boolean
@@ -9,6 +12,9 @@ export type AudioPlaylistState = {
   audioIndex: number
 }
 
+/**
+ * Default initial state for the audio playlist.
+ */
 const states: AudioPlaylistState = {
   volume: 1,
   loop: false,
