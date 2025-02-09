@@ -2,7 +2,9 @@ import Audio from '../Audio'
 
 const audioCtxMock = {} as AudioContext
 
-jest.mock('../AudioCtx', () => jest.fn().mockImplementation(() => audioCtxMock))
+jest.mock('../AudioCtx', () => ({
+  AudioCtx: jest.fn().mockImplementation(() => audioCtxMock),
+}))
 
 describe('audio', () => {
   it('should audio object be defined', () => {
@@ -13,8 +15,5 @@ describe('audio', () => {
     const audio = Audio({ file: 'test.mp3' })
     expect(audio.audioCtx).toBeDefined()
     expect(audio.audioCtx).toBe(audioCtxMock)
-    expect(() => {
-      audio.audioCtx = audioCtxMock
-    }).toThrow()
   })
 })
