@@ -1,5 +1,3 @@
-import type { AudioPropType, AudioEventType } from './types'
-
 import { AudioCtx } from './AudioCtx'
 import globalStates from './states'
 import { EventEmitter } from '../EventEmitter'
@@ -7,6 +5,22 @@ import { EventHandler } from '../EventHandler'
 import { decodeAudioData } from './decodeAudioData'
 import { initializeSource } from './initializeSource'
 import { getBuffer, preloadFile } from './utils'
+
+/**
+ * Configuration options for creating an Audio instance.
+ */
+type AudioProp = {
+  file: string
+  volume?: number
+  autoPlay?: boolean
+  loop?: boolean
+  preload?: boolean
+}
+
+/**
+ * Valid event types that can be emitted by the Audio instance.
+ */
+type AudioEvent = 'ready' | 'start' | 'state' | 'end'
 
 /**
  * If `AudioContext` is initialized before a user gesture on the page, its
@@ -20,9 +34,9 @@ const start = (audioCtx: AudioContext, source: AudioBufferSourceNode) =>
  * Audio player class that provides control over a single audio file.
  * Implements the AudioType interface for managing audio playback, volume, and events.
  */
-class Audio {
+export class Audio {
   /** @private Path or URL to the audio file */
-  private _file: AudioPropType['file']
+  private _file: AudioProp['file']
   /** @private Initial volume level set during construction */
   private _initialVolume: number
   /** @private Flag indicating if audio should play automatically */
@@ -41,20 +55,14 @@ class Audio {
   /**
    * Creates an instance of Audio player.
    *
-   * @param {AudioPropType} config - The audio configuration object
+   * @param {AudioProp} config - The audio configuration object
    * @param {string} config.file - Path or URL to the audio file
    * @param {number} [config.volume=1] - Initial volume level (0 to 1)
    * @param {boolean} [config.autoPlay=false] - Whether to start playing automatically
    * @param {boolean} [config.loop=false] - Whether to loop the audio
    * @param {boolean} [config.preload=false] - Whether to preload the audio file
    */
-  constructor({
-    file,
-    volume = 1,
-    autoPlay = false,
-    loop = false,
-    preload = false,
-  }: AudioPropType) {
+  constructor({ file, volume = 1, autoPlay = false, loop = false, preload = false }: AudioProp) {
     this._file = file
     this._initialVolume = volume
     this._autoPlay = autoPlay
@@ -156,10 +164,10 @@ class Audio {
 
   /**
    * Subscribes to audio events.
-   * @param {AudioEventType} eventType - Type of event to listen for
+   * @param {AudioEvent} eventType - Type of event to listen for
    * @param {Function} callback - Function to call when event occurs
    */
-  public on(eventType: AudioEventType, callback: <T>(param: { [data: string]: T }) => void): void {
+  public on(eventType: AudioEvent, callback: <T>(param: { [data: string]: T }) => void): void {
     this._eventHandler[eventType]?.(callback)
   }
 
@@ -222,4 +230,4 @@ class Audio {
  * @param {AudioPropType} props - The audio configuration properties
  * @returns {AudioType} A new Audio instance
  */
-export default (props: AudioPropType): Audio => new Audio(props)
+export default (props: AudioProp): Audio => new Audio(props)
