@@ -6,7 +6,14 @@ declare global {
   }
 }
 
-const AudioCtx = (): AudioContext => {
+/**
+ * Creates and returns a new AudioContext instance with cross-browser support.
+ * Attempts to use standard AudioContext first, falls back to webkitAudioContext for older browsers.
+ *
+ * @returns {AudioContext} A new AudioContext instance
+ * @throws {Error} If the browser doesn't support AudioContext
+ */
+export const AudioCtx = (): AudioContext => {
   const Context = window.AudioContext || window.webkitAudioContext
 
   if (!Context) {
@@ -15,5 +22,3 @@ const AudioCtx = (): AudioContext => {
 
   return new Context()
 }
-
-export default AudioCtx

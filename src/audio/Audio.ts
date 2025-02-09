@@ -1,16 +1,18 @@
 import type { AudioPropType, AudioEventType } from './types'
 
-import AudioCtx from './AudioCtx'
+import { AudioCtx } from './AudioCtx'
 import globalStates from './states'
 import { EventEmitter } from '../EventEmitter'
 import { EventHandler } from '../EventHandler'
-import decodeAudioData from './decodeAudioData'
-import initializeSource from './initializeSource'
+import { decodeAudioData } from './decodeAudioData'
+import { initializeSource } from './initializeSource'
 import { getBuffer, preloadFile } from './utils'
 
-// if audiocontext is initialized before a user gesture on the page, its
-// state become `suspended` by default. once audiocontext.state is `suspended`
-// the only way to start it after a user gesture is executing the `resume` method
+/**
+ * If `AudioContext` is initialized before a user gesture on the page, its
+ * state becomes `suspended` by default. Once `AudioContext.state` is `suspended`,
+ * the only way to start it after a user gesture is executing the `resume` method.
+ */
 const start = (audioCtx: AudioContext, source: AudioBufferSourceNode) =>
   audioCtx.state === 'suspended' ? audioCtx.resume().then(() => source.start(0)) : source.start(0)
 
@@ -76,16 +78,16 @@ class Audio {
     this._states.isDecoded = false
 
     getBuffer(this._file)
-      .then((buffer) => {
-        decodeAudioData(
-          this._audioCtx,
+      .then((arrayBuffer) => {
+        decodeAudioData({
+          audioCtx: this._audioCtx,
           source,
-          buffer,
-          this._autoPlay,
-          this._initialLoop,
-          this._states,
-          this._emitter,
-        )
+          arrayBuffer,
+          autoPlay: this._autoPlay,
+          loop: this._initialLoop,
+          states: this._states,
+          emitter: this._emitter,
+        })
       })
       .catch(console.error)
   }
@@ -102,7 +104,13 @@ class Audio {
       return
     }
 
-    initializeSource(this._audioCtx, this._initialVolume, this._emitter, this._states)
+    initializeSource({
+      audioCtx: this._audioCtx,
+      volume: this._initialVolume,
+      emitter: this._emitter,
+      states: this._states,
+    })
+
     const { source } = this._states
 
     if (source) {
