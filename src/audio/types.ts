@@ -8,7 +8,7 @@ export type AudioPropType = {
 
 export type AudioEventType = 'ready' | 'start' | 'state' | 'end'
 
-export type AudioType = {
+export interface AudioType {
   play: () => void
   pause: () => void
   stop: () => void
