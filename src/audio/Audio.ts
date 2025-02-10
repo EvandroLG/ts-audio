@@ -1,5 +1,5 @@
 import { AudioCtx } from './AudioCtx'
-import globalStates from './states'
+import { defaultStates } from './states'
 import { EventEmitter } from '../EventEmitter'
 import { EventHandler } from '../EventHandler'
 import { decodeAudioData } from './decodeAudioData'
@@ -34,7 +34,7 @@ const start = (audioCtx: AudioContext, source: AudioBufferSourceNode) =>
  * Audio player class that provides control over a single audio file.
  * Implements the AudioType interface for managing audio playback, volume, and events.
  */
-export class Audio {
+export class AudioClass {
   /** @private Path or URL to the audio file */
   private _file: AudioProp['file']
   /** @private Initial volume level set during construction */
@@ -46,7 +46,7 @@ export class Audio {
   /** @private Web Audio API context */
   private _audioCtx: AudioContext
   /** @private Internal state management object */
-  private _states: typeof globalStates
+  private _states: typeof defaultStates
   /** @private Event emitter for handling audio events */
   private _emitter: EventEmitter
   /** @private Event handler for managing event subscriptions */
@@ -68,7 +68,7 @@ export class Audio {
     this._autoPlay = autoPlay
     this._initialLoop = loop
     this._audioCtx = AudioCtx()
-    this._states = { ...globalStates }
+    this._states = { ...defaultStates }
     this._emitter = new EventEmitter()
     this._eventHandler = new EventHandler(this._emitter, this._audioCtx)
 
@@ -230,4 +230,4 @@ export class Audio {
  * @param {AudioPropType} props - The audio configuration properties
  * @returns {AudioType} A new Audio instance
  */
-export default (props: AudioProp): Audio => new Audio(props)
+export default (props: AudioProp): AudioClass => new AudioClass(props)

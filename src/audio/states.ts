@@ -1,4 +1,7 @@
-export type StatesType = {
+/**
+ * Type definition for the audio player's internal state.
+ */
+export type AudioState = {
   isDecoded: boolean
   isPlaying: boolean
   hasStarted: boolean
@@ -6,12 +9,13 @@ export type StatesType = {
   gainNode: GainNode | null
 }
 
-const states: StatesType = {
+/**
+ * Default initial state for audio decoding and playback.
+ */
+export const defaultStates: AudioState = {
   isDecoded: false,
   isPlaying: false,
   hasStarted: false,
   source: null,
   gainNode: null,
 }
-
-export default states

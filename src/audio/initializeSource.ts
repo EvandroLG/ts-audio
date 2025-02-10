@@ -1,11 +1,11 @@
 import type { EventEmitter } from '../EventEmitter'
-import type { StatesType } from './states'
+import type { AudioState } from './states'
 
 type InitializeSourceConfig = {
   audioCtx: AudioContext
   volume: number
   emitter: EventEmitter
-  states: StatesType
+  states: AudioState
 }
 
 /**

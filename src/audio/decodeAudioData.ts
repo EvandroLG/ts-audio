@@ -1,4 +1,4 @@
-import type { StatesType } from './states'
+import type { AudioState } from './states'
 import type { EventEmitter } from '../EventEmitter'
 
 /**
@@ -16,7 +16,7 @@ type DecodeAudioDataConfig = {
   /** Whether the audio should loop when playing */
   loop: boolean
   /** State object to track decoding and playback status */
-  states: StatesType
+  states: AudioState
   /** Event emitter to broadcast decode completion */
   emitter: EventEmitter
 }
