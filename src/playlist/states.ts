@@ -1,4 +1,4 @@
-import type { AudioType } from '../audio/types'
+import type { AudioClass } from '../audio/Audio'
 
 /**
  * Represents the global state for an audio playlist.
@@ -6,7 +6,7 @@ import type { AudioType } from '../audio/types'
 export type AudioPlaylistState = {
   volume: number
   loop: boolean
-  audio: AudioType | null
+  audio: AudioClass | null
   isStopped: boolean
   isPlaying: boolean
   audioIndex: number
