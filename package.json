@@ -1,6 +1,6 @@
 {
   "name": "ts-audio",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "author": "evandrolg",
   "license": "MIT",
   "source": "src/index.ts",
