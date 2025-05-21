@@ -5,7 +5,7 @@ export type AudioState = {
   isDecoded: boolean
   isPlaying: boolean
   hasStarted: boolean
-  source: AudioBufferSourceNode | null
+  source: (AudioBufferSourceNode & { _fallbackTimer?: number | null }) | null
   gainNode: GainNode | null
 }
 

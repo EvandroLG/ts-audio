@@ -23,7 +23,8 @@ const playAudio = (
       emmiter.emit('start', e as Event)
     })
 
-    audio.on('end', () => {
+    // Safari workaround: Multiple event handlers to ensure end is captured
+    const handlePlaybackEnd = () => {
       if (states.isStopped) return
 
       if (files.length === states.audioIndex + 1) {
@@ -40,7 +41,24 @@ const playAudio = (
         states.audioIndex++
         playAudioHelper(files, loop)
       }
-    })
+    }
+
+    // Use the standard event listener
+    audio.on('end', handlePlaybackEnd)
+    
+    // For Safari: Add a manual check after the expected duration
+    if (audio.audioCtx && audio.audioCtx.state !== 'closed') {
+      // Create a manual duration checker if the end event doesn't fire
+      const checkDuration = () => {
+        // If the audio has been stopped or the end event fired normally, this won't execute
+        if (states.audio === audio && states.isPlaying) {
+          handlePlaybackEnd() 
+        }
+      }
+      
+      // Get the file duration and add a safety margin
+      setTimeout(checkDuration, 30000) // Fallback of 30 seconds in case we can't determine duration
+    }
 
     audio.play()
   }

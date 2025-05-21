@@ -126,8 +126,44 @@ export class AudioClass {
 
       if (this._states.isDecoded) {
         start(this._audioCtx, source)
+        
+        // Safari compatibility: Add positive duration check timer fallback
+        if (source.buffer && !this._initialLoop) {
+          // Create a reliable timer-based fallback for Safari
+          const duration = source.buffer.duration * 1000
+          const fallbackTimer = setTimeout(() => {
+            // Only emit if playback hasn't been explicitly stopped
+            if (this._states.hasStarted && this._states.isPlaying) {
+              this._states.hasStarted = false
+              this._states.isPlaying = false
+              this._emitter.emit('end', { data: null })
+            }
+          }, duration + 300) // Add buffer time to ensure regular event has time to fire
+          
+          // Store the timer in the source for cleanup if stopped early
+          source._fallbackTimer = fallbackTimer
+        }
       } else {
-        this._emitter.listener('decoded', () => start(this._audioCtx, source))
+        this._emitter.listener('decoded', () => {
+          start(this._audioCtx, source)
+          
+          // Safari compatibility: Add positive duration check timer fallback
+          if (source.buffer && !this._initialLoop) {
+            // Create a reliable timer-based fallback for Safari
+            const duration = source.buffer.duration * 1000
+            const fallbackTimer = setTimeout(() => {
+              // Only emit if playback hasn't been explicitly stopped
+              if (this._states.hasStarted && this._states.isPlaying) {
+                this._states.hasStarted = false
+                this._states.isPlaying = false
+                this._emitter.emit('end', { data: null })
+              }
+            }, duration + 300) // Add buffer time to ensure regular event has time to fire
+            
+            // Store the timer in the source for cleanup if stopped early
+            source._fallbackTimer = fallbackTimer
+          }
+        })
       }
 
       this._states.hasStarted = true
@@ -157,6 +193,12 @@ export class AudioClass {
    */
   public stop(): void {
     if (this._states.hasStarted) {
+      // Clear any Safari fallback timers if they exist
+      if (this._states.source && this._states.source._fallbackTimer) {
+        clearTimeout(this._states.source._fallbackTimer)
+        this._states.source._fallbackTimer = null
+      }
+      
       this._states.source?.stop(0)
       this._states.isPlaying = false
     }

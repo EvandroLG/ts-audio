@@ -44,10 +44,32 @@ export const decodeAudioData = ({
 
     states.isDecoded = true
     emitter.emit('decoded', { data: buffer })
+    emitter.emit('ready', { data: null })
 
     if (autoPlay) {
-      source.start(0)
+      const start = () =>
+        audioCtx.state === 'suspended' ? audioCtx.resume().then(() => source.start(0)) : source.start(0)
+
+      start()
+      states.hasStarted = true
       states.isPlaying = true
+      emitter.emit('start', { data: null })
+      
+      // For Safari compatibility: Set up the timer-based fallback for ended event
+      if (!loop) {
+        const duration = buffer.duration * 1000
+        const fallbackTimer = setTimeout(() => {
+          // Only emit if playback hasn't been explicitly stopped
+          if (states.hasStarted && states.isPlaying) {
+            states.hasStarted = false
+            states.isPlaying = false
+            emitter.emit('end', { data: null })
+          }
+        }, duration + 300) // Add buffer time to ensure regular event has time to fire
+        
+        // Store the timer in the source for cleanup if stopped early
+        source._fallbackTimer = fallbackTimer
+      }
     }
   }
 
