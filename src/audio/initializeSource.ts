@@ -33,6 +33,15 @@ export const initializeSource = ({
   gainNode.connect(audioCtx.destination)
   source.connect(gainNode)
 
+  // Safari has issues with onended not firing in certain conditions (inactive tabs)
+  // We need to use addEventListener instead of the onended property for better compatibility
+  source.addEventListener('ended', () => {
+    states.hasStarted = false
+    states.isPlaying = false
+    emitter.emit('end', { data: null })
+  })
+  
+  // Also set the onended property as a fallback for older implementations
   source.onended = () => {
     states.hasStarted = false
     states.isPlaying = false

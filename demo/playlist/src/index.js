@@ -8,7 +8,7 @@ const getVolume = (element) => Number(element.value) / 100
 const range = document.getElementById('range')
 
 const playlist = AudioPlaylist({
-  files: { [songOne]: 1, [songTwo]: 5, [songThree]: 1 },
+  files: { [songOne]: 5, [songTwo]: 1, [songThree]: 1 },
 })
 
 const buttonPlay = document.getElementById('bt-play')
