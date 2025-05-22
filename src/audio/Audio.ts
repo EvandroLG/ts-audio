@@ -222,6 +222,46 @@ export class AudioClass {
   public get audioCtx(): AudioContext {
     return this._audioCtx
   }
+
+  /**
+   * Gets the total duration of the loaded audio in seconds.
+   * @returns {number} The duration of the audio if available; otherwise, returns 0.
+   */
+  public get duration(): number {
+    return this._states.source?.buffer?.duration ?? 0
+  }
+
+  /**
+   * Gets the current playback position in seconds.
+   * @returns {number} The current playback position if available; otherwise, returns 0.
+   */
+  public get currentTime(): number {
+    return this._states.source?.context.currentTime ?? 0
+  }
+
+  /**
+   * Sets the current playback position in seconds.
+   * @param {number} newTime - The new playback position in seconds
+   */
+  public set currentTime(newTime: number) {
+    const { source } = this._states
+    const buffer = source?.buffer
+    const context = source?.context
+
+    if (!buffer || !context || !source) {
+      return
+    }
+
+    source.stop()
+
+    const newSource = context.createBufferSource()
+    newSource.buffer = buffer
+    newSource.connect(context.destination)
+
+    newSource.start(0, newTime)
+
+    this._states.source = newSource
+  }
 }
 
 /**
