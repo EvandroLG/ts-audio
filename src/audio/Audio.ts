@@ -10,10 +10,17 @@ import { getBuffer, preloadFile } from './utils'
  * Configuration options for creating an Audio instance.
  */
 type AudioProp = {
+  /** Path or URL to the audio file */
   file: string
+  /** Initial volume level (0 to 1) */
   volume?: number
+  /** Time in seconds to start playback */
+  time?: number
+  /** Whether to start playing automatically */
   autoPlay?: boolean
+  /** Whether to loop the audio */
   loop?: boolean
+  /** Whether to preload the audio file */
   preload?: boolean
 }
 
@@ -27,8 +34,10 @@ type AudioEvent = 'ready' | 'start' | 'state' | 'end'
  * state becomes `suspended` by default. Once `AudioContext.state` is `suspended`,
  * the only way to start it after a user gesture is executing the `resume` method.
  */
-const start = (audioCtx: AudioContext, source: AudioBufferSourceNode) =>
-  audioCtx.state === 'suspended' ? audioCtx.resume().then(() => source.start(0)) : source.start(0)
+const start = (audioCtx: AudioContext, source: AudioBufferSourceNode, time: number) =>
+  audioCtx.state === 'suspended'
+    ? audioCtx.resume().then(() => source.start(0, time))
+    : source.start(0, time)
 
 /**
  * Audio player class that provides control over a single audio file.
@@ -39,6 +48,8 @@ export class AudioClass {
   private _file: AudioProp['file']
   /** @private Initial volume level set during construction */
   private _initialVolume: number
+  /** @private Initial time in seconds to start playback */
+  private _initialTime: number
   /** @private Flag indicating if audio should play automatically */
   private _autoPlay: boolean
   /** @private Initial loop state set during construction */
@@ -58,13 +69,22 @@ export class AudioClass {
    * @param {AudioProp} config - The audio configuration object
    * @param {string} config.file - Path or URL to the audio file
    * @param {number} [config.volume=1] - Initial volume level (0 to 1)
+   * @param {number} [config.time=0] - Time in seconds to start playback
    * @param {boolean} [config.autoPlay=false] - Whether to start playing automatically
    * @param {boolean} [config.loop=false] - Whether to loop the audio
    * @param {boolean} [config.preload=false] - Whether to preload the audio file
    */
-  constructor({ file, volume = 1, autoPlay = false, loop = false, preload = false }: AudioProp) {
+  constructor({
+    file,
+    volume = 1,
+    time = 0,
+    autoPlay = false,
+    loop = false,
+    preload = false,
+  }: AudioProp) {
     this._file = file
     this._initialVolume = volume
+    this._initialTime = time
     this._autoPlay = autoPlay
     this._initialLoop = loop
     this._audioCtx = AudioCtx()
@@ -125,9 +145,9 @@ export class AudioClass {
       this.curryGetBuffer(source)
 
       if (this._states.isDecoded) {
-        start(this._audioCtx, source)
+        start(this._audioCtx, source, this._initialTime)
       } else {
-        this._emitter.listener('decoded', () => start(this._audioCtx, source))
+        this._emitter.listener('decoded', () => start(this._audioCtx, source, this._initialTime))
       }
 
       this._states.hasStarted = true
@@ -237,30 +257,6 @@ export class AudioClass {
    */
   public get currentTime(): number {
     return this._states.source?.context.currentTime ?? 0
-  }
-
-  /**
-   * Sets the current playback position in seconds.
-   * @param {number} newTime - The new playback position in seconds
-   */
-  public set currentTime(newTime: number) {
-    const { source } = this._states
-    const buffer = source?.buffer
-    const context = source?.context
-
-    if (!buffer || !context || !source) {
-      return
-    }
-
-    source.stop()
-
-    const newSource = context.createBufferSource()
-    newSource.buffer = buffer
-    newSource.connect(context.destination)
-
-    newSource.start(0, newTime)
-
-    this._states.source = newSource
   }
 }
 
