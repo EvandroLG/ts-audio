@@ -6,12 +6,19 @@ const playMock = jest.fn()
 const pauseMock = jest.fn()
 const stopMock = jest.fn()
 
-// TODO: Replace 'any' with proper type from Audio module interface
-const audioMock: any = jest.fn(() => ({
-  play: playMock,
-  pause: pauseMock,
-  stop: stopMock,
-}))
+interface AudioMock {
+  play: jest.Mock
+  pause: jest.Mock
+  stop: jest.Mock
+}
+
+const audioMock = jest.fn(
+  (): AudioMock => ({
+    play: playMock,
+    pause: pauseMock,
+    stop: stopMock,
+  }),
+)
 
 jest.spyOn(Audio, 'default').mockImplementation(audioMock)
 jest.spyOn(utils, 'preloadFiles').mockImplementation()
@@ -117,7 +124,7 @@ describe('AudioPlaylist', () => {
 
   describe('preload', () => {
     beforeEach(() => {
-      (utils.preloadFiles as jest.Mock).mockClear()
+      ;(utils.preloadFiles as jest.Mock).mockClear()
     })
 
     test('preloads files using the default limit', () => {
@@ -150,7 +157,7 @@ describe('AudioPlaylist', () => {
 
   describe('shuffle', () => {
     beforeEach(() => {
-      (utils.shuffle as jest.Mock).mockClear()
+      ;(utils.shuffle as jest.Mock).mockClear()
     })
 
     test('shuffles the files', () => {
