@@ -6,7 +6,6 @@ const playMock = jest.fn()
 const pauseMock = jest.fn()
 const stopMock = jest.fn()
 
-// Create a proper mock interface for the Audio class
 interface AudioMock {
   play: jest.Mock
   pause: jest.Mock
