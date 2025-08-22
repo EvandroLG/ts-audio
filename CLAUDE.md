@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## ⚠️ Bundle Size Critical
+## Bundle Size Critical
 
 **CRITICAL CONSTRAINT**: This library must maintain bundle sizes under strict limits:
 - Modern builds: **1.6KB max**
