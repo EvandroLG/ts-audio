@@ -63,9 +63,9 @@ export class AudioClass {
   /** @private Event handler for managing event subscriptions */
   private _eventHandler: EventHandler
   /** @private Track when playback started for currentTime calculation */
-  private _startTime: number = 0
+  private _startTime = 0
   /** @private Track pause position for accurate seeking */
-  private _pauseTime: number = 0
+  private _pauseTime = 0
 
   /**
    * Creates an instance of Audio player.
