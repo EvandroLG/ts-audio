@@ -238,7 +238,6 @@ document.getElementById('play-button').addEventListener('click', () => {
 **Events not firing:**
 - Ensure event listeners are attached before calling `play()`
 - Check browser console for errors
-```
 
 ## 🤝 Contributing
 
