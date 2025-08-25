@@ -4,32 +4,51 @@ import song from './song.mp3'
 
 const getVolume = (element) => Number(element.value) / 100
 
-const range = document.getElementById('range')
+const volume = document.getElementById('volume')
+const duration = document.getElementById('duration')
 const buttonPlay = document.getElementById('bt-play')
 const buttonPause = document.getElementById('bt-pause')
 const buttonToggle = document.getElementById('bt-toggle')
 const buttonStop = document.getElementById('bt-stop')
+
 const audio = Audio({
   file: song,
   loop: true,
-  volume: getVolume(range),
+  volume: getVolume(volume),
   preload: true,
 })
 
+let intervalDurationId
+
 audio.on('end', () => {
+  console.log('end')
   buttonPlay.removeAttribute('disabled')
   buttonPause.setAttribute('disabled', 'disabled')
   buttonStop.setAttribute('disabled', 'disabled')
+  clearInterval(intervalDurationId)
 })
-
-console.log('audio ctx', audio.audioCtx)
 
 setTimeout(() => {
   audio.loop = false
 }, 2000)
 
-audio.on('ready', ({ data }) => console.log(data))
-audio.on('start', () => console.log('start'))
+audio.on('ready', ({ data }) => {
+  console.log('ready event data:', data)
+})
+
+audio.on('start', () => {
+  console.log('start')
+
+  if (intervalDurationId) {
+    clearInterval(intervalDurationId)
+  }
+
+  intervalDurationId = setInterval(() => {
+    duration.max = audio.duration
+    duration.value = audio.currentTime
+  }, 1000 / 60) // 60fps
+})
+
 audio.on('state', ({ data }) => console.log(data))
 
 buttonPlay.addEventListener('click', () => {
@@ -44,6 +63,7 @@ buttonPause.addEventListener('click', () => {
   buttonPause.setAttribute('disabled', 'disabled')
   buttonStop.setAttribute('disabled', 'disabled')
   buttonPlay.removeAttribute('disabled')
+  clearInterval(intervalDurationId)
 })
 
 buttonToggle.addEventListener('click', () => {
@@ -54,9 +74,14 @@ buttonStop.addEventListener('click', () => {
   audio.stop()
   buttonPause.setAttribute('disabled', 'disabled')
   buttonStop.setAttribute('disabled', 'disabled')
+  clearInterval(intervalDurationId)
 })
 
-range.addEventListener('change', (e) => {
+volume.addEventListener('change', (e) => {
   const volume = getVolume(e.target)
   audio.volume = volume
+})
+
+duration.addEventListener('input', (e) => {
+  audio.seek(Number(e.target.value))
 })
