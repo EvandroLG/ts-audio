@@ -330,6 +330,9 @@ export class AudioClass {
 
     // Stop current source if playing
     if (this._states.source && wasPlaying) {
+      // Temporarily remove onended handler to prevent false "end" events during seek
+      this._states.source.onended = null
+
       try {
         this._states.source.stop(0)
       } catch (error) {
