@@ -11,6 +11,6 @@
     "webpack-dev-server": "^5.2.1"
   },
   "dependencies": {
-    "ts-audio": "^0.7.4"
+    "ts-audio": "file:../.."
   }
 }

@@ -62,6 +62,12 @@ export class AudioClass {
   private _emitter: EventEmitter
   /** @private Event handler for managing event subscriptions */
   private _eventHandler: EventHandler
+  /** @private Track when playback started for currentTime calculation */
+  private _startTime = 0
+  /** @private Track pause position for accurate seeking */
+  private _pauseTime = 0
+  /** @private Flag to track if seeking occurred while audio was paused */
+  private _hasSeekedWhilePaused = false
 
   /**
    * Creates an instance of Audio player.
@@ -98,6 +104,45 @@ export class AudioClass {
   }
 
   /**
+   * Recreates source and starts playback at specified time.
+   * @private
+   * @param {number} time - Time in seconds to start playback
+   * @param {AudioBuffer} buffer - The audio buffer to use
+   */
+  private recreateAndStart(time: number, buffer: AudioBuffer): void {
+    try {
+      // Stop current source if playing
+      if (this._states.source) {
+        this._states.source.stop(0)
+        this._states.source.onended = null
+      }
+
+      initializeSource({
+        audioCtx: this._audioCtx,
+        volume: this._states.gainNode?.gain.value ?? this._initialVolume,
+        emitter: this._emitter,
+        states: this._states,
+      })
+
+      const { source } = this._states
+
+      if (source) {
+        source.buffer = buffer
+        source.loop = this._initialLoop
+
+        start(this._audioCtx, source, time)
+        this._startTime = this._audioCtx.currentTime
+        this._pauseTime = time
+        this._states.isPlaying = true
+        this._states.hasStarted = true
+      }
+    } catch (error) {
+      console.error('Failed to recreate audio source:', error)
+      this._states.isPlaying = false
+    }
+  }
+
+  /**
    * Fetches and decodes the audio buffer for the given source node.
    * @private
    * @param {AudioBufferSourceNode} source - The audio source node to load buffer into
@@ -124,11 +169,21 @@ export class AudioClass {
    * Starts or resumes audio playback.
    * If playback hasn't started, initializes audio source and begins playback.
    * If playback was paused, resumes from the current position.
+   * If seeking occurred while paused, recreates the source at the new position.
    */
   public play(): void {
-    if (this._states.hasStarted) {
+    if (this._states.hasStarted && !this._hasSeekedWhilePaused) {
       this._audioCtx.resume()
+      this._startTime = this._audioCtx.currentTime
       this._states.isPlaying = true
+      return
+    }
+
+    // If seeked while paused, recreate source at the new position
+    if (this._hasSeekedWhilePaused && this._states.source?.buffer) {
+      const audioBuffer = this._states.source.buffer
+      this.recreateAndStart(this._pauseTime, audioBuffer)
+      this._hasSeekedWhilePaused = false
       return
     }
 
@@ -145,9 +200,13 @@ export class AudioClass {
       this.curryGetBuffer(source)
 
       if (this._states.isDecoded) {
-        start(this._audioCtx, source, this._initialTime)
+        start(this._audioCtx, source, this._pauseTime ?? this._initialTime)
+        this._startTime = this._audioCtx.currentTime
       } else {
-        this._emitter.listener('decoded', () => start(this._audioCtx, source, this._initialTime))
+        this._emitter.listener('decoded', () => {
+          start(this._audioCtx, source, this._pauseTime ?? this._initialTime)
+          this._startTime = this._audioCtx.currentTime
+        })
       }
 
       this._states.hasStarted = true
@@ -160,8 +219,13 @@ export class AudioClass {
    * Pauses audio playback by suspending the audio context.
    */
   public pause(): void {
+    if (this._states.isPlaying) {
+      this._pauseTime = this.currentTime
+    }
+
     this._audioCtx.suspend()
     this._states.isPlaying = false
+    this._hasSeekedWhilePaused = false
   }
 
   /**
@@ -256,7 +320,52 @@ export class AudioClass {
    * @returns {number} The current playback position if available; otherwise, returns 0.
    */
   public get currentTime(): number {
-    return this._states.source?.context.currentTime ?? 0
+    if (!this._states.hasStarted) {
+      return 0
+    }
+
+    if (!this._states.isPlaying) {
+      return this._pauseTime
+    }
+
+    return this._pauseTime + (this._audioCtx.currentTime - this._startTime)
+  }
+
+  /**
+   * Seeks to a specific time position in the audio track.
+   * @param {number} time - Time in seconds to seek to (0 ≤ time ≤ duration)
+   */
+  public seek(time: number): void {
+    if (!this._states.source?.buffer || !this._states.isDecoded) {
+      return
+    }
+
+    // Clamp time to valid bounds
+    time = Math.max(0, Math.min(time, this.duration))
+
+    const wasPlaying = this._states.isPlaying
+    const audioBuffer = this._states.source.buffer
+
+    // Stop current source if playing
+    if (this._states.source && wasPlaying) {
+      // Temporarily remove onended handler to prevent false "end" events during seek
+      this._states.source.onended = null
+
+      try {
+        this._states.source.stop(0)
+      } catch (error) {
+        console.error('Error stopping audio source:', error)
+      }
+    }
+
+    if (wasPlaying) {
+      // Recreate source and start playing at new position
+      this.recreateAndStart(time, audioBuffer)
+    } else {
+      // Just update pause position for paused audio
+      this._pauseTime = time
+      this._hasSeekedWhilePaused = true
+    }
   }
 }
 

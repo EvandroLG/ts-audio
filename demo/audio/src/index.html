@@ -1,14 +1,12 @@
 <!doctype html>
 <html>
   <head>
-    <title>
-      Demo - Audio
-    </title>
+    <title>Demo - Audio</title>
     <style>
       @import url('https://fonts.googleapis.com/css?family=Allerta&display=swap');
 
       * {
-        font-family: "Allerta", sans-serif;
+        font-family: 'Allerta', sans-serif;
         color: #212121;
       }
 
@@ -39,28 +37,49 @@
         background: #eee;
         padding: 20px;
         border-radius: 5px;
+        max-width: 420px;
+        width: min(90vw, 420px);
+        display: grid;
+        gap: 12px;
+      }
+
+      main > button {
+        padding: 8px 12px;
+      }
+
+      input[type='range'] {
+        width: 100%;
+        display: block;
+        appearance: none;
+        height: 8px;
+        background: #ddd;
+        border-radius: 4px;
+        outline: none;
+      }
+
+      /* Volume slider */
+      #volume {
+        accent-color: #00b894;
+      }
+
+      /* Duration slider */
+      #duration {
+        accent-color: #6c5ce7;
       }
     </style>
   </head>
   <body>
     <main>
-      <button type="button" id="bt-play">
-        Play
-      </button>
+      <button type="button" id="bt-play">Play</button>
 
-      <button type="button" id="bt-pause" disabled>
-        Pause
-      </button>
+      <button type="button" id="bt-pause" disabled>Pause</button>
 
-      <button type="button" id="bt-toggle">
-        Toggle
-      </button>
+      <button type="button" id="bt-toggle">Toggle</button>
 
-      <button type="button" id="bt-stop" disabled>
-        Stop
-      </button>
+      <button type="button" id="bt-stop" disabled>Stop</button>
 
-      <input type="range" min="0" max="100" value="50" id="range">
+      <input type="range" min="0" max="100" value="50" id="volume" />
+      <input type="range" min="0" value="0" step="0.01" id="duration" />
     </main>
   </body>
 </html>
