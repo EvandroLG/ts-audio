@@ -66,6 +66,8 @@ export class AudioClass {
   private _startTime = 0
   /** @private Track pause position for accurate seeking */
   private _pauseTime = 0
+  /** @private Flag to track if seeking occurred while audio was paused */
+  private _hasSeekedWhilePaused = false
 
   /**
    * Creates an instance of Audio player.
@@ -109,6 +111,12 @@ export class AudioClass {
    */
   private recreateAndStart(time: number, buffer: AudioBuffer): void {
     try {
+      // Stop current source if playing
+      if (this._states.source) {
+        this._states.source.stop(0)
+        this._states.source.onended = null
+      }
+
       initializeSource({
         audioCtx: this._audioCtx,
         volume: this._states.gainNode?.gain.value ?? this._initialVolume,
@@ -161,12 +169,21 @@ export class AudioClass {
    * Starts or resumes audio playback.
    * If playback hasn't started, initializes audio source and begins playback.
    * If playback was paused, resumes from the current position.
+   * If seeking occurred while paused, recreates the source at the new position.
    */
   public play(): void {
-    if (this._states.hasStarted) {
+    if (this._states.hasStarted && !this._hasSeekedWhilePaused) {
       this._audioCtx.resume()
       this._startTime = this._audioCtx.currentTime
       this._states.isPlaying = true
+      return
+    }
+
+    // If seeked while paused, recreate source at the new position
+    if (this._hasSeekedWhilePaused && this._states.source?.buffer) {
+      const audioBuffer = this._states.source.buffer
+      this.recreateAndStart(this._pauseTime, audioBuffer)
+      this._hasSeekedWhilePaused = false
       return
     }
 
@@ -208,6 +225,7 @@ export class AudioClass {
 
     this._audioCtx.suspend()
     this._states.isPlaying = false
+    this._hasSeekedWhilePaused = false
   }
 
   /**
@@ -346,6 +364,7 @@ export class AudioClass {
     } else {
       // Just update pause position for paused audio
       this._pauseTime = time
+      this._hasSeekedWhilePaused = true
     }
   }
 }
