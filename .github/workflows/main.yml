@@ -70,7 +70,7 @@ jobs:
   delete-branch:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.event.head_commit.message contains 'Merge pull request'
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(github.event.head_commit.message, 'Merge pull request') }}
 
     steps:
       - name: Delete merged branch
