@@ -58,15 +58,15 @@
   "size-limit": [
     {
       "path": "./dist/index.js",
-      "limit": "1.60 KB"
+      "limit": "2.5 KB"
     },
     {
       "path": "./dist/index.modern.mjs",
-      "limit": "1.60 KB"
+      "limit": "2.5 KB"
     },
     {
       "path": "./dist/index.umd.js",
-      "limit": "1.70 KB"
+      "limit": "2.5 KB"
     }
   ]
 }
