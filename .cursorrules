@@ -1,11 +1,13 @@
 # Cursor Rules for ts-audio Project
 
 ## Project Overview
+
 This is a TypeScript audio library that provides audio playback, playlist management, and Web Audio API integration. The project follows strict TypeScript standards with comprehensive testing.
 
 ## Code Style & Standards
 
 ### TypeScript
+
 - Use strict TypeScript configuration (strict: true, noImplicitAny: true, strictNullChecks: true)
 - Always provide explicit types for function parameters and return values
 - Use interfaces for object shapes and types for unions/primitives
@@ -14,6 +16,7 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 - Implement proper error handling with typed error objects
 
 ### Naming Conventions
+
 - Use PascalCase for classes and interfaces (e.g., `AudioClass`, `EventEmitter`)
 - Use camelCase for variables, functions, and methods (e.g., `audioCtx`, `preloadFile`)
 - Use UPPER_SNAKE_CASE for constants (e.g., `defaultStates`)
@@ -21,6 +24,7 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 - Prefix private properties with underscore (e.g., `_file`, `_audioCtx`)
 
 ### File Organization
+
 - Keep related functionality in dedicated modules (audio/, playlist/, etc.)
 - Use index.ts files for clean public API exports
 - Separate test files in `__tests__` directories
@@ -29,18 +33,21 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Architecture Patterns
 
 ### Class Design
+
 - Follow single responsibility principle - each class should have one clear purpose
 - Use composition over inheritance where possible
 - Implement proper encapsulation with private/public methods
 - Use dependency injection for external dependencies (e.g., AudioContext)
 
 ### Event Handling
+
 - Use the EventEmitter pattern for decoupled communication
 - Define clear event types and interfaces
 - Implement proper event cleanup and memory management
 - Use typed event data structures
 
 ### Audio Implementation
+
 - Leverage Web Audio API (AudioContext, AudioBufferSourceNode)
 - Handle AudioContext state management (suspended, running, closed)
 - Implement proper resource cleanup and disposal
@@ -49,6 +56,7 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Testing Standards
 
 ### Jest Testing
+
 - Write comprehensive unit tests for all public methods
 - Use descriptive test names that explain the expected behavior
 - Mock external dependencies (Audio, utils) appropriately
@@ -57,6 +65,7 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 - Verify method calls and state changes
 
 ### Test Structure
+
 - Group related tests using `describe` blocks
 - Use `test` or `it` for individual test cases
 - Mock complex objects with proper interfaces
@@ -65,12 +74,14 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Error Handling
 
 ### Audio Context Errors
+
 - Handle AudioContext state transitions gracefully
 - Implement proper error recovery for suspended contexts
 - Provide meaningful error messages for debugging
 - Use try-catch blocks for audio operations
 
 ### Resource Management
+
 - Implement proper cleanup for audio resources
 - Handle file loading failures gracefully
 - Manage memory usage for large audio files
@@ -79,12 +90,14 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Performance Considerations
 
 ### Audio Preloading
+
 - Implement intelligent preloading strategies
 - Limit concurrent preload operations
 - Use appropriate buffer sizes for different audio formats
 - Consider memory constraints for mobile devices
 
 ### Event Optimization
+
 - Minimize event listener overhead
 - Use event delegation where appropriate
 - Implement proper event cleanup to prevent memory leaks
@@ -92,12 +105,14 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Documentation
 
 ### Code Comments
+
 - Use JSDoc comments for public methods and classes
 - Document complex algorithms and business logic
 - Explain non-obvious implementation details
 - Keep comments up-to-date with code changes
 
 ### API Documentation
+
 - Provide clear examples for common use cases
 - Document configuration options and their effects
 - Explain event types and their data structures
@@ -106,12 +121,14 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Security & Best Practices
 
 ### Audio File Handling
+
 - Validate file paths and URLs
 - Implement proper CORS handling for cross-origin audio
 - Sanitize user input for file operations
 - Handle malicious or corrupted audio files gracefully
 
 ### Web Audio API
+
 - Respect user gesture requirements for audio playback
 - Implement proper error boundaries
 - Handle browser compatibility issues
@@ -120,13 +137,15 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Build & Development
 
 ### Code Quality
+
 - Use ESLint for code linting and style enforcement
 - Use Prettier for consistent code formatting
 - Run tests before committing (husky pre-commit hook)
 - Maintain consistent import/export patterns
 
 ### Bundle Optimization
-- Keep bundle size under defined limits (1.60-1.70 KB)
+
+- Keep bundle size under defined limits (2.5 KB)
 - Use tree-shaking for unused code elimination
 - Minimize external dependencies
 - Optimize for modern browsers while maintaining compatibility
@@ -134,18 +153,21 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## Common Patterns
 
 ### Factory Functions
+
 - Use factory functions for complex object creation (e.g., `AudioPlaylist`)
 - Provide sensible defaults for optional parameters
 - Return consistent object interfaces
 - Implement proper initialization and cleanup
 
 ### State Management
+
 - Use immutable state updates where possible
 - Implement proper state transitions
 - Provide state change notifications through events
 - Maintain state consistency across operations
 
 ### Utility Functions
+
 - Keep utility functions pure and stateless
 - Implement proper error handling and validation
 - Use TypeScript generics for type-safe operations
@@ -154,18 +176,21 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 ## When Adding New Features
 
 ### Audio Formats
+
 - Support common audio formats (MP3, WAV, OGG)
 - Implement proper format detection
 - Handle format-specific optimizations
 - Provide fallback support for unsupported formats
 
 ### Playlist Features
+
 - Implement shuffle and repeat modes
 - Support custom playback orders
 - Handle dynamic playlist modifications
 - Provide playlist state persistence
 
 ### Performance Monitoring
+
 - Implement audio performance metrics
 - Monitor memory usage and cleanup
 - Track user interaction patterns
