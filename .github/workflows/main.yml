@@ -88,7 +88,13 @@ jobs:
             });
 
             for (const pull of pulls) {
-              if (pull.merged_at && pull.head.ref !== 'master' && pull.head.ref !== 'develop') {
+              if (
+                pull.merged_at &&
+                pull.head.ref !== 'master' &&
+                pull.head.ref !== 'develop' &&
+                pull.head.repo &&
+                pull.head.repo.full_name === context.repo.full_name
+              ) {
                 try {
                   await github.rest.git.deleteRef({
                     owner: context.repo.owner,
