@@ -208,11 +208,11 @@ export class AudioClass {
       this.curryGetBuffer(source)
 
       if (this._states.isDecoded) {
-        start(this._audioCtx, source, this._pauseTime || this._initialTime)
+        start(this._audioCtx, source, this._pauseTime ?? this._initialTime)
         this._startTime = this._audioCtx.currentTime
       } else {
         this._emitter.listener('decoded', () => {
-          start(this._audioCtx, source, this._pauseTime || this._initialTime)
+          start(this._audioCtx, source, this._pauseTime ?? this._initialTime)
           this._startTime = this._audioCtx.currentTime
         })
       }
