@@ -68,6 +68,8 @@ export class AudioClass {
   private _pauseTime = 0
   /** @private Flag to track if seeking occurred while audio was paused */
   private _hasSeekedWhilePaused = false
+  /** @private Store seek time requested before audio is decoded */
+  private _pendingSeekTime: number | null = null
 
   /**
    * Creates an instance of Audio player.
@@ -194,17 +196,23 @@ export class AudioClass {
       states: this._states,
     })
 
+    // Apply pending seek if one was requested before audio was ready
+    if (this._pendingSeekTime !== null) {
+      this._pauseTime = this._pendingSeekTime
+      this._pendingSeekTime = null
+    }
+
     const { source } = this._states
 
     if (source) {
       this.curryGetBuffer(source)
 
       if (this._states.isDecoded) {
-        start(this._audioCtx, source, this._pauseTime ?? this._initialTime)
+        start(this._audioCtx, source, this._pauseTime || this._initialTime)
         this._startTime = this._audioCtx.currentTime
       } else {
         this._emitter.listener('decoded', () => {
-          start(this._audioCtx, source, this._pauseTime ?? this._initialTime)
+          start(this._audioCtx, source, this._pauseTime || this._initialTime)
           this._startTime = this._audioCtx.currentTime
         })
       }
@@ -333,37 +341,41 @@ export class AudioClass {
 
   /**
    * Seeks to a specific time position in the audio track.
+   * Works consistently before and after playback starts.
    * @param {number} time - Time in seconds to seek to (0 ≤ time ≤ duration)
    */
   public seek(time: number): void {
-    if (!this._states.source?.buffer || !this._states.isDecoded) {
+    // Clamp time if we know duration, otherwise trust the value
+    const clampedTime =
+      this.duration > 0 ? Math.max(0, Math.min(time, this.duration)) : Math.max(0, time)
+
+    // If audio not decoded yet, store pending seek
+    if (!this._states.isDecoded || !this._states.source?.buffer) {
+      this._pendingSeekTime = clampedTime
       return
     }
 
-    // Clamp time to valid bounds
-    time = Math.max(0, Math.min(time, this.duration))
+    // Clear any pending seek
+    this._pendingSeekTime = null
+
+    // Re-clamp now that we have actual duration
+    const finalTime = Math.max(0, Math.min(clampedTime, this.duration))
 
     const wasPlaying = this._states.isPlaying
     const audioBuffer = this._states.source.buffer
 
-    // Stop current source if playing
-    if (this._states.source && wasPlaying) {
+    if (wasPlaying && this._states.source) {
       // Temporarily remove onended handler to prevent false "end" events during seek
       this._states.source.onended = null
-
       try {
         this._states.source.stop(0)
       } catch (error) {
         console.error('Error stopping audio source:', error)
       }
-    }
-
-    if (wasPlaying) {
-      // Recreate source and start playing at new position
-      this.recreateAndStart(time, audioBuffer)
+      this.recreateAndStart(finalTime, audioBuffer)
     } else {
       // Just update pause position for paused audio
-      this._pauseTime = time
+      this._pauseTime = finalTime
       this._hasSeekedWhilePaused = true
     }
   }
