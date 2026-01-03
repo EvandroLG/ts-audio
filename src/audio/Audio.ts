@@ -341,7 +341,6 @@ export class AudioClass {
 
   /**
    * Seeks to a specific time position in the audio track.
-   * Works consistently before and after playback starts.
    * @param {number} time - Time in seconds to seek to (0 ≤ time ≤ duration)
    */
   public seek(time: number): void {
@@ -360,7 +359,6 @@ export class AudioClass {
 
     // Re-clamp now that we have actual duration
     const finalTime = Math.max(0, Math.min(clampedTime, this.duration))
-
     const wasPlaying = this._states.isPlaying
     const audioBuffer = this._states.source.buffer
 
