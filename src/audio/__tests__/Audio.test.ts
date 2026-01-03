@@ -160,5 +160,41 @@ describe('audio', () => {
       expect(() => audio.seek(0)).not.toThrow()
       expect(() => audio.seek(130)).not.toThrow()
     })
+
+    it('should accept seek before play() is called', () => {
+      // Audio is in initial state - not decoded, not started
+      Object.defineProperty(audio, '_states', {
+        value: {
+          isDecoded: false,
+          isPlaying: false,
+          hasStarted: false,
+          source: null,
+          gainNode: null,
+        },
+        writable: true,
+      })
+
+      // Should not throw and should store pending seek
+      expect(() => audio.seek(30)).not.toThrow()
+      expect(audio['_pendingSeekTime']).toBe(30)
+    })
+
+    it('should accept seek before audio is decoded', () => {
+      // Audio source exists but not decoded yet
+      Object.defineProperty(audio, '_states', {
+        value: {
+          isDecoded: false,
+          isPlaying: false,
+          hasStarted: false,
+          source: mockSource,
+          gainNode: mockGainNode,
+        },
+        writable: true,
+      })
+
+      // Should not throw and should store pending seek
+      expect(() => audio.seek(45)).not.toThrow()
+      expect(audio['_pendingSeekTime']).toBe(45)
+    })
   })
 })
