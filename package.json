@@ -1,6 +1,6 @@
 {
   "name": "ts-audio",
-  "version": "0.7.9",
+  "version": "0.8.0",
   "author": "evandrolg",
   "license": "MIT",
   "source": "src/index.ts",
@@ -45,7 +45,7 @@
     "jest-environment-jsdom": "^29.3.1",
     "microbundle": "^0.15.1",
     "prettier": "3.4.2",
-    "size-limit": "^8.1.2",
+    "size-limit": "^11.2.0",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
@@ -58,11 +58,11 @@
   ],
   "size-limit": [
     {
-      "path": "./dist/index.js",
+      "path": "./dist/index.modern.mjs",
       "limit": "2.5 KB"
     },
     {
-      "path": "./dist/index.modern.mjs",
+      "path": "./dist/index.js",
       "limit": "2.5 KB"
     },
     {

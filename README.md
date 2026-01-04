@@ -111,6 +111,7 @@ type AudioConfig = {
 | `stop()` | Stop playback and reset to beginning |
 | `toggle()` | Toggle between play/pause |
 | `seek(time: number)` | Seek to specific time in seconds |
+| `destroy()` | Clean up resources and remove all event listeners |
 
 #### Events
 
@@ -149,6 +150,7 @@ type AudioPlaylistConfig = {
 | `next()` | Play next track |
 | `previous()` | Play previous track |
 | `shuffle()` | Shuffle remaining tracks |
+| `destroy()` | Clean up resources and remove all event listeners |
 
 ## 🎯 Advanced Examples
 
@@ -209,6 +211,54 @@ document.getElementById('play-button').addEventListener('click', () => {
 });
 ```
 
+### Resource Management and Cleanup
+
+```typescript
+// Create audio instance
+const audio = Audio({
+  file: './background-music.mp3',
+  volume: 0.5,
+  loop: true
+});
+
+audio.play();
+
+// When done or component unmounts (e.g., in React useEffect cleanup)
+// Always call destroy to prevent memory leaks
+audio.destroy();
+
+// For playlists
+const playlist = AudioPlaylist({
+  files: ['./song1.mp3', './song2.mp3', './song3.mp3'],
+  preload: true
+});
+
+playlist.play();
+
+// Clean up playlist resources when done
+playlist.destroy();
+
+// Example in React component
+import { useEffect } from 'react';
+import { Audio } from 'ts-audio';
+
+function MusicPlayer() {
+  useEffect(() => {
+    const audio = Audio({
+      file: './song.mp3',
+      autoPlay: true
+    });
+
+    // Cleanup function
+    return () => {
+      audio.destroy();
+    };
+  }, []);
+
+  return <div>Playing music...</div>;
+}
+```
+
 ## 🔧 Browser Compatibility
 
 - Chrome 14+
@@ -238,6 +288,11 @@ document.getElementById('play-button').addEventListener('click', () => {
 **Events not firing:**
 - Ensure event listeners are attached before calling `play()`
 - Check browser console for errors
+
+**Memory leaks:**
+- Always call `destroy()` when done with an Audio or AudioPlaylist instance
+- Particularly important in single-page applications (SPA) and React components
+- Call `destroy()` in component cleanup/unmount lifecycle methods
 
 ## 🤝 Contributing
 
