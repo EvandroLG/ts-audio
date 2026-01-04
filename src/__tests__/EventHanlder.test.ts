@@ -33,4 +33,25 @@ describe('EventHandler', () => {
 
     expect(mockEmitter.listener).toBeCalledWith('end', callback)
   })
+
+  describe('dispose', () => {
+    test('removes onstatechange listener when audioCtx exists', () => {
+      const mockAudioCtx = {
+        onstatechange: jest.fn(),
+        state: 'running',
+      } as unknown as AudioContext
+
+      const eventHandlerWithCtx = new EventHandler(mockEmitter, mockAudioCtx)
+
+      mockAudioCtx.onstatechange = jest.fn()
+      eventHandlerWithCtx.dispose()
+
+      expect(mockAudioCtx.onstatechange).toBeNull()
+    })
+
+    test('does not throw error when audioCtx is undefined', () => {
+      const eventHandlerNoCtx = new EventHandler(mockEmitter)
+      expect(() => eventHandlerNoCtx.dispose()).not.toThrow()
+    })
+  })
 })
