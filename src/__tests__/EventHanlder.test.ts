@@ -43,7 +43,6 @@ describe('EventHandler', () => {
 
       const eventHandlerWithCtx = new EventHandler(mockEmitter, mockAudioCtx)
 
-      mockAudioCtx.onstatechange = jest.fn()
       expect(mockAudioCtx.onstatechange).not.toBeNull()
       eventHandlerWithCtx.dispose()
 
