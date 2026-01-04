@@ -70,6 +70,8 @@ export class AudioClass {
   private _hasSeekedWhilePaused = false
   /** @private Store seek time requested before audio is decoded */
   private _pendingSeekTime: number | null = null
+  /** @private Flag to track if the instance has been destroyed */
+  private _isDestroyed = false
 
   /**
    * Creates an instance of Audio player.
@@ -174,6 +176,10 @@ export class AudioClass {
    * If seeking occurred while paused, recreates the source at the new position.
    */
   public play(): void {
+    if (this._isDestroyed) {
+      return
+    }
+
     if (this._states.hasStarted && !this._hasSeekedWhilePaused) {
       this._audioCtx.resume()
       this._startTime = this._audioCtx.currentTime
@@ -227,6 +233,10 @@ export class AudioClass {
    * Pauses audio playback by suspending the audio context.
    */
   public pause(): void {
+    if (this._isDestroyed) {
+      return
+    }
+
     if (this._states.isPlaying) {
       this._pauseTime = this.currentTime
     }
@@ -240,6 +250,10 @@ export class AudioClass {
    * Toggles between play and pause states.
    */
   public toggle(): void {
+    if (this._isDestroyed) {
+      return
+    }
+
     this._states.isPlaying ? this.pause() : this.play()
   }
 
@@ -248,6 +262,10 @@ export class AudioClass {
    * Different from pause as it resets the playback position.
    */
   public stop(): void {
+    if (this._isDestroyed) {
+      return
+    }
+
     if (this._states.hasStarted) {
       this._states.source?.stop(0)
       this._states.isPlaying = false
@@ -260,6 +278,10 @@ export class AudioClass {
    * @param {Function} callback - Function to call when event occurs
    */
   public on(eventType: AudioEvent, callback: <T>(param: { [data: string]: T }) => void): void {
+    if (this._isDestroyed) {
+      return
+    }
+
     this._eventHandler[eventType]?.(callback)
   }
 
@@ -276,6 +298,10 @@ export class AudioClass {
    * @param {number} newVolume - New volume value between 0 and 1
    */
   public set volume(newVolume: number) {
+    if (this._isDestroyed) {
+      return
+    }
+
     if (this._states.gainNode) {
       this._states.gainNode.gain.value = newVolume
     }
@@ -294,6 +320,10 @@ export class AudioClass {
    * @param {boolean} newLoop - Whether audio should loop
    */
   public set loop(newLoop: boolean) {
+    if (this._isDestroyed) {
+      return
+    }
+
     if (this._states.source) {
       this._states.source.loop = newLoop
     }
@@ -344,6 +374,10 @@ export class AudioClass {
    * @param {number} time - Time in seconds to seek to (0 ≤ time ≤ duration)
    */
   public seek(time: number): void {
+    if (this._isDestroyed) {
+      return
+    }
+
     // Clamp time if we know duration, otherwise trust the value
     const clampedTime =
       this.duration > 0 ? Math.max(0, Math.min(time, this.duration)) : Math.max(0, time)
@@ -376,6 +410,48 @@ export class AudioClass {
       this._pauseTime = finalTime
       this._hasSeekedWhilePaused = true
     }
+  }
+
+  /**
+   * Destroys the Audio instance, stopping playback, disconnecting audio nodes,
+   * removing event listeners, and releasing references.
+   * This method is idempotent and safe to call multiple times.
+   */
+  public destroy(): void {
+    if (this._isDestroyed) {
+      return
+    }
+
+    // Stop playback if active
+    if (this._states.source) {
+      this._states.source.onended = null
+
+      try {
+        this._states.source.stop(0)
+      } catch (error) {
+        // Ignore errors if source is already stopped
+      }
+
+      this._states.source.disconnect()
+    }
+
+    // Disconnect gain node
+    this._states.gainNode?.disconnect()
+
+    // Dispose event handler
+    this._eventHandler.dispose()
+
+    // Clear all event listeners
+    this._emitter.removeAllListeners()
+
+    // Clear state references
+    this._states.source = null
+    this._states.gainNode = null
+    this._states.isPlaying = false
+    this._states.hasStarted = false
+    this._states.isDecoded = false
+
+    this._isDestroyed = true
   }
 }
 

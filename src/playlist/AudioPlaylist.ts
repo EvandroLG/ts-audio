@@ -32,7 +32,7 @@ type AudioPlaylistEvent = 'start' | 'end'
  */
 class AudioPlaylist {
   /** Event emitter for handling playlist events */
-  private emmiter: EventEmitter
+  private emiter: EventEmitter
   /** Global state object containing audio playback states */
   private states: typeof globalStates
   /** Array of audio file paths to be played */
@@ -41,6 +41,8 @@ class AudioPlaylist {
   private shouldLoop: boolean
   /** Curried function for playing audio files */
   private curryPlayAudio: ReturnType<typeof playAudio>
+  /** Flag to track if the instance has been destroyed */
+  private isDestroyed = false
 
   /**
    * Creates an instance of AudioPlaylist.
@@ -60,7 +62,7 @@ class AudioPlaylist {
     preload = false,
     preloadLimit = 3,
   }: AudioPlaylistConfig) {
-    this.emmiter = new EventEmitter()
+    this.emiter = new EventEmitter()
     this.states = { ...globalStates, ...{ volume, loop } }
 
     const hasWeights = !Array.isArray(files)
@@ -73,7 +75,7 @@ class AudioPlaylist {
     this.copiedFiles =
       shuffle || hasWeights ? shuffleHelper(normalizedFiles) : normalizedFiles.slice()
 
-    this.curryPlayAudio = playAudio(this.states, this.emmiter)
+    this.curryPlayAudio = playAudio(this.states, this.emiter)
 
     if (preload) {
       preloadFiles(this.copiedFiles, preloadLimit)
@@ -85,6 +87,10 @@ class AudioPlaylist {
    * If no audio is playing or playback was stopped, starts from current position.
    */
   play(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
     const { audio } = this.states
     this.states.isPlaying = true
 
@@ -101,6 +107,10 @@ class AudioPlaylist {
    * Toggles between play and pause states.
    */
   toggle(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
     this.states.isPlaying ? this.pause() : this.play()
   }
 
@@ -108,6 +118,10 @@ class AudioPlaylist {
    * Pauses the current audio playback.
    */
   pause(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
     this.states.audio?.pause()
     this.states.isPlaying = false
   }
@@ -116,6 +130,10 @@ class AudioPlaylist {
    * Stops the current audio playback and resets the player.
    */
   stop(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
     this.states.isPlaying = false
     this.states.isStopped = true
     this.states.audio?.stop()
@@ -126,6 +144,10 @@ class AudioPlaylist {
    * Handles wrapping back to the beginning when reaching the end of the playlist.
    */
   next(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
     const isLastFile = this.states.audioIndex === this.copiedFiles.length - 1
     this.states.audioIndex = isLastFile ? 0 : this.states.audioIndex + 1
 
@@ -143,6 +165,10 @@ class AudioPlaylist {
    * Handles wrapping to the end of the playlist when at the beginning.
    */
   prev(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
     const isFirstFile = this.states.audioIndex === 0
     this.states.audioIndex = isFirstFile ? this.copiedFiles.length - 1 : this.states.audioIndex - 1
 
@@ -160,7 +186,11 @@ class AudioPlaylist {
    * @param {Function} callback - Callback function to execute when event occurs
    */
   on(eventType: AudioPlaylistEvent, callback: (param: { [data: string]: unknown }) => void): void {
-    this.emmiter.listener(eventType, callback)
+    if (this.isDestroyed) {
+      return
+    }
+
+    this.emiter.listener(eventType, callback)
   }
 
   /**
@@ -176,6 +206,10 @@ class AudioPlaylist {
    * @param {number} newVolume - New volume level (0-1)
    */
   set volume(newVolume: number) {
+    if (this.isDestroyed) {
+      return
+    }
+
     this.states.volume = newVolume
 
     if (this.states.audio) {
@@ -196,6 +230,10 @@ class AudioPlaylist {
    * @param {boolean} newLoop - New loop state
    */
   set loop(newLoop: boolean) {
+    if (this.isDestroyed) {
+      return
+    }
+
     this.states.loop = newLoop
   }
 
@@ -205,6 +243,33 @@ class AudioPlaylist {
    */
   get audioCtx(): AudioContext | undefined {
     return this.states.audio?.audioCtx
+  }
+
+  /**
+   * Destroys the AudioPlaylist instance, stopping playback, destroying the current audio instance,
+   * removing event listeners, and releasing references.
+   * This method is safe to call multiple times.
+   */
+  destroy(): void {
+    if (this.isDestroyed) {
+      return
+    }
+
+    // Stop playback
+    this.stop()
+
+    // Destroy current audio instance if exists
+    this.states.audio?.destroy()
+
+    // Clear all event listeners
+    this.emiter.removeAllListeners()
+
+    // Clear references
+    this.states.audio = null
+    this.copiedFiles = []
+
+    // Set destroyed flag
+    this.isDestroyed = true
   }
 }
 

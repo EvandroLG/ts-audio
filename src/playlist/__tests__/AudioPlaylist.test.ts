@@ -5,11 +5,15 @@ import AudioPlaylist from '../AudioPlaylist'
 const playMock = jest.fn()
 const pauseMock = jest.fn()
 const stopMock = jest.fn()
+const destroyMock = jest.fn()
+const onMock = jest.fn()
 
 interface AudioMock {
   play: jest.Mock
   pause: jest.Mock
   stop: jest.Mock
+  destroy: jest.Mock
+  on: jest.Mock
 }
 
 const audioMock = jest.fn(
@@ -17,6 +21,8 @@ const audioMock = jest.fn(
     play: playMock,
     pause: pauseMock,
     stop: stopMock,
+    destroy: destroyMock,
+    on: onMock,
   }),
 )
 
@@ -28,6 +34,8 @@ describe('AudioPlaylist', () => {
   beforeEach(() => {
     pauseMock.mockClear()
     stopMock.mockClear()
+    destroyMock.mockClear()
+    onMock.mockClear()
   })
 
   const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3']
@@ -175,6 +183,105 @@ describe('AudioPlaylist', () => {
       })
 
       expect(utils.shuffle).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('destroy', () => {
+    test('stops playback and destroys current audio instance', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.play()
+      playlist.destroy()
+
+      expect(stopMock).toHaveBeenCalled()
+      expect(destroyMock).toHaveBeenCalled()
+    })
+
+    test('is safe to call multiple times', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.play()
+
+      playlist.destroy()
+      playlist.destroy()
+      playlist.destroy()
+
+      expect(stopMock).toHaveBeenCalledTimes(1)
+      expect(destroyMock).toHaveBeenCalledTimes(1)
+    })
+
+    test('prevents play() after destroy', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.destroy()
+      playlist.play()
+
+      expect(playMock).not.toHaveBeenCalled()
+    })
+
+    test('prevents pause() after destroy', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.play()
+      playlist.destroy()
+
+      pauseMock.mockClear()
+      playlist.pause()
+
+      expect(pauseMock).not.toHaveBeenCalled()
+    })
+
+    test('prevents toggle() after destroy', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.destroy()
+
+      playlist.toggle()
+
+      expect(playMock).not.toHaveBeenCalled()
+    })
+
+    test('prevents stop() after destroy', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.play()
+      playlist.destroy()
+
+      stopMock.mockClear()
+      playlist.stop()
+
+      expect(stopMock).not.toHaveBeenCalled()
+    })
+
+    test('prevents next() after destroy', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.play()
+      playlist.destroy()
+
+      audioMock.mockClear()
+      playMock.mockClear()
+      playlist.next()
+
+      expect(audioMock).not.toHaveBeenCalled()
+      expect(playMock).not.toHaveBeenCalled()
+    })
+
+    test('prevents prev() after destroy', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.play()
+      playlist.destroy()
+
+      audioMock.mockClear()
+      playMock.mockClear()
+      playlist.prev()
+
+      expect(audioMock).not.toHaveBeenCalled()
+      expect(playMock).not.toHaveBeenCalled()
+    })
+
+    test('prevents volume setter after destroy', () => {
+      const playlist = AudioPlaylist({ files })
+      playlist.play()
+      const initialVolume = playlist.volume
+
+      playlist.destroy()
+      playlist.volume = 0.5
+
+      expect(playlist.volume).toBe(initialVolume)
     })
   })
 })
