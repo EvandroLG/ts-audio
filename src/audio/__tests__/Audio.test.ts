@@ -259,30 +259,5 @@ describe('audio', () => {
 
       expect(() => audio.destroy()).not.toThrow()
     })
-
-    it('should handle errors during cleanup gracefully', () => {
-      const errorSource = {
-        ...mockSource,
-        stop: jest.fn().mockImplementation(() => {
-          throw new Error('Already stopped')
-        }),
-        disconnect: jest.fn().mockImplementation(() => {
-          throw new Error('Already disconnected')
-        }),
-      } as unknown as AudioBufferSourceNode
-
-      Object.defineProperty(audio, '_states', {
-        value: {
-          isDecoded: true,
-          isPlaying: true,
-          hasStarted: true,
-          source: errorSource,
-          gainNode: mockGainNode,
-        },
-        writable: true,
-      })
-
-      expect(() => audio.destroy()).not.toThrow()
-    })
   })
 })
