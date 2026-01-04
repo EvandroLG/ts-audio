@@ -32,7 +32,7 @@ type AudioPlaylistEvent = 'start' | 'end'
  */
 class AudioPlaylist {
   /** Event emitter for handling playlist events */
-  private emmiter: EventEmitter
+  private emiter: EventEmitter
   /** Global state object containing audio playback states */
   private states: typeof globalStates
   /** Array of audio file paths to be played */
@@ -62,7 +62,7 @@ class AudioPlaylist {
     preload = false,
     preloadLimit = 3,
   }: AudioPlaylistConfig) {
-    this.emmiter = new EventEmitter()
+    this.emiter = new EventEmitter()
     this.states = { ...globalStates, ...{ volume, loop } }
 
     const hasWeights = !Array.isArray(files)
@@ -75,7 +75,7 @@ class AudioPlaylist {
     this.copiedFiles =
       shuffle || hasWeights ? shuffleHelper(normalizedFiles) : normalizedFiles.slice()
 
-    this.curryPlayAudio = playAudio(this.states, this.emmiter)
+    this.curryPlayAudio = playAudio(this.states, this.emiter)
 
     if (preload) {
       preloadFiles(this.copiedFiles, preloadLimit)
@@ -190,7 +190,7 @@ class AudioPlaylist {
       return
     }
 
-    this.emmiter.listener(eventType, callback)
+    this.emiter.listener(eventType, callback)
   }
 
   /**
@@ -262,7 +262,7 @@ class AudioPlaylist {
     this.states.audio?.destroy()
 
     // Clear all event listeners
-    this.emmiter.removeAllListeners()
+    this.emiter.removeAllListeners()
 
     // Clear references
     this.states.audio = null
