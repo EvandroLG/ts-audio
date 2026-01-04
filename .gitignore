@@ -5,3 +5,4 @@ dist
 coverage
 .cache/
 .parcel-cache/
+.playwright-mcp/

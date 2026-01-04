@@ -52,4 +52,14 @@ export class EventHandler {
 
     this.audioCtx.onstatechange = () => callback({ data: this.audioCtx?.state })
   }
+
+  /**
+   * Disposes the EventHandler by removing the onstatechange listener from the AudioContext.
+   * This method should be called when the EventHandler is no longer needed to prevent memory leaks.
+   */
+  public dispose(): void {
+    if (this.audioCtx) {
+      this.audioCtx.onstatechange = null
+    }
+  }
 }
