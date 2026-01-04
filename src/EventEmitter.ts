@@ -46,4 +46,12 @@ export class EventEmitter {
       this.events[keyEvent](param)
     }
   }
+
+  /**
+   * Removes all registered event listeners.
+   * Clears the internal event map to ensure no callbacks are retained.
+   */
+  public removeAllListeners(): void {
+    this.events = {}
+  }
 }

@@ -377,6 +377,29 @@ export class AudioClass {
       this._hasSeekedWhilePaused = true
     }
   }
+
+  /**
+   * Destroys the Audio instance, stopping playback, disconnecting audio nodes,
+   * removing event listeners, and releasing references.
+   */
+  public destroy(): void {
+    // Stop playback if active
+    this._states.source?.stop(0)
+    this._states.source?.disconnect()
+
+    // Disconnect gain node
+    this._states.gainNode?.disconnect()
+
+    // Clear all event listeners
+    this._emitter.removeAllListeners()
+
+    // Clear state references
+    this._states.source = null
+    this._states.gainNode = null
+    this._states.isPlaying = false
+    this._states.hasStarted = false
+    this._states.isDecoded = false
+  }
 }
 
 /**

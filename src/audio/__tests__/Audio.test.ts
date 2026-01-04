@@ -197,4 +197,92 @@ describe('audio', () => {
       expect(audio['_pendingSeekTime']).toBe(45)
     })
   })
+
+  describe('destroy method', () => {
+    let audio: ReturnType<typeof Audio>
+    let mockSource: AudioBufferSourceNode
+    let mockGainNode: GainNode
+
+    beforeEach(() => {
+      mockSource = {
+        buffer: null,
+        loop: false,
+        stop: jest.fn(),
+        start: jest.fn(),
+        disconnect: jest.fn(),
+        context: audioCtxMock,
+        onended: null,
+      } as unknown as AudioBufferSourceNode
+
+      mockGainNode = {
+        gain: {
+          value: 0.8,
+        },
+        connect: jest.fn(),
+        disconnect: jest.fn(),
+      } as unknown as GainNode
+
+      audio = Audio({ file: 'test.mp3' })
+    })
+
+    it('should properly cleanup resources when destroyed', () => {
+      Object.defineProperty(audio, '_states', {
+        value: {
+          isDecoded: true,
+          isPlaying: true,
+          hasStarted: true,
+          source: mockSource,
+          gainNode: mockGainNode,
+        },
+        writable: true,
+      })
+
+      audio.destroy()
+
+      expect(mockSource.stop).toHaveBeenCalledWith(0)
+      expect(mockSource.disconnect).toHaveBeenCalled()
+      expect(mockGainNode.disconnect).toHaveBeenCalled()
+      expect(mockSource.onended).toBe(null)
+    })
+
+    it('should handle destroy with no active source', () => {
+      Object.defineProperty(audio, '_states', {
+        value: {
+          isDecoded: false,
+          isPlaying: false,
+          hasStarted: false,
+          source: null,
+          gainNode: null,
+        },
+        writable: true,
+      })
+
+      expect(() => audio.destroy()).not.toThrow()
+    })
+
+    it('should handle errors during cleanup gracefully', () => {
+      const errorSource = {
+        ...mockSource,
+        stop: jest.fn().mockImplementation(() => {
+          throw new Error('Already stopped')
+        }),
+        disconnect: jest.fn().mockImplementation(() => {
+          throw new Error('Already disconnected')
+        }),
+      } as unknown as AudioBufferSourceNode
+
+      Object.defineProperty(audio, '_states', {
+        value: {
+          isDecoded: true,
+          isPlaying: true,
+          hasStarted: true,
+          source: errorSource,
+          gainNode: mockGainNode,
+        },
+        writable: true,
+      })
+
+      expect(() => audio.destroy()).not.toThrow()
+    })
+  })
 })
