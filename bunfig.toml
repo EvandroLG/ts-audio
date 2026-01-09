@@ -1,0 +1,5 @@
+[test]
+preload = ["./test-setup.ts"]
+
+[test.coverage]
+enabled = true
