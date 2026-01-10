@@ -1,9 +1,7 @@
 import { describe, it, expect, beforeEach, mock } from 'bun:test'
 
-// ✅ Mock modules BEFORE importing Audio
 mock.module('../AudioCtx', () => ({
   AudioCtx: mock(() => {
-    // default; will be overridden per-test via mockImplementation
     throw new Error('AudioCtx mock not configured')
   }),
 }))
