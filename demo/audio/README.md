@@ -1,26 +1,15 @@
-# [ts-audio] sample
-For run the sample application, first install the dependencies:
+# [ts-audio] Audio Demo
+
+To run the demo application, first install the dependencies:
 
 ```sh
-$ npm install
+bun install
 ```
 
-or
+Then, start the dev server:
 
 ```sh
-$ yarn install
-```
-
-Then, simply run:
-
-```sh
-$ npm start
-```
-
-or
-
-```sh
-$ yarn start
+bun run dev
 ```
 
 The application should be running at `http://localhost:1234` :)
