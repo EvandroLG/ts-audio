@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a TypeScript audio library that provides audio playback, playlist management, and Web Audio API integration. The project follows strict TypeScript standards with comprehensive testing.
+This is a TypeScript audio library that provides audio playback, playlist management, and Web Audio API integration. The project uses **Bun** as its runtime and package manager, follows strict TypeScript standards, and includes comprehensive testing with Bun's built-in test runner.
 
 ## Code Style & Standards
 
@@ -55,21 +55,24 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 
 ## Testing Standards
 
-### Jest Testing
+### Bun Testing
 
 - Write comprehensive unit tests for all public methods
 - Use descriptive test names that explain the expected behavior
-- Mock external dependencies (Audio, utils) appropriately
+- Mock external dependencies using `mock.module()` from `bun:test`
 - Test both success and error scenarios
 - Use beforeEach/afterEach for proper test isolation
 - Verify method calls and state changes
+- Import test utilities from `bun:test`: `describe`, `test`, `expect`, `beforeEach`, `mock`, `spyOn`
 
 ### Test Structure
 
 - Group related tests using `describe` blocks
 - Use `test` or `it` for individual test cases
-- Mock complex objects with proper interfaces
+- Use `mock.module()` for mocking modules (replaces `jest.mock()`)
+- Use `spyOn()` for spying on methods (replaces `jest.spyOn()`)
 - Clear test data setup and verification
+- Tests use happy-dom for browser API simulation
 
 ## Error Handling
 
@@ -136,6 +139,14 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 
 ## Build & Development
 
+### Runtime & Package Manager
+
+- This project uses **Bun** as the JavaScript runtime and package manager
+- Use `bun install` to install dependencies
+- Use `bun test` to run tests
+- Use `bun run <script>` to run package.json scripts
+- Use `bunx` to execute binaries (equivalent to npx)
+
 ### Code Quality
 
 - Use ESLint for code linting and style enforcement
@@ -149,6 +160,7 @@ This is a TypeScript audio library that provides audio playback, playlist manage
 - Use tree-shaking for unused code elimination
 - Minimize external dependencies
 - Optimize for modern browsers while maintaining compatibility
+- Uses microbundle for bundling (ES, CJS, UMD outputs)
 
 ## Common Patterns
 
