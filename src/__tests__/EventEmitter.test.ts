@@ -1,10 +1,11 @@
+import { describe, test, expect, mock } from 'bun:test'
 import { EventEmitter } from '../EventEmitter'
 
 describe('EventEmitter', () => {
   test('emit', () => {
     const emitter = new EventEmitter()
     const keyEvent = 'decoded'
-    const callback = jest.fn()
+    const callback = mock(() => {})
     const param = { data: true }
 
     emitter.listener(keyEvent, callback)
