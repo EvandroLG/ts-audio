@@ -1,11 +1,5 @@
 import { describe, test, expect, beforeEach, mock } from 'bun:test'
 
-mock.module('../EventEmitter', () => ({
-  EventEmitter: class EventEmitter {
-    listener = mock(() => {})
-  },
-}))
-
 import { EventEmitter } from '../EventEmitter'
 import { EventHandler } from '../EventHandler'
 

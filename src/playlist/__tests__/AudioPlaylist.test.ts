@@ -1,16 +1,16 @@
-import { describe, it, test, expect, beforeEach, mock, spyOn } from 'bun:test'
+import { describe, test, expect, beforeEach, afterEach, mock, spyOn } from 'bun:test'
 
-import * as utils from '../utils'
+import * as utils from '..//utils'
 import * as Audio from '../../audio/Audio'
 import AudioPlaylist from '../AudioPlaylist'
 
-const playMock = mock(() => {})
-const pauseMock = mock(() => {})
-const stopMock = mock(() => {})
-const destroyMock = mock(() => {})
-const onMock = mock(() => {})
+const playMock = mock()
+const pauseMock = mock()
+const stopMock = mock()
+const destroyMock = mock()
+const onMock = mock()
 
-type AudioMock = {
+interface AudioMock {
   play: typeof playMock
   pause: typeof pauseMock
   stop: typeof stopMock
@@ -28,26 +28,39 @@ const audioMock = mock(
   }),
 )
 
-// Bun: spyOn(obj, "method") works similar to jest.spyOn
-spyOn(Audio, 'default').mockImplementation(audioMock)
-
-// If you don’t care about return values, you can just noop them.
-spyOn(utils, 'preloadFiles').mockImplementation(() => undefined)
-spyOn(utils, 'shuffle').mockImplementation(() => undefined)
+let audioSpy: ReturnType<typeof spyOn>
+let preloadSpy: ReturnType<typeof spyOn>
+let shuffleSpy: ReturnType<typeof spyOn>
 
 describe('AudioPlaylist', () => {
   beforeEach(() => {
+    // Clear all mocks before each test
     playMock.mockClear()
     pauseMock.mockClear()
     stopMock.mockClear()
     destroyMock.mockClear()
     onMock.mockClear()
+    audioMock.mockClear()
+
+    // Set up mocks before each test
+    audioSpy = spyOn(Audio, 'default').mockImplementation(audioMock)
+    preloadSpy = spyOn(utils, 'preloadFiles').mockImplementation(() => {})
+    shuffleSpy = spyOn(utils, 'shuffle').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    // Restore original implementations after each test
+    audioSpy.mockRestore()
+    preloadSpy.mockRestore()
+    shuffleSpy.mockRestore()
   })
 
   const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3']
 
   describe('pause', () => {
-    const playlist = AudioPlaylist({ files })
+    const playlist = AudioPlaylist({
+      files,
+    })
 
     test('invokes the pause method from audio', () => {
       playlist.pause()
@@ -58,9 +71,11 @@ describe('AudioPlaylist', () => {
   })
 
   describe('stop', () => {
-    const playlist = AudioPlaylist({ files })
+    const playlist = AudioPlaylist({
+      files,
+    })
 
-    it('invokes the stop method from audio', () => {
+    test('invokes the stop method from audio', () => {
       playlist.stop()
       playlist.next()
       playlist.stop()
@@ -69,7 +84,9 @@ describe('AudioPlaylist', () => {
   })
 
   describe('next', () => {
-    const playlist = AudioPlaylist({ files })
+    const playlist = AudioPlaylist({
+      files,
+    })
 
     const verifyPlayNext = (file: string) => {
       playlist.next()
@@ -99,7 +116,9 @@ describe('AudioPlaylist', () => {
   })
 
   describe('prev', () => {
-    const playlist = AudioPlaylist({ files })
+    const playlist = AudioPlaylist({
+      files,
+    })
 
     const verifyPlayPrev = (file: string) => {
       playlist.prev()
@@ -130,8 +149,7 @@ describe('AudioPlaylist', () => {
 
   describe('preload', () => {
     beforeEach(() => {
-      // Bun: spy returns a mock-like function; mockClear works.
-      ;(utils.preloadFiles as unknown as { mockClear: () => void }).mockClear()
+      ;(utils.preloadFiles as ReturnType<typeof mock>).mockClear()
     })
 
     test('preloads files using the default limit', () => {
@@ -154,7 +172,9 @@ describe('AudioPlaylist', () => {
     })
 
     test('does not preload files', () => {
-      AudioPlaylist({ files })
+      AudioPlaylist({
+        files,
+      })
 
       expect(utils.preloadFiles).not.toHaveBeenCalled()
     })
@@ -162,7 +182,7 @@ describe('AudioPlaylist', () => {
 
   describe('shuffle', () => {
     beforeEach(() => {
-      ;(utils.shuffle as unknown as { mockClear: () => void }).mockClear()
+      ;(utils.shuffle as ReturnType<typeof mock>).mockClear()
     })
 
     test('shuffles the files', () => {
@@ -175,7 +195,9 @@ describe('AudioPlaylist', () => {
     })
 
     test('does not shuffle the files', () => {
-      AudioPlaylist({ files })
+      AudioPlaylist({
+        files,
+      })
 
       expect(utils.shuffle).not.toHaveBeenCalled()
     })

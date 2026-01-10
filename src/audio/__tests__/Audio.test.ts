@@ -1,17 +1,14 @@
 import { describe, it, expect, beforeEach, mock } from 'bun:test'
+import Audio from '../Audio'
+import { AudioCtx } from '../AudioCtx'
 
 mock.module('../AudioCtx', () => ({
-  AudioCtx: mock(() => {
-    throw new Error('AudioCtx mock not configured')
-  }),
+  AudioCtx: mock(),
 }))
 
 mock.module('../initializeSource', () => ({
-  initializeSource: mock(() => undefined),
+  initializeSource: mock(),
 }))
-
-import Audio from '../Audio'
-import { AudioCtx } from '../AudioCtx'
 
 describe('audio', () => {
   let audioCtxMock: AudioContext
@@ -21,13 +18,11 @@ describe('audio', () => {
   let mockSuspend: ReturnType<typeof mock>
 
   beforeEach(() => {
-    // Create mock functions
     mockCreateBufferSource = mock(() => {})
     mockCreateGain = mock(() => {})
     mockResume = mock(() => {})
     mockSuspend = mock(() => {})
 
-    // Create mock AudioContext
     audioCtxMock = {
       createBufferSource: mockCreateBufferSource as any,
       createGain: mockCreateGain as any,
