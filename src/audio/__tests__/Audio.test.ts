@@ -1,52 +1,58 @@
+import { describe, it, expect, beforeEach, mock } from 'bun:test'
+
+// ✅ Mock modules BEFORE importing Audio
+mock.module('../AudioCtx', () => ({
+  AudioCtx: mock(() => {
+    // default; will be overridden per-test via mockImplementation
+    throw new Error('AudioCtx mock not configured')
+  }),
+}))
+
+mock.module('../initializeSource', () => ({
+  initializeSource: mock(() => undefined),
+}))
+
 import Audio from '../Audio'
 import { AudioCtx } from '../AudioCtx'
 
-jest.mock('../AudioCtx', () => ({
-  AudioCtx: jest.fn(),
-}))
-
-jest.mock('../initializeSource', () => ({
-  initializeSource: jest.fn(),
-}))
-
 describe('audio', () => {
   let audioCtxMock: AudioContext
-  let mockCreateBufferSource: jest.Mock
-  let mockCreateGain: jest.Mock
-  let mockResume: jest.Mock
-  let mockSuspend: jest.Mock
+  let mockCreateBufferSource: ReturnType<typeof mock>
+  let mockCreateGain: ReturnType<typeof mock>
+  let mockResume: ReturnType<typeof mock>
+  let mockSuspend: ReturnType<typeof mock>
 
   beforeEach(() => {
     // Create mock functions
-    mockCreateBufferSource = jest.fn()
-    mockCreateGain = jest.fn()
-    mockResume = jest.fn()
-    mockSuspend = jest.fn()
+    mockCreateBufferSource = mock(() => {})
+    mockCreateGain = mock(() => {})
+    mockResume = mock(() => {})
+    mockSuspend = mock(() => {})
 
     // Create mock AudioContext
     audioCtxMock = {
-      createBufferSource: mockCreateBufferSource,
-      createGain: mockCreateGain,
-      resume: mockResume,
-      suspend: mockSuspend,
+      createBufferSource: mockCreateBufferSource as any,
+      createGain: mockCreateGain as any,
+      resume: mockResume as any,
+      suspend: mockSuspend as any,
       state: 'running',
     } as unknown as AudioContext
 
-    // Set up the mock implementation
-    ;(AudioCtx as unknown as jest.Mock).mockImplementation(() => audioCtxMock)
+    // Configure AudioCtx() to return our fake context
+    ;(AudioCtx as unknown as ReturnType<typeof mock>).mockImplementation(() => audioCtxMock)
 
     // Reset mock implementations
     mockCreateBufferSource.mockReturnValue({
       buffer: null,
       loop: false,
-      stop: jest.fn(),
-      start: jest.fn(),
+      stop: mock(() => {}),
+      start: mock(() => {}),
       context: audioCtxMock,
     })
 
     mockCreateGain.mockReturnValue({
       gain: { value: 0.8 },
-      connect: jest.fn(),
+      connect: mock(() => {}),
     })
   })
 
@@ -69,16 +75,14 @@ describe('audio', () => {
       mockSource = {
         buffer: null,
         loop: false,
-        stop: jest.fn(),
-        start: jest.fn(),
+        stop: mock(() => {}),
+        start: mock(() => {}),
         context: audioCtxMock,
       } as unknown as AudioBufferSourceNode
 
       mockGainNode = {
-        gain: {
-          value: 0.8,
-        },
-        connect: jest.fn(),
+        gain: { value: 0.8 },
+        connect: mock(() => {}),
       } as unknown as GainNode
 
       audio = Audio({ file: 'test.mp3' })
@@ -119,7 +123,7 @@ describe('audio', () => {
       })
 
       expect(() => audio.seek(-10)).not.toThrow()
-      expect(audio['_pauseTime']).toBe(0)
+      expect((audio as any)['_pauseTime']).toBe(0)
     })
 
     it('should clamp time beyond duration to duration', () => {
@@ -137,7 +141,7 @@ describe('audio', () => {
       })
 
       expect(() => audio.seek(150)).not.toThrow()
-      expect(audio['_pauseTime']).toBe(120)
+      expect((audio as any)['_pauseTime']).toBe(120)
     })
 
     it('should seek to boundary values correctly', () => {
@@ -162,7 +166,6 @@ describe('audio', () => {
     })
 
     it('should accept seek before play() is called', () => {
-      // Audio is in initial state - not decoded, not started
       Object.defineProperty(audio, '_states', {
         value: {
           isDecoded: false,
@@ -174,13 +177,11 @@ describe('audio', () => {
         writable: true,
       })
 
-      // Should not throw and should store pending seek
       expect(() => audio.seek(30)).not.toThrow()
-      expect(audio['_pendingSeekTime']).toBe(30)
+      expect((audio as any)['_pendingSeekTime']).toBe(30)
     })
 
     it('should accept seek before audio is decoded', () => {
-      // Audio source exists but not decoded yet
       Object.defineProperty(audio, '_states', {
         value: {
           isDecoded: false,
@@ -192,9 +193,8 @@ describe('audio', () => {
         writable: true,
       })
 
-      // Should not throw and should store pending seek
       expect(() => audio.seek(45)).not.toThrow()
-      expect(audio['_pendingSeekTime']).toBe(45)
+      expect((audio as any)['_pendingSeekTime']).toBe(45)
     })
   })
 
@@ -207,19 +207,17 @@ describe('audio', () => {
       mockSource = {
         buffer: null,
         loop: false,
-        stop: jest.fn(),
-        start: jest.fn(),
-        disconnect: jest.fn(),
+        stop: mock(() => {}),
+        start: mock(() => {}),
+        disconnect: mock(() => {}),
         context: audioCtxMock,
         onended: null,
       } as unknown as AudioBufferSourceNode
 
       mockGainNode = {
-        gain: {
-          value: 0.8,
-        },
-        connect: jest.fn(),
-        disconnect: jest.fn(),
+        gain: { value: 0.8 },
+        connect: mock(() => {}),
+        disconnect: mock(() => {}),
       } as unknown as GainNode
 
       audio = Audio({ file: 'test.mp3' })
@@ -239,9 +237,9 @@ describe('audio', () => {
 
       audio.destroy()
 
-      expect(mockSource.stop).toHaveBeenCalledWith(0)
-      expect(mockSource.disconnect).toHaveBeenCalled()
-      expect(mockGainNode.disconnect).toHaveBeenCalled()
+      expect(mockSource.stop as any).toHaveBeenCalledWith(0)
+      expect(mockSource.disconnect as any).toHaveBeenCalled()
+      expect(mockGainNode.disconnect as any).toHaveBeenCalled()
       expect(mockSource.onended).toBe(null)
     })
 

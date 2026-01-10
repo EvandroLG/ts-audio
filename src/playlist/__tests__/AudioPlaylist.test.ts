@@ -1,22 +1,24 @@
-import * as utils from '..//utils'
+import { describe, it, test, expect, beforeEach, mock, spyOn } from 'bun:test'
+
+import * as utils from '../utils'
 import * as Audio from '../../audio/Audio'
 import AudioPlaylist from '../AudioPlaylist'
 
-const playMock = jest.fn()
-const pauseMock = jest.fn()
-const stopMock = jest.fn()
-const destroyMock = jest.fn()
-const onMock = jest.fn()
+const playMock = mock(() => {})
+const pauseMock = mock(() => {})
+const stopMock = mock(() => {})
+const destroyMock = mock(() => {})
+const onMock = mock(() => {})
 
-interface AudioMock {
-  play: jest.Mock
-  pause: jest.Mock
-  stop: jest.Mock
-  destroy: jest.Mock
-  on: jest.Mock
+type AudioMock = {
+  play: typeof playMock
+  pause: typeof pauseMock
+  stop: typeof stopMock
+  destroy: typeof destroyMock
+  on: typeof onMock
 }
 
-const audioMock = jest.fn(
+const audioMock = mock(
   (): AudioMock => ({
     play: playMock,
     pause: pauseMock,
@@ -26,12 +28,16 @@ const audioMock = jest.fn(
   }),
 )
 
-jest.spyOn(Audio, 'default').mockImplementation(audioMock)
-jest.spyOn(utils, 'preloadFiles').mockImplementation()
-jest.spyOn(utils, 'shuffle').mockImplementation()
+// Bun: spyOn(obj, "method") works similar to jest.spyOn
+spyOn(Audio, 'default').mockImplementation(audioMock)
+
+// If you don’t care about return values, you can just noop them.
+spyOn(utils, 'preloadFiles').mockImplementation(() => undefined)
+spyOn(utils, 'shuffle').mockImplementation(() => undefined)
 
 describe('AudioPlaylist', () => {
   beforeEach(() => {
+    playMock.mockClear()
     pauseMock.mockClear()
     stopMock.mockClear()
     destroyMock.mockClear()
@@ -41,9 +47,7 @@ describe('AudioPlaylist', () => {
   const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3']
 
   describe('pause', () => {
-    const playlist = AudioPlaylist({
-      files,
-    })
+    const playlist = AudioPlaylist({ files })
 
     test('invokes the pause method from audio', () => {
       playlist.pause()
@@ -54,9 +58,7 @@ describe('AudioPlaylist', () => {
   })
 
   describe('stop', () => {
-    const playlist = AudioPlaylist({
-      files,
-    })
+    const playlist = AudioPlaylist({ files })
 
     it('invokes the stop method from audio', () => {
       playlist.stop()
@@ -67,9 +69,7 @@ describe('AudioPlaylist', () => {
   })
 
   describe('next', () => {
-    const playlist = AudioPlaylist({
-      files,
-    })
+    const playlist = AudioPlaylist({ files })
 
     const verifyPlayNext = (file: string) => {
       playlist.next()
@@ -99,9 +99,7 @@ describe('AudioPlaylist', () => {
   })
 
   describe('prev', () => {
-    const playlist = AudioPlaylist({
-      files,
-    })
+    const playlist = AudioPlaylist({ files })
 
     const verifyPlayPrev = (file: string) => {
       playlist.prev()
@@ -132,7 +130,8 @@ describe('AudioPlaylist', () => {
 
   describe('preload', () => {
     beforeEach(() => {
-      ;(utils.preloadFiles as jest.Mock).mockClear()
+      // Bun: spy returns a mock-like function; mockClear works.
+      ;(utils.preloadFiles as unknown as { mockClear: () => void }).mockClear()
     })
 
     test('preloads files using the default limit', () => {
@@ -155,9 +154,7 @@ describe('AudioPlaylist', () => {
     })
 
     test('does not preload files', () => {
-      AudioPlaylist({
-        files,
-      })
+      AudioPlaylist({ files })
 
       expect(utils.preloadFiles).not.toHaveBeenCalled()
     })
@@ -165,7 +162,7 @@ describe('AudioPlaylist', () => {
 
   describe('shuffle', () => {
     beforeEach(() => {
-      ;(utils.shuffle as jest.Mock).mockClear()
+      ;(utils.shuffle as unknown as { mockClear: () => void }).mockClear()
     })
 
     test('shuffles the files', () => {
@@ -178,9 +175,7 @@ describe('AudioPlaylist', () => {
     })
 
     test('does not shuffle the files', () => {
-      AudioPlaylist({
-        files,
-      })
+      AudioPlaylist({ files })
 
       expect(utils.shuffle).not.toHaveBeenCalled()
     })
