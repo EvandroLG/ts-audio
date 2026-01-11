@@ -111,7 +111,11 @@ class AudioPlaylist {
       return
     }
 
-    this.states.isPlaying ? this.pause() : this.play()
+    if (this.states.isPlaying) {
+      this.pause()
+    } else {
+      this.play()
+    }
   }
 
   /**

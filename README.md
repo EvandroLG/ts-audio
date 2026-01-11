@@ -27,50 +27,54 @@ yarn add ts-audio
 pnpm add ts-audio
 ```
 
+```bash
+bun add ts-audio
+```
+
 ## 🚀 Quick Start
 
 ### Basic Audio Player
 
 ```typescript
-import { Audio } from 'ts-audio';
+import { Audio } from 'ts-audio'
 
 const audio = Audio({
   file: './song.mp3',
   volume: 0.5,
   loop: true,
-  preload: true
-});
+  preload: true,
+})
 
 // Play the audio
-audio.play();
+audio.play()
 
 // Pause
-audio.pause();
+audio.pause()
 
 // Stop and reset
-audio.stop();
+audio.stop()
 ```
 
 ### Audio Playlist
 
 ```typescript
-import { AudioPlaylist } from 'ts-audio';
+import { AudioPlaylist } from 'ts-audio'
 
 const playlist = AudioPlaylist({
   files: ['./song1.mp3', './song2.mp3', './song3.mp3'],
   volume: 0.7,
   shuffle: true,
-  loop: true
-});
+  loop: true,
+})
 
 // Start the playlist
-playlist.play();
+playlist.play()
 
 // Next track
-playlist.next();
+playlist.next()
 
 // Previous track
-playlist.previous();
+playlist.previous()
 ```
 
 ## 📚 API Reference
@@ -83,44 +87,44 @@ The `Audio` component provides control over a single audio file with full playba
 
 ```typescript
 type AudioConfig = {
-  file: string;           // Path or URL to the audio file
-  volume?: number;        // Initial volume (0-1, default: 1)
-  time?: number;          // Start time in seconds (default: 0)
-  autoPlay?: boolean;     // Auto-play on creation (default: false)
-  loop?: boolean;         // Loop the audio (default: false)
-  preload?: boolean;      // Preload the audio file (default: false)
+  file: string // Path or URL to the audio file
+  volume?: number // Initial volume (0-1, default: 1)
+  time?: number // Start time in seconds (default: 0)
+  autoPlay?: boolean // Auto-play on creation (default: false)
+  loop?: boolean // Loop the audio (default: false)
+  preload?: boolean // Preload the audio file (default: false)
 }
 ```
 
 #### Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `duration` | `number` | Total duration in seconds |
-| `currentTime` | `number` | Current playback position in seconds |
-| `volume` | `number` | Current volume level (0-1) |
-| `loop` | `boolean` | Whether audio is looping |
-| `isPlaying` | `boolean` | Current playback state |
+| Property      | Type      | Description                          |
+| ------------- | --------- | ------------------------------------ |
+| `duration`    | `number`  | Total duration in seconds            |
+| `currentTime` | `number`  | Current playback position in seconds |
+| `volume`      | `number`  | Current volume level (0-1)           |
+| `loop`        | `boolean` | Whether audio is looping             |
+| `isPlaying`   | `boolean` | Current playback state               |
 
 #### Methods
 
-| Method | Description |
-|--------|-------------|
-| `play()` | Start or resume playback |
-| `pause()` | Pause playback |
-| `stop()` | Stop playback and reset to beginning |
-| `toggle()` | Toggle between play/pause |
-| `seek(time: number)` | Seek to specific time in seconds |
-| `destroy()` | Clean up resources and remove all event listeners |
+| Method               | Description                                       |
+| -------------------- | ------------------------------------------------- |
+| `play()`             | Start or resume playback                          |
+| `pause()`            | Pause playback                                    |
+| `stop()`             | Stop playback and reset to beginning              |
+| `toggle()`           | Toggle between play/pause                         |
+| `seek(time: number)` | Seek to specific time in seconds                  |
+| `destroy()`          | Clean up resources and remove all event listeners |
 
 #### Events
 
 ```typescript
 // Listen to audio events
-audio.on('ready', (data) => console.log('Audio loaded:', data));
-audio.on('start', () => console.log('Playback started'));
-audio.on('state', (data) => console.log('State changed:', data));
-audio.on('end', () => console.log('Playback ended'));
+audio.on('ready', (data) => console.log('Audio loaded:', data))
+audio.on('start', () => console.log('Playback started'))
+audio.on('state', (data) => console.log('State changed:', data))
+audio.on('end', () => console.log('Playback ended'))
 ```
 
 ### AudioPlaylist Component
@@ -131,26 +135,26 @@ The `AudioPlaylist` component manages multiple audio files with advanced playlis
 
 ```typescript
 type AudioPlaylistConfig = {
-  files: string[] | { [key: string]: number };  // Array of files or weighted object
-  volume?: number;        // Initial volume (0-1, default: 1)
-  loop?: boolean;         // Loop the playlist (default: false)
-  shuffle?: boolean;      // Shuffle playback order (default: false)
-  preload?: boolean;      // Preload audio files (default: false)
-  preloadLimit?: number;  // Number of files to preload (default: 3)
+  files: string[] | { [key: string]: number } // Array of files or weighted object
+  volume?: number // Initial volume (0-1, default: 1)
+  loop?: boolean // Loop the playlist (default: false)
+  shuffle?: boolean // Shuffle playback order (default: false)
+  preload?: boolean // Preload audio files (default: false)
+  preloadLimit?: number // Number of files to preload (default: 3)
 }
 ```
 
 #### Methods
 
-| Method | Description |
-|--------|-------------|
-| `play()` | Start or resume playlist |
-| `pause()` | Pause playlist |
-| `stop()` | Stop playlist and reset |
-| `next()` | Play next track |
-| `previous()` | Play previous track |
-| `shuffle()` | Shuffle remaining tracks |
-| `destroy()` | Clean up resources and remove all event listeners |
+| Method       | Description                                       |
+| ------------ | ------------------------------------------------- |
+| `play()`     | Start or resume playlist                          |
+| `pause()`    | Pause playlist                                    |
+| `stop()`     | Stop playlist and reset                           |
+| `next()`     | Play next track                                   |
+| `previous()` | Play previous track                               |
+| `shuffle()`  | Shuffle remaining tracks                          |
+| `destroy()`  | Clean up resources and remove all event listeners |
 
 ## 🎯 Advanced Examples
 
@@ -159,12 +163,12 @@ type AudioPlaylistConfig = {
 ```typescript
 const weightedPlaylist = AudioPlaylist({
   files: {
-    './popular-song.mp3': 0.6,    // 60% chance
-    './regular-song.mp3': 0.3,    // 30% chance
-    './rare-song.mp3': 0.1        // 10% chance
+    './popular-song.mp3': 0.6, // 60% chance
+    './regular-song.mp3': 0.3, // 30% chance
+    './rare-song.mp3': 0.1, // 10% chance
   },
-  shuffle: true
-});
+  shuffle: true,
+})
 ```
 
 ### Audio with Event Handling
@@ -173,17 +177,17 @@ const weightedPlaylist = AudioPlaylist({
 const audio = Audio({
   file: './background-music.mp3',
   volume: 0.3,
-  loop: true
-});
+  loop: true,
+})
 
 audio.on('ready', () => {
-  console.log('Background music loaded');
-  audio.play();
-});
+  console.log('Background music loaded')
+  audio.play()
+})
 
 audio.on('end', () => {
-  console.log('Track finished, looping...');
-});
+  console.log('Track finished, looping...')
+})
 ```
 
 ### Interactive Audio Controls
@@ -191,24 +195,24 @@ audio.on('end', () => {
 ```typescript
 const audio = Audio({
   file: './song.mp3',
-  preload: true
-});
+  preload: true,
+})
 
 // Volume control
 document.getElementById('volume-slider').addEventListener('input', (e) => {
-  audio.volume = e.target.value / 100;
-});
+  audio.volume = e.target.value / 100
+})
 
 // Time seeking
 document.getElementById('time-slider').addEventListener('change', (e) => {
-  const percent = e.target.value / 100;
-  audio.currentTime = audio.duration * percent;
-});
+  const percent = e.target.value / 100
+  audio.currentTime = audio.duration * percent
+})
 
 // Play/pause toggle
 document.getElementById('play-button').addEventListener('click', () => {
-  audio.toggle();
-});
+  audio.toggle()
+})
 ```
 
 ### Resource Management and Cleanup
@@ -277,19 +281,23 @@ function MusicPlayer() {
 ### Common Issues
 
 **Audio won't play:**
+
 - Ensure user interaction before calling `play()` (browser autoplay policy)
 - Check if audio file path is correct
 - Verify audio file format is supported (MP3, WAV, OGG, etc.)
 
 **Volume not working:**
+
 - Volume range is 0-1 (0 = muted, 1 = full volume)
 - Check if volume is being set after audio is loaded
 
 **Events not firing:**
+
 - Ensure event listeners are attached before calling `play()`
 - Check browser console for errors
 
 **Memory leaks:**
+
 - Always call `destroy()` when done with an Audio or AudioPlaylist instance
 - Particularly important in single-page applications (SPA) and React components
 - Call `destroy()` in component cleanup/unmount lifecycle methods

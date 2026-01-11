@@ -9,26 +9,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Modern builds: **2.5KB max**
 - UMD build: **2.5KB max**
 
-Always run `npm run size` after any changes to verify bundle size compliance. Every line of code counts toward these limits.
+Always run `bun run size` after any changes to verify bundle size compliance. Every line of code counts toward these limits.
 
 ## Common Commands
 
 ### Development
 
-- `npm run build` - Build the library using microbundle (outputs to dist/)
-- `npm run test` - Run Jest tests
-- `npm run lint` - Lint source code with ESLint
-- `npm run lint:fix` - Fix linting issues automatically
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
-- `npm run size` - Build and check bundle size limits
+- `bun run build` - Build the library using microbundle (outputs to dist/)
+- `bun test` - Run Bun tests
+- `bun run lint` - Lint source code with ESLint
+- `bun run lint:fix` - Fix linting issues automatically
+- `bun run format` - Format code with Prettier
+- `bun run format:check` - Check code formatting
+- `bun run typecheck` - Run TypeScript type checking
+- `bun run size` - Build and check bundle size limits
 - `./scripts/build.sh` - Direct build script execution
 
 ### Testing
 
-- `npm test` - Run all tests
-- `jest src/audio/__tests__/Audio.test.ts` - Run specific test file
-- Tests use jsdom environment for DOM-based audio testing
+- `bun test` - Run all tests
+- `bun test src/audio/__tests__/Audio.test.ts` - Run specific test file
+- `bun test --coverage` - Run tests with coverage
+- Tests use happy-dom for DOM-based audio testing
 
 ## Architecture
 
@@ -52,7 +54,7 @@ This is a TypeScript audio library that provides two main components:
 - `src/audio/` - Single audio player implementation
 - `src/playlist/` - Playlist functionality
 - `src/EventEmitter.ts` & `src/EventHandler.ts` - Event system
-- `__tests__/` directories - Jest tests co-located with source
+- `__tests__/` directories - Bun tests co-located with source
 
 ### Build System
 
@@ -63,6 +65,20 @@ This is a TypeScript audio library that provides two main components:
 
 ### Demo Applications
 
-- `demo/audio/` - Single audio player example
-- `demo/playlist/` - Playlist example
-- Both use webpack for local development
+- `demo/audio/` - Single audio player example (port 1234)
+- `demo/playlist/` - Playlist example (port 1235)
+- Both use Bun's built-in server with on-the-fly bundling
+
+### Running Demos
+
+```bash
+# Audio demo
+cd demo/audio
+bun install
+bun run dev
+
+# Playlist demo
+cd demo/playlist
+bun install
+bun run dev
+```

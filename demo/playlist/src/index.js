@@ -1,8 +1,8 @@
 import { AudioPlaylist } from 'ts-audio'
 
-import songOne from './1.mp3'
-import songTwo from './2.mp3'
-import songThree from './3.mp3'
+const songOne = './1.mp3'
+const songTwo = './2.mp3'
+const songThree = './3.mp3'
 
 const getVolume = (element) => Number(element.value) / 100
 const range = document.getElementById('range')

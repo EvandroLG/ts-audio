@@ -254,7 +254,11 @@ export class AudioClass {
       return
     }
 
-    this._states.isPlaying ? this.pause() : this.play()
+    if (this._states.isPlaying) {
+      this.pause()
+    } else {
+      this.play()
+    }
   }
 
   /**
@@ -428,7 +432,7 @@ export class AudioClass {
 
       try {
         this._states.source.stop(0)
-      } catch (error) {
+      } catch {
         // Ignore errors if source is already stopped
       }
 

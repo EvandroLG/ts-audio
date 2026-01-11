@@ -10,7 +10,7 @@ jobs:
   test:
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 21.x]
+        bun-version: [latest, canary]
 
     runs-on: ubuntu-latest
 
@@ -18,26 +18,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          bun-version: ${{ matrix.bun-version }}
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install
 
       - name: Type check
-        run: npx tsc --noEmit
+        run: bun run typecheck
 
       - name: Lint
-        run: npm run lint
+        run: bun run lint
 
       - name: Check formatting
-        run: npm run format:check
+        run: bun run format:check
 
       - name: Run tests
-        run: npm run test -- --ci --coverage --maxWorkers=2
+        run: bun test --coverage
 
   build:
     needs: test
@@ -48,17 +47,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20.x'
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install
 
       - name: Build
-        run: npm run build
+        run: bun run build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

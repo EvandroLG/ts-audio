@@ -1,22 +1,24 @@
+import { describe, test, expect, beforeEach, afterEach, mock, spyOn } from 'bun:test'
+
 import * as utils from '..//utils'
 import * as Audio from '../../audio/Audio'
 import AudioPlaylist from '../AudioPlaylist'
 
-const playMock = jest.fn()
-const pauseMock = jest.fn()
-const stopMock = jest.fn()
-const destroyMock = jest.fn()
-const onMock = jest.fn()
+const playMock = mock()
+const pauseMock = mock()
+const stopMock = mock()
+const destroyMock = mock()
+const onMock = mock()
 
 interface AudioMock {
-  play: jest.Mock
-  pause: jest.Mock
-  stop: jest.Mock
-  destroy: jest.Mock
-  on: jest.Mock
+  play: typeof playMock
+  pause: typeof pauseMock
+  stop: typeof stopMock
+  destroy: typeof destroyMock
+  on: typeof onMock
 }
 
-const audioMock = jest.fn(
+const audioMock = mock(
   (): AudioMock => ({
     play: playMock,
     pause: pauseMock,
@@ -26,16 +28,31 @@ const audioMock = jest.fn(
   }),
 )
 
-jest.spyOn(Audio, 'default').mockImplementation(audioMock)
-jest.spyOn(utils, 'preloadFiles').mockImplementation()
-jest.spyOn(utils, 'shuffle').mockImplementation()
+let audioSpy: ReturnType<typeof spyOn>
+let preloadSpy: ReturnType<typeof spyOn>
+let shuffleSpy: ReturnType<typeof spyOn>
 
 describe('AudioPlaylist', () => {
   beforeEach(() => {
+    // Clear all mocks before each test
+    playMock.mockClear()
     pauseMock.mockClear()
     stopMock.mockClear()
     destroyMock.mockClear()
     onMock.mockClear()
+    audioMock.mockClear()
+
+    // Set up mocks before each test
+    audioSpy = spyOn(Audio, 'default').mockImplementation(audioMock)
+    preloadSpy = spyOn(utils, 'preloadFiles').mockImplementation(() => {})
+    shuffleSpy = spyOn(utils, 'shuffle').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    // Restore original implementations after each test
+    audioSpy.mockRestore()
+    preloadSpy.mockRestore()
+    shuffleSpy.mockRestore()
   })
 
   const files = ['./audio1.mp3', './audio2.mp3', './audio3.mp3']
@@ -58,7 +75,7 @@ describe('AudioPlaylist', () => {
       files,
     })
 
-    it('invokes the stop method from audio', () => {
+    test('invokes the stop method from audio', () => {
       playlist.stop()
       playlist.next()
       playlist.stop()
@@ -132,7 +149,7 @@ describe('AudioPlaylist', () => {
 
   describe('preload', () => {
     beforeEach(() => {
-      ;(utils.preloadFiles as jest.Mock).mockClear()
+      ;(utils.preloadFiles as ReturnType<typeof mock>).mockClear()
     })
 
     test('preloads files using the default limit', () => {
@@ -165,7 +182,7 @@ describe('AudioPlaylist', () => {
 
   describe('shuffle', () => {
     beforeEach(() => {
-      ;(utils.shuffle as jest.Mock).mockClear()
+      ;(utils.shuffle as ReturnType<typeof mock>).mockClear()
     })
 
     test('shuffles the files', () => {
