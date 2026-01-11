@@ -1,6 +1,13 @@
 import { describe, it, expect, beforeEach, mock } from 'bun:test'
+
 import Audio from '../Audio'
 import { AudioCtx } from '../AudioCtx'
+
+/** Test-only interface for accessing private Audio internals */
+interface AudioTestInternals {
+  _pauseTime: number
+  _pendingSeekTime: number | null
+}
 
 mock.module('../AudioCtx', () => ({
   AudioCtx: mock(),
@@ -24,10 +31,10 @@ describe('audio', () => {
     mockSuspend = mock(() => {})
 
     audioCtxMock = {
-      createBufferSource: mockCreateBufferSource as any,
-      createGain: mockCreateGain as any,
-      resume: mockResume as any,
-      suspend: mockSuspend as any,
+      createBufferSource: mockCreateBufferSource,
+      createGain: mockCreateGain,
+      resume: mockResume,
+      suspend: mockSuspend,
       state: 'running',
     } as unknown as AudioContext
 
@@ -116,7 +123,7 @@ describe('audio', () => {
       })
 
       expect(() => audio.seek(-10)).not.toThrow()
-      expect((audio as any)['_pauseTime']).toBe(0)
+      expect((audio as unknown as AudioTestInternals)._pauseTime).toBe(0)
     })
 
     it('should clamp time beyond duration to duration', () => {
@@ -134,7 +141,7 @@ describe('audio', () => {
       })
 
       expect(() => audio.seek(150)).not.toThrow()
-      expect((audio as any)['_pauseTime']).toBe(120)
+      expect((audio as unknown as AudioTestInternals)._pauseTime).toBe(120)
     })
 
     it('should seek to boundary values correctly', () => {
@@ -171,7 +178,7 @@ describe('audio', () => {
       })
 
       expect(() => audio.seek(30)).not.toThrow()
-      expect((audio as any)['_pendingSeekTime']).toBe(30)
+      expect((audio as unknown as AudioTestInternals)._pendingSeekTime).toBe(30)
     })
 
     it('should accept seek before audio is decoded', () => {
@@ -187,7 +194,7 @@ describe('audio', () => {
       })
 
       expect(() => audio.seek(45)).not.toThrow()
-      expect((audio as any)['_pendingSeekTime']).toBe(45)
+      expect((audio as unknown as AudioTestInternals)._pendingSeekTime).toBe(45)
     })
   })
 
@@ -195,14 +202,21 @@ describe('audio', () => {
     let audio: ReturnType<typeof Audio>
     let mockSource: AudioBufferSourceNode
     let mockGainNode: GainNode
+    let mockStop: ReturnType<typeof mock>
+    let mockSourceDisconnect: ReturnType<typeof mock>
+    let mockGainDisconnect: ReturnType<typeof mock>
 
     beforeEach(() => {
+      mockStop = mock(() => {})
+      mockSourceDisconnect = mock(() => {})
+      mockGainDisconnect = mock(() => {})
+
       mockSource = {
         buffer: null,
         loop: false,
-        stop: mock(() => {}),
+        stop: mockStop,
         start: mock(() => {}),
-        disconnect: mock(() => {}),
+        disconnect: mockSourceDisconnect,
         context: audioCtxMock,
         onended: null,
       } as unknown as AudioBufferSourceNode
@@ -210,7 +224,7 @@ describe('audio', () => {
       mockGainNode = {
         gain: { value: 0.8 },
         connect: mock(() => {}),
-        disconnect: mock(() => {}),
+        disconnect: mockGainDisconnect,
       } as unknown as GainNode
 
       audio = Audio({ file: 'test.mp3' })
@@ -230,9 +244,9 @@ describe('audio', () => {
 
       audio.destroy()
 
-      expect(mockSource.stop as any).toHaveBeenCalledWith(0)
-      expect(mockSource.disconnect as any).toHaveBeenCalled()
-      expect(mockGainNode.disconnect as any).toHaveBeenCalled()
+      expect(mockStop).toHaveBeenCalledWith(0)
+      expect(mockSourceDisconnect).toHaveBeenCalled()
+      expect(mockGainDisconnect).toHaveBeenCalled()
       expect(mockSource.onended).toBe(null)
     })
 

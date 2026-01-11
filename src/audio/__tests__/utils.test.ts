@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'bun:test'
+
 import { throwsError } from '../utils'
 
 describe('utils', () => {

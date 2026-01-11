@@ -1,4 +1,5 @@
 import { describe, test, expect, mock } from 'bun:test'
+
 import { EventEmitter } from '../EventEmitter'
 
 describe('EventEmitter', () => {
