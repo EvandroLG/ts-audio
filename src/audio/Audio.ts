@@ -370,6 +370,15 @@ export class AudioClass {
   }
 
   /**
+   * Indicates whether the audio is currently playing.
+   * @returns {boolean}
+   */
+  public get isPlaying(): boolean {
+    return this._states.isPlaying;
+  }
+
+
+  /**
    * Seeks to a specific time position in the audio track.
    * @param {number} time - Time in seconds to seek to (0 ≤ time ≤ duration)
    */
