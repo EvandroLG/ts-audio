@@ -11,6 +11,7 @@ export default tseslint.config(
   {
     plugins: { "import-x": importX },
     rules: {
+      ...importX.configs.typescript.rules,
       "prefer-const": "error",
       "@typescript-eslint/consistent-type-imports": [
         "error",

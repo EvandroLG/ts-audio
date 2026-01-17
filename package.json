@@ -34,7 +34,7 @@
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.16.1",
-    "husky": "^8.0.2",
+    "husky": "^9.1.7",
     "microbundle": "^0.15.1",
     "prettier": "3.4.2",
     "size-limit": "^11.2.0",
