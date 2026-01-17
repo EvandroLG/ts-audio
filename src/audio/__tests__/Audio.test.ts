@@ -260,4 +260,33 @@ describe('audio', () => {
       expect(() => audio.destroy()).not.toThrow()
     })
   })
+
+  describe("isPlaying getter", () => {
+    let audio: ReturnType<typeof Audio>
+
+    beforeEach(() => {
+      audio = Audio({ file: 'test.mp3' })
+    })
+
+    it("should return true", () => {
+      Object.defineProperty(audio, '_states', {
+        value: {
+          isPlaying: true,
+        },
+        writable: true,
+      })
+      expect(audio.isPlaying).toEqual(true);
+    });
+
+    it("should return false", () => {
+      Object.defineProperty(audio, '_states', {
+        value: {
+          isPlaying: false,
+        },
+        writable: true,
+      })
+      expect(audio.isPlaying).toEqual(false);
+    });
+  });
+
 })
