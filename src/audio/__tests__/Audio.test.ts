@@ -275,8 +275,8 @@ describe('audio', () => {
         },
         writable: true,
       })
-      expect(audio.isPlaying).toEqual(true);
-    });
+      expect(audio.isPlaying).toEqual(true)
+    })
 
     it("should return false", () => {
       Object.defineProperty(audio, '_states', {
@@ -285,8 +285,8 @@ describe('audio', () => {
         },
         writable: true,
       })
-      expect(audio.isPlaying).toEqual(false);
-    });
-  });
+      expect(audio.isPlaying).toEqual(false)
+    })
+  })
 
 })
