@@ -2,7 +2,7 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import importX from "eslint-plugin-import-x";
 import prettier from "eslint-config-prettier";
-import { ignores } from "./eslint.ignores.js";
+import { ignores } from "./eslint.ignores.mjs";
 
 export default tseslint.config(
   { ignores },
