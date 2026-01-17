@@ -261,14 +261,14 @@ describe('audio', () => {
     })
   })
 
-  describe("isPlaying getter", () => {
+  describe('isPlaying getter', () => {
     let audio: ReturnType<typeof Audio>
 
     beforeEach(() => {
       audio = Audio({ file: 'test.mp3' })
     })
 
-    it("should return true", () => {
+    it('should return true', () => {
       Object.defineProperty(audio, '_states', {
         value: {
           isPlaying: true,
@@ -278,7 +278,7 @@ describe('audio', () => {
       expect(audio.isPlaying).toEqual(true)
     })
 
-    it("should return false", () => {
+    it('should return false', () => {
       Object.defineProperty(audio, '_states', {
         value: {
           isPlaying: false,
@@ -288,5 +288,4 @@ describe('audio', () => {
       expect(audio.isPlaying).toEqual(false)
     })
   })
-
 })

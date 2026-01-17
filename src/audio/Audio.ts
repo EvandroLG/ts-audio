@@ -377,7 +377,6 @@ export class AudioClass {
     return this._states.isPlaying
   }
 
-
   /**
    * Seeks to a specific time position in the audio track.
    * @param {number} time - Time in seconds to seek to (0 ≤ time ≤ duration)
