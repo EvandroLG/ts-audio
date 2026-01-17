@@ -374,7 +374,7 @@ export class AudioClass {
    * @returns {boolean}
    */
   public get isPlaying(): boolean {
-    return this._states.isPlaying;
+    return this._states.isPlaying
   }
 
 
