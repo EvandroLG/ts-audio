@@ -1,3 +1,5 @@
+import { describe, test, expect } from 'bun:test'
+
 import { shuffle, weightedFiles, preloadFiles } from '../utils'
 
 function compare(arr1: string[], arr2: string[]): boolean {
