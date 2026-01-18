@@ -23,7 +23,7 @@
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
     "build": "./scripts/build.sh",
-    "prepare": "husky",
+    "prepare": "bunx husky",
     "prepublishOnly": "bun run build"
   },
   "devDependencies": {
